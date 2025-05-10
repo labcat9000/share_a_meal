@@ -1,0 +1,12 @@
+<h1>All Meals</h1>
+
+<div class="meal-cards">
+  <% @meals.each do |meal| %>
+    <div class="meal-card">
+      <h2><%= link_to meal.name, meal_path(meal) %></h2>
+      <p><%= truncate(meal.description, length: 100) %></p>
+      <p><strong>Cuisine:</strong> <%= meal.cuisine %></p>
+      <p><strong>Cooked by:</strong> <%= meal.user.name if meal.user %></p>
+    </div>
+  <% end %>
+</div>
