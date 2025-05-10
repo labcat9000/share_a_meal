@@ -15,9 +15,9 @@ class Exchange < ApplicationRecord
   end
 
   #not the same date
-  def no_overlapping_exchangings
+  def no_overlapping_exchanges
 
-    overlaps = Exchanging.where(meal_id: meal_id, status: "accepted")
+    overlaps = Exchange.where(meal_id: meal_id, status: "accepted")
                       .where.not(id: id)
 
     if overlaps.exists?
@@ -26,12 +26,12 @@ class Exchange < ApplicationRecord
   end
 
   #not 2 bookings for the same user and tool
-  def only_one_exchanging_per_user_meal
+  def only_one_exchange_per_user_meal
 
-    existing_exchanging = Exchanging.where(user_id: user_id, meal_id: meal_id)
+    existing_exchange = Exchange.where(user_id: user_id, meal_id: meal_id)
                                .where.not(id: id)
 
-    if existing_exchanging.exists?
+    if existing_exchange.exists?
       errors.add(:base, "You already have an exchange for this meal.")
     end
   end
