@@ -10,3 +10,17 @@
 // Your CSS partials
 @import "components/index";
 @import "pages/index";
+
+.meal-cards {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+}
+
+.meal-card {
+  background: white;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  padding: 12px;
+  width: 300px;
+}
