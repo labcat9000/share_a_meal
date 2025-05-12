@@ -54,7 +54,7 @@ gem "pundit"
 gem 'dotenv-rails'
 gem 'geocoder'
 gem "cloudinary"
-
+gem 'faker'
 
 group :development, :test do
   gem "dotenv-rails"
