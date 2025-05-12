@@ -52,6 +52,8 @@ gem "simple_form", github: "heartcombo/simple_form"
 gem "sassc-rails"
 gem "pundit"
 gem 'dotenv-rails'
+gem 'geocoder'
+gem "cloudinary"
 
 
 group :development, :test do
