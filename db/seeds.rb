@@ -29,7 +29,7 @@ categories = ['Appetizer', 'Main Course', 'Dessert', 'Snack', 'Side Dish', 'Soup
 
 20.times do
   Meal.create!(
-    name: Faker::Food.dish,
+    name: Faker::Food.unique.dish,
     description: Faker::Food.description,
     category: categories.sample,
     ingredients: Array.new(rand(3..6)) { Faker::Food.ingredient }.join(', '),
