@@ -1,0 +1,8 @@
+<h1><%= @meal.name %></h1>
+<p><strong>Description:</strong> <%= @meal.description %></p>
+<p><strong>Ingredients:</strong> <%= @meal.ingredients %></p>
+<p><strong>Category:</strong> <%= @meal.category %></p>
+<p><strong>Cuisine:</strong> <%= @meal.cuisine %></p>
+
+<%= link_to 'Edit', edit_meal_path(@meal) %> |
+<%= link_to 'Back to all meals', meals_path %>
