@@ -1,8 +1,35 @@
-<h1><%= @meal.name %></h1>
-<p><strong>Description:</strong> <%= @meal.description %></p>
-<p><strong>Ingredients:</strong> <%= @meal.ingredients %></p>
-<p><strong>Category:</strong> <%= @meal.category %></p>
-<p><strong>Cuisine:</strong> <%= @meal.cuisine %></p>
 
-<%= link_to 'Edit', edit_meal_path(@meal) %> |
-<%= link_to 'Back to all meals', meals_path %>
+<div class="meal-show-wrapper">
+  <div class="meal-show-card">
+    <div class="meal-show-image-rect"></div>
+    <div class="dots-nav">
+      <span class="dot active"></span>
+      <span class="dot"></span>
+      <span class="dot"></span>
+    </div>
+    <h1 class="meal-show-title"><%= @meal.name %></h1>
+    <p class="meal-show-author">
+      Cooked by:
+      <strong><%= "#{@meal.user.first_name} #{@meal.user.last_name}" if @meal.user %></strong>
+    </p>
+    <p class="meal-show-cuisine">
+      <strong>Cuisine:</strong> <%= @meal.cuisine %>
+    </p>
+    <div class="meal-show-content">
+      <p class="meal-show-description">
+        <%= simple_format(@meal.description) %>
+      </p>
+    </div>
+    <% if @meal.ingredients.present? %>
+      <p class="meal-show-ingredients">
+        <strong>Ingredients:</strong> <%= @meal.ingredients %>
+      </p>
+    <% end %>
+    <div class="map-wrapper">
+      <div id="show-map" class="map-container"></div>
+    </div>
+    <div class="back-link">
+      <%= link_to "← Back to Meals", meals_path, class: "back-to-meals" %>
+    </div>
+  </div>
+</div>

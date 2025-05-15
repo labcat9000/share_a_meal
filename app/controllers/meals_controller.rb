@@ -6,7 +6,10 @@ class MealsController < ApplicationController
   end
 
   def show
-    @meal = Meal.find(params[:id])
+    @meal = Meal.find_by(id: params[:id])
+    if @meal.nil?
+      redirect_to meals_path, alert: "Meal not found."
+    end
   end
 
   def new
