@@ -1,30 +1,92 @@
-// Graphical variables
 @import "config/fonts";
 @import "config/colors";
 @import "config/bootstrap_variables";
-
-// External libraries
 @import "bootstrap";
 @import "font-awesome";
-
-// Your CSS partials
 @import "components/index";
 @import "pages/index";
 
+// Meal Cards Layout
 .meal-cards {
   display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  padding: 1rem;
   flex-wrap: wrap;
-  gap: 16px;
 }
 
+// Individual Meal Card
 .meal-card {
   background: white;
   border: 1px solid #ddd;
   border-radius: 8px;
   padding: 12px;
-  width: 300px;
+  width: 100%;
+  max-width: 100%;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
 }
 
+.meal-card-inner {
+  display: flex;
+  gap: 1rem;
+  align-items: flex-start;
+}
+
+.meal-card-image {
+  width: 80px;
+  height: 80px;
+  flex-shrink: 0;
+  background-color: #ccc;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 6px;
+}
+
+.meal-image,
+.meal-image-placeholder {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  font-size: 0.8rem;
+  text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #444;
+}
+
+.meal-card-content {
+  flex-grow: 1;
+}
+
+.meal-title {
+  font-weight: 700;
+  font-size: 1.1rem;
+  margin-bottom: 0.25rem;
+}
+
+.meal-author,
+.meal-cuisine,
+.meal-description {
+  font-size: 0.9rem;
+  margin-bottom: 0.25rem;
+  color: #333;
+}
+
+// Link Styling
+.meal-card-link {
+  text-decoration: none;
+  color: inherit;
+  display: block;
+
+  &:hover {
+    text-decoration: none;
+    color: inherit;
+  }
+}
+
+// Toggle Buttons
 .view-toggle {
   display: flex;
   justify-content: center;
@@ -41,33 +103,25 @@
   background: transparent;
   font-size: 1rem;
   cursor: pointer;
+
+  &.active {
+    background-color: white;
+    border-radius: 24px;
+    font-weight: bold;
+  }
 }
 
-.toggle-button.active {
-  background-color: white;
-  border-radius: 24px;
-  font-weight: bold;
-}
-
-.meal-cards {
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
-  padding: 1rem;
-}
-
-.meal-card {
-  background: white;
-  border: 1px solid #ddd;
-  border-radius: 8px;
-  padding: 12px;
-}
-
+// Map Container (for list view)
 #map {
   width: 100%;
   height: 60vh;
   max-width: 100%;
   border-radius: 12px;
+}
+
+.map-wrapper {
+  padding: 0 16px;
+  box-sizing: border-box;
 }
 
 .map-footer {
@@ -77,7 +131,7 @@
   background: white;
   border-radius: 12px;
   padding: 10px 16px;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 }
 
 .map-location p {
@@ -102,7 +156,7 @@
   gap: 6px;
 }
 
-
+// Icon Buttons
 .icon-btn {
   display: flex;
   flex-direction: column;
@@ -112,18 +166,172 @@
   background: white;
   border-radius: 12px;
   padding: 0.4rem 0.8rem;
-  box-shadow: 0 1px 4px rgba(0,0,0,0.1);
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
   font-weight: 500;
   cursor: pointer;
+
+  span {
+    font-size: 0.7rem;
+    margin-top: 2px;
+  }
 }
 
-.icon-btn span {
-  font-size: 0.7rem;
-  margin-top: 2px;
+// Responsive adjustment
+@media (max-width: 480px) {
+  .meal-card-inner {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .meal-card-image {
+    width: 100%;
+    height: 160px;
+  }
+
+  .meal-card-content {
+    text-align: center;
+  }
 }
 
+// === MEAL SHOW PAGE LAYOUT ===
 
+.meal-show-wrapper {
+  display: flex;
+  justify-content: center;
+  padding: 2rem 1rem;
+}
+
+.meal-show-card {
+  width: 100%;
+  max-width: 500px;
+  background: #fff;
+  border-radius: 16px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  overflow: hidden;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Image Placeholder (2/5 of card height) */
+.meal-show-image-rect {
+  width: 100%;
+  height: 200px;
+  background: #e5e5e5;
+}
+
+/* Dots */
+.dots-nav {
+  display: flex;
+  justify-content: center;
+  margin: 0.75rem 0;
+  gap: 6px;
+}
+
+.dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background-color: #bbb;
+}
+
+.dot.active {
+  background-color: #222;
+}
+
+/* Title */
+.meal-show-title {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #2e3e1d;
+  margin: 0.5rem 0 0;
+  text-align: left;
+  padding: 0 1rem;
+}
+
+/* Cooked By */
+.meal-show-author {
+  font-size: 0.95rem;
+  color: #444;
+  margin-bottom: 1rem;
+  text-align: left;
+  padding: 0 1rem;
+}
+
+/* Description */
+.meal-show-content {
+  padding: 0 1rem;
+  text-align: justify;
+  font-size: 1rem;
+  color: #333;
+}
+
+/* Map Section */
 .map-wrapper {
-  padding: 0 16px;
-  box-sizing: border-box;
+  margin-top: 1.5rem;
+  border-radius: 12px;
+  overflow: hidden;
+  padding: 0 1rem;
+}
+
+.map-container {
+  width: 100%;
+  height: 200px;
+  border-radius: 12px;
+}
+
+.map-footer {
+  display: flex;
+  justify-content: center;
+  margin-top: 1rem;
+  padding-bottom: 1rem;
+}
+
+.map-buttons {
+  display: flex;
+  gap: 10px;
+}
+
+.map-btn {
+  background: white;
+  border: 1px solid #ccc;
+  padding: 6px 12px;
+  border-radius: 12px;
+  font-size: 14px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+
+.meal-show-cuisine {
+  font-size: 0.95rem;
+  color: #444;
+  text-align: left;
+  padding: 1rem;
+  padding-top: 0;
+  padding-bottom: 0.5rem;
+}
+
+.back-link {
+  margin-top: 1rem;
+  padding: 1rem;
+  text-align: center;
+}
+
+.back-to-meals {
+  display: inline-block;
+  font-size: 0.95rem;
+  padding: 0.5rem 1rem;
+  background: white;
+  border: 1px solid #ccc;
+  border-radius: 12px;
+  text-decoration: none;
+  color: #333;
+  transition: background 0.2s ease;
+
+  &:hover {
+    background: #f5f5f5;
+  }
 }

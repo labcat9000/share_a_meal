@@ -1,4 +1,5 @@
-<<<<<<< HEAD
+<div class="spacer-top"></div>
+
 <div class="view-toggle">
   <button class="toggle-button active" id="list-view-btn">List</button>
   <button class="toggle-button" id="map-view-btn">Map</button>
@@ -7,20 +8,38 @@
 <div id="meal-list">
   <div class="meal-cards">
     <% @meals.each do |meal| %>
-      <div class="meal-card">
-        <h2><%= link_to meal.name, meal_path(meal) %></h2>
-        <p><%= truncate(meal.description, length: 100) %></p>
-        <p><strong>Cuisine:</strong> <%= meal.cuisine %></p>
-        <p><strong>Cooked by:</strong> <%= meal.user.name if meal.user %></p>
-      </div>
+      <%= link_to meal_path(meal), class: "meal-card-link" do %>
+        <div class="meal-card">
+          <div class="meal-card-inner">
+            <div class="meal-card-image">
+              <% if meal.respond_to?(:image_url) && meal.image_url.present? %>
+                <%= image_tag meal.image_url, alt: meal.name, class: "meal-image" %>
+              <% else %>
+                <div class="meal-image-placeholder">No photo yet</div>
+              <% end %>
+            </div>
+
+            <div class="meal-card-content">
+              <h3 class="meal-title"><%= meal.name %></h3>
+              <p class="meal-author">
+                Cooked by:
+                <strong><%= "#{meal.user.first_name} #{meal.user.last_name}" if meal.user %></strong>
+              </p>
+              <p class="meal-cuisine"><strong>Cuisine:</strong> <%= meal.cuisine %></p>
+              <p class="meal-description"><%= truncate(meal.description, length: 80) %></p>
+            </div>
+          </div>
+        </div>
+      <% end %>
     <% end %>
   </div>
 </div>
 
 <div id="meal-map" style="display: none;">
   <div class="map-wrapper">
-    <div id="map" class="map-container"></div>
+    <div id="map" class="map-container" style="height: 60vh; border-radius: 12px;"></div>
   </div>
+
   <div class="map-footer">
     <div class="map-location">
       <p><strong>Montreal, QC</strong><br><small>Location is approximate</small></p>
@@ -31,3 +50,5 @@
     </div>
   </div>
 </div>
+
+<div class="spacer-bottom"></div>
