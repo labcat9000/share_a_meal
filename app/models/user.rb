@@ -11,6 +11,10 @@ class User < ApplicationRecord
     role == 'exchanger'
   end
 
+  def name
+    "#{first_name} #{last_name}"
+  end
+
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :validatable
   has_many :meals, dependent: :destroy

@@ -12,7 +12,7 @@
         <div class="meal-card">
           <div class="meal-card-inner">
             <div class="meal-card-image">
-              <% if meal.respond_to?(:image_url) && meal.image_url.present? %>
+              <% if meal.image_url.present? %>
                 <%= image_tag meal.image_url, alt: meal.name, class: "meal-image" %>
               <% else %>
                 <div class="meal-image-placeholder">No photo yet</div>
@@ -27,6 +27,17 @@
               </p>
               <p class="meal-cuisine"><strong>Cuisine:</strong> <%= meal.cuisine %></p>
               <p class="meal-description"><%= truncate(meal.description, length: 80) %></p>
+              
+              <%# Optional admin links shown inline at bottom (optional: add `if current_user.admin?`) %>
+              <div class="meal-actions">
+                <%= link_to edit_meal_path(meal), title: "Edit" do %>
+                  <i class="fa fa-edit"></i>
+                <% end %>
+                |
+                <%= link_to meal_path(meal), method: :delete, data: { confirm: 'Are you sure?' }, title: "Delete" do %>
+                  <i class="fa fa-trash"></i>
+                <% end %>
+              </div>
             </div>
           </div>
         </div>
@@ -52,3 +63,4 @@
 </div>
 
 <div class="spacer-bottom"></div>
+

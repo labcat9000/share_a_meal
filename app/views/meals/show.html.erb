@@ -1,53 +1,35 @@
+
 <div class="meal-show-wrapper">
   <div class="meal-show-card">
-
-    <!-- Image Placeholder -->
     <div class="meal-show-image-rect"></div>
-
-    <!-- Dots -->
     <div class="dots-nav">
       <span class="dot active"></span>
       <span class="dot"></span>
       <span class="dot"></span>
     </div>
-
-    <!-- Title -->
     <h1 class="meal-show-title"><%= @meal.name %></h1>
-
-    <!-- Cooked by -->
     <p class="meal-show-author">
       Cooked by:
       <strong><%= "#{@meal.user.first_name} #{@meal.user.last_name}" if @meal.user %></strong>
     </p>
-
-    <!-- Cuisine -->
     <p class="meal-show-cuisine">
       <strong>Cuisine:</strong> <%= @meal.cuisine %>
     </p>
-
-    <!-- Description -->
     <div class="meal-show-content">
       <p class="meal-show-description">
         <%= simple_format(@meal.description) %>
       </p>
     </div>
-
-    <!-- Ingredients -->
     <% if @meal.ingredients.present? %>
       <p class="meal-show-ingredients">
         <strong>Ingredients:</strong> <%= @meal.ingredients %>
       </p>
     <% end %>
-
-    <!-- Map -->
     <div class="map-wrapper">
       <div id="show-map" class="map-container"></div>
     </div>
-
-    <!-- Back to Meals -->
     <div class="back-link">
       <%= link_to "← Back to Meals", meals_path, class: "back-to-meals" %>
     </div>
-
   </div>
 </div>
