@@ -1,3 +1,4 @@
+
 document.addEventListener("DOMContentLoaded", () => {
   const listBtn = document.getElementById("list-view-btn");
   const mapBtn = document.getElementById("map-view-btn");

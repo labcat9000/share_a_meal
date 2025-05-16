@@ -11,8 +11,6 @@ require 'faker'
 
 Meal.destroy_all
 puts "Destroyed all meals"
-User.destroy_all
-puts "Destroyed all users"
 
 users = 6.times.map do
   User.create!(

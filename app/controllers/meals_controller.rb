@@ -14,11 +14,11 @@ class MealsController < ApplicationController
   end
 
   def create
-    @meal = Meal.new(meal_params)
+    @meal = current_user.meals.build(meal_params)
     if @meal.save
-      redirect_to meals_path, notice: 'Meal was successfully created.'
+      redirect_to meals_path, notice: "Meal created successfully."
     else
-      render :new, status: :unprocessable_entity
+      render :new
     end
   end
 
