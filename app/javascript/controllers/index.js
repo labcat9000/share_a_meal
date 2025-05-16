@@ -66,3 +66,5 @@ document.addEventListener("turbo:load", () => {
     showMapInstance.addControl(new mapboxgl.NavigationControl(), 'top-left');
   }
 });
+
+// debug
