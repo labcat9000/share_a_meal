@@ -12,11 +12,11 @@
         <div class="meal-card">
           <div class="meal-card-inner">
             <div class="meal-card-image">
-              <% if meal.image_url.present? %>
-                <%= image_tag meal.image_url, alt: meal.name, class: "meal-image" %>
-              <% else %>
-                <div class="meal-image-placeholder">No photo yet</div>
-              <% end %>
+              <%#<% if meal.image_url.present? %>
+                <%#<%= image_tag meal.image_url, alt: meal.name, class: "meal-image" %>
+              <%#<% else %>
+                <%#<div class="meal-image-placeholder">No photo yet</div>
+              <%#<% end %>
             </div>
 
             <div class="meal-card-content">
@@ -27,7 +27,7 @@
               </p>
               <p class="meal-cuisine"><strong>Cuisine:</strong> <%= meal.cuisine %></p>
               <p class="meal-description"><%= truncate(meal.description, length: 80) %></p>
-              
+
               <%# Optional admin links shown inline at bottom (optional: add `if current_user.admin?`) %>
               <div class="meal-actions">
                 <%= link_to edit_meal_path(meal), title: "Edit" do %>
@@ -46,11 +46,10 @@
   </div>
 </div>
 
-<div id="meal-map" style="display: none;">
+<div id="meal-map" style="display: 1;">
   <div class="map-wrapper">
-    <div id="map" class="map-container" style="height: 60vh; border-radius: 12px;"></div>
+    <div id="map" class="map-container" style="height: 60vh; border-radius: 12px;" data-controller="map-index" data-map-index-api-key-value="<%= ENV['MAPBOX_API_KEY'] %>" ></div>
   </div>
-
   <div class="map-footer">
     <div class="map-location">
       <p><strong>Montreal, QC</strong><br><small>Location is approximate</small></p>
@@ -63,4 +62,3 @@
 </div>
 
 <div class="spacer-bottom"></div>
-
