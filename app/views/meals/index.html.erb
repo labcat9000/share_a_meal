@@ -1,66 +1,85 @@
 <div class="spacer-top"></div>
 
-<div class="view-toggle">
-  <button class="toggle-button active" id="list-view-btn">List</button>
-  <button class="toggle-button" id="map-view-btn">Map</button>
-</div>
+<!-- Henrique, it was neccesary to add a wrapper in the line 4 to add our index-display controller-->
+<div data-controller="index-display">
+  <div class="view-toggle">
+    <!-- Add a data target and the data action in the line below -->
+    <button class="toggle-button active"
+            id="list-view-btn"
+            data-action="click->index-display#displayMealList"
+            data-index-display-target="listButton">List</button>
+    <!-- Add a data target and the data action in the line below -->
+    <button class="toggle-button"
+            id="map-view-btn"
+            data-action="click->index-display#displayMealMap"
+            data-index-display-target="mapButton">Map</button>
+  </div>
 
-<div id="meal-list">
-  <div class="meal-cards">
-    <% @meals.each do |meal| %>
-      <%= link_to meal_path(meal), class: "meal-card-link" do %>
-        <div class="meal-card">
-          <div class="meal-card-inner">
-            <div class="meal-card-image">
-              <% if meal.image_url.present? %>
-                <%= image_tag meal.image_url, alt: meal.name, class: "meal-image" %>
-              <% else %>
-                <div class="meal-image-placeholder">No photo yet</div>
-              <% end %>
-            </div>
+  <!-- Add a data target in the line below -->
+  <div id="meal-list" data-index-display-target="mealList">
+    <div class="meal-cards">
+      <% @meals.each do |meal| %>
+        <%= link_to meal_path(meal), class: "meal-card-link" do %>
+          <div class="meal-card">
+            <div class="meal-card-inner">
+              <div class="meal-card-image">
+                <%#<% if meal.image_url.present? %>
+                  <%#<%= image_tag meal.image_url, alt: meal.name, class: "meal-image" %>
+                <%#<% else %>
+                  <%#<div class="meal-image-placeholder">No photo yet</div>
+                <%#<% end %>
+              </div>
 
-            <div class="meal-card-content">
-              <h3 class="meal-title"><%= meal.name %></h3>
-              <p class="meal-author">
-                Cooked by:
-                <strong><%= "#{meal.user.first_name} #{meal.user.last_name}" if meal.user %></strong>
-              </p>
-              <p class="meal-cuisine"><strong>Cuisine:</strong> <%= meal.cuisine %></p>
-              <p class="meal-description"><%= truncate(meal.description, length: 80) %></p>
-              
-              <%# Optional admin links shown inline at bottom (optional: add `if current_user.admin?`) %>
-              <div class="meal-actions">
-                <%= link_to edit_meal_path(meal), title: "Edit" do %>
-                  <i class="fa fa-edit"></i>
-                <% end %>
-                |
-                <%= link_to meal_path(meal), method: :delete, data: { confirm: 'Are you sure?' }, title: "Delete" do %>
-                  <i class="fa fa-trash"></i>
-                <% end %>
+              <div class="meal-card-content">
+                <h3 class="meal-title"><%= meal.name %></h3>
+                <p class="meal-author">
+                  Cooked by:
+                  <strong><%= "#{meal.user.first_name} #{meal.user.last_name}" if meal.user %></strong>
+                </p>
+                <p class="meal-cuisine"><strong>Cuisine:</strong> <%= meal.cuisine %></p>
+                <p class="meal-description"><%= truncate(meal.description, length: 80) %></p>
+
+                <%# Optional admin links shown inline at bottom (optional: add `if current_user.admin?`) %>
+                <div class="meal-actions">
+                  <%= link_to edit_meal_path(meal), title: "Edit" do %>
+                    <i class="fa fa-edit"></i>
+                  <% end %>
+                  |
+                  <%= link_to meal_path(meal), method: :delete, data: { confirm: 'Are you sure?' }, title: "Delete" do %>
+                    <i class="fa fa-trash"></i>
+                  <% end %>
+                </div>
               </div>
             </div>
           </div>
-        </div>
+        <% end %>
       <% end %>
-    <% end %>
-  </div>
-</div>
-
-<div id="meal-map" style="display: none;">
-  <div class="map-wrapper">
-    <div id="map" class="map-container" style="height: 60vh; border-radius: 12px;"></div>
-  </div>
-
-  <div class="map-footer">
-    <div class="map-location">
-      <p><strong>Montreal, QC</strong><br><small>Location is approximate</small></p>
-    </div>
-    <div class="map-buttons">
-      <button id="locate-btn" class="map-btn">📍 Locate</button>
-      <button id="directions-btn" class="map-btn">🧭 Directions</button>
     </div>
   </div>
+
+  <!-- Henrique, this is the start of the map code that connects it to the Stimulus controller. -->
+  <div  id="meal-map"
+        style="display: none;"
+        data-index-display-target="mealMap"
+        data-controller="map-index"
+        data-map-index-api-key-value="<%= ENV['MAPBOX_API_KEY'] %>">
+    <div class="map-wrapper">
+      <div  id="map"
+            class="map-container"
+            data-map-index-target="map"
+            style="height: 60vh; border-radius: 12px;"></div>
+    </div>
+    <div class="map-footer">
+      <div class="map-location">
+        <p><strong>Montreal, QC</strong><br><small>Location is approximate</small></p>
+      </div>
+      <div class="map-buttons">
+        <button id="locate-btn" class="map-btn" data-action="click->map-index#locatePosition">📍 Locate</button>
+        <button id="directions-btn" class="map-btn">🧭 Directions</button>
+      </div>
+    </div>
+  </div>
+  <!-- This is the end of the map code. -->
 </div>
 
 <div class="spacer-bottom"></div>
-
