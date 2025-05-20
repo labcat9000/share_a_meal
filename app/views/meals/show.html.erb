@@ -25,7 +25,12 @@
       </p>
     <% end %>
     <div class="map-wrapper">
-      <div id="show-map" class="map-container"></div>
+      <!-- Henrique, this is the start of the map code that connects it to the Stimulus controller. -->
+      <div  id="show-map"
+            class="map-container"
+            data-controller="map-show"
+            data-map-show-api-key-value="<%= ENV['MAPBOX_API_KEY'] %>" ></div>
+      <!-- This is the end of the map code. -->
     </div>
     <div class="back-link">
       <%= link_to "← Back to Meals", meals_path, class: "back-to-meals" %>

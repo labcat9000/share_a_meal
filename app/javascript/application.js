@@ -3,4 +3,4 @@ import "@hotwired/turbo-rails"
 import "controllers"
 import "@popperjs/core"
 import "bootstrap"
-import "@fortawesome/fontawesome-free/css/all"
+// import "@fontawesome/fontawesome-free/css/all" <-- Henrique, please remove this line on your end
