@@ -1,0 +1,25 @@
+<div class="meal-card">
+  <div class="meal-card-inner">
+    <div class="meal-card-image">
+      <% if meal.photo.attached? %>
+        <%= cl_image_tag meal.photo.key, class: "meal-image" %>
+      <% else %>
+        <%= image_tag "meal-default.png.jpeg", class: "meal-image" %>
+      <% end %>
+    </div>
+    <div class="meal-card-content">
+      <h3 class="meal-title"><%= meal.name %></h3>
+      <p class="meal-description"><%= truncate(meal.description, length: 80) %></p>
+      <p class="meal-author">Cooked by: <strong><%= "#{meal.user.first_name} #{meal.user.last_name}" if meal.user %></strong></p>
+      <div class="meal-actions">
+        <%= link_to edit_meal_path(meal), title: "Edit" do %>
+          <i class="fa fa-edit"></i>
+        <% end %>
+        |
+        <%= link_to meal_path(meal), method: :delete, data: { confirm: 'Are you sure?' }, title: "Delete" do %>
+          <i class="fa fa-trash"></i>
+        <% end %>
+      </div>
+    </div>
+  </div>
+</div>

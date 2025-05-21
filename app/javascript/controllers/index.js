@@ -1,5 +1,8 @@
-// Import and register all your controllers from the importmap via controllers/**/*_controller
-import { application } from "controllers/application"
+import { Application } from "@hotwired/stimulus"
 import { eagerLoadControllersFrom } from "@hotwired/stimulus-loading"
+
+const application = Application.start()
+application.debug = false
+window.Stimulus = application
+
 eagerLoadControllersFrom("controllers", application)
-// Henrique, please add the original content on this file (i.e. lines 1-4 above)

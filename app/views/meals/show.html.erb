@@ -32,9 +32,14 @@
       </p>
     <% end %>
 
-    <!-- Cuisine -->
+    <!-- Category and Cuisine -->
     <p style="font-size: 0.95rem; color: #666; margin-bottom: 1.5rem;">
-      <strong>Cuisine:</strong> <%= @meal.cuisine %>
+      <% if @meal.category.present? %>
+        <strong>Category:</strong> <%= @meal.category %><br>
+      <% end %>
+      <% if @meal.cuisine.present? %>
+        <strong>Cuisine:</strong> <%= @meal.cuisine %>
+      <% end %>
     </p>
 
     <!-- Ingredients -->
