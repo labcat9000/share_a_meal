@@ -1,45 +1,42 @@
 <div class="spacer-top"></div>
 
-<!-- Henrique, it was neccesary to add a wrapper in the line 4 to add our index-display controller-->
+<!-- Wrapper controlled by Stimulus -->
 <div data-controller="index-display">
   <div class="view-toggle">
-    <!-- Add a data target and the data action in the line below -->
     <button class="toggle-button active"
             id="list-view-btn"
             data-action="click->index-display#displayMealList"
             data-index-display-target="listButton">List</button>
-    <!-- Add a data target and the data action in the line below -->
     <button class="toggle-button"
             id="map-view-btn"
             data-action="click->index-display#displayMealMap"
             data-index-display-target="mapButton">Map</button>
   </div>
 
-  <!-- Add a data target in the line below -->
+  <!-- Meal List -->
   <div id="meal-list" data-index-display-target="mealList">
     <div class="meal-cards">
       <% @meals.each do |meal| %>
         <%= link_to meal_path(meal), class: "meal-card-link" do %>
           <div class="meal-card">
             <div class="meal-card-inner">
+
+              <!-- LEFT: Image or Placeholder -->
               <div class="meal-card-image">
-                <%#<% if meal.image_url.present? %>
-                  <%#<%= image_tag meal.image_url, alt: meal.name, class: "meal-image" %>
-                <%#<% else %>
-                  <%#<div class="meal-image-placeholder">No photo yet</div>
-                <%#<% end %>
+                <% if meal.photo.attached? %>
+                  <%= cl_image_tag meal.photo.key, class: "meal-image" %>
+                <% else %>
+                  <%= image_tag "meal-default.png.jpeg", class: "meal-image" %>
+                <% end %>
               </div>
 
+              <!-- RIGHT: Text Content -->
               <div class="meal-card-content">
                 <h3 class="meal-title"><%= meal.name %></h3>
-                <p class="meal-author">
-                  Cooked by:
-                  <strong><%= "#{meal.user.first_name} #{meal.user.last_name}" if meal.user %></strong>
-                </p>
-                <p class="meal-cuisine"><strong>Cuisine:</strong> <%= meal.cuisine %></p>
                 <p class="meal-description"><%= truncate(meal.description, length: 80) %></p>
+                <p class="meal-author">Cooked by: <strong><%= "#{meal.user.first_name} #{meal.user.last_name}" if meal.user %></strong></p>
 
-                <%# Optional admin links shown inline at bottom (optional: add `if current_user.admin?`) %>
+                <!-- Admin Actions -->
                 <div class="meal-actions">
                   <%= link_to edit_meal_path(meal), title: "Edit" do %>
                     <i class="fa fa-edit"></i>
@@ -50,6 +47,7 @@
                   <% end %>
                 </div>
               </div>
+
             </div>
           </div>
         <% end %>
@@ -57,17 +55,17 @@
     </div>
   </div>
 
-  <!-- Henrique, this is the start of the map code that connects it to the Stimulus controller. -->
-  <div  id="meal-map"
-        style="display: none;"
-        data-index-display-target="mealMap"
-        data-controller="map-index"
-        data-map-index-api-key-value="<%= ENV['MAPBOX_API_KEY'] %>">
+  <!-- Map Section -->
+  <div id="meal-map"
+       style="display: none;"
+       data-index-display-target="mealMap"
+       data-controller="map-index"
+       data-map-index-api-key-value="<%= ENV['MAPBOX_API_KEY'] %>">
     <div class="map-wrapper">
-      <div  id="map"
-            class="map-container"
-            data-map-index-target="map"
-            style="height: 60vh; border-radius: 12px;"></div>
+      <div id="map"
+           class="map-container"
+           data-map-index-target="map"
+           style="height: 60vh; border-radius: 12px;"></div>
     </div>
     <div class="map-footer">
       <div class="map-location">
@@ -79,7 +77,6 @@
       </div>
     </div>
   </div>
-  <!-- This is the end of the map code. -->
 </div>
 
 <div class="spacer-bottom"></div>

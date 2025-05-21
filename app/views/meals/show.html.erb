@@ -1,39 +1,63 @@
-<div class="meal-show-wrapper">
-  <div class="meal-show-card">
-    <div class="meal-show-image-rect"></div>
-    <div class="dots-nav">
-      <span class="dot active"></span>
-      <span class="dot"></span>
-      <span class="dot"></span>
+<div style="display: flex; justify-content: center; padding: 2rem 1rem;">
+  <div style="max-width: 500px; width: 100%; background: #fff; border-radius: 24px; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08); padding: 1.5rem;">
+
+    <!-- Image -->
+    <div style="width: 100%; border-radius: 20px; overflow: hidden; margin-bottom: 1rem;">
+      <% if @meal.photo.attached? %>
+        <%= cl_image_tag @meal.photo.key, class: "img-fluid", style: "width: 100%; height: auto; object-fit: cover; border-radius: 20px;" %>
+      <% else %>
+        <%= image_tag "meal-default.png.jpeg", class: "img-fluid", style: "width: 100%; height: auto; object-fit: cover; border-radius: 20px;" %>
+      <% end %>
     </div>
-    <h1 class="meal-show-title"><%= @meal.name %></h1>
-    <p class="meal-show-author">
-      Cooked by:
-      <strong><%= "#{@meal.user.first_name} #{@meal.user.last_name}" if @meal.user %></strong>
+
+    <!-- Dots -->
+    <div class="dots-nav" style="display: flex; justify-content: center; gap: 6px; margin-bottom: 1rem;">
+      <span class="dot active" style="width: 8px; height: 8px; border-radius: 50%; background-color: #222;"></span>
+      <span class="dot" style="width: 8px; height: 8px; border-radius: 50%; background-color: #bbb;"></span>
+      <span class="dot" style="width: 8px; height: 8px; border-radius: 50%; background-color: #bbb;"></span>
+    </div>
+
+    <!-- Meal Name -->
+    <h2 style="font-size: 1.5rem; font-weight: 700; color: #2e3e1d; margin-bottom: 1rem;"><%= @meal.name %></h2>
+
+    <!-- Description -->
+    <p style="font-size: 1rem; color: #333; margin-bottom: 1.5rem; text-align: center;">
+      <%= simple_format(@meal.description) %>
     </p>
-    <p class="meal-show-cuisine">
+
+    <!-- Cooked By -->
+    <% if @meal.user.present? %>
+      <p style="font-size: 0.95rem; color: #666; margin-bottom: 0.5rem;">
+        Cooked by: <strong><%= @meal.user.first_name %> <%= @meal.user.last_name %></strong>
+      </p>
+    <% end %>
+
+    <!-- Cuisine -->
+    <p style="font-size: 0.95rem; color: #666; margin-bottom: 1.5rem;">
       <strong>Cuisine:</strong> <%= @meal.cuisine %>
     </p>
-    <div class="meal-show-content">
-      <p class="meal-show-description">
-        <%= simple_format(@meal.description) %>
-      </p>
-    </div>
+
+    <!-- Ingredients -->
     <% if @meal.ingredients.present? %>
-      <p class="meal-show-ingredients">
+      <p style="font-size: 0.95rem; color: #333; margin-bottom: 2rem;">
         <strong>Ingredients:</strong> <%= @meal.ingredients %>
       </p>
     <% end %>
-    <div class="map-wrapper">
-      <!-- Henrique, this is the start of the map code that connects it to the Stimulus controller. -->
-      <div  id="show-map"
-            class="map-container"
-            data-controller="map-show"
-            data-map-show-api-key-value="<%= ENV['MAPBOX_API_KEY'] %>" ></div>
-      <!-- This is the end of the map code. -->
+
+    <!-- Map -->
+    <div class="map-wrapper" style="margin-top: 1.5rem; border-radius: 12px; overflow: hidden;">
+      <div id="show-map"
+           class="map-container"
+           data-controller="map-show"
+           data-map-show-api-key-value="<%= ENV['MAPBOX_API_KEY'] %>"
+           style="width: 100%; height: 200px; border-radius: 12px;">
+      </div>
     </div>
-    <div class="back-link">
-      <%= link_to "← Back to Meals", meals_path, class: "back-to-meals" %>
+
+    <!-- Back link -->
+    <div class="back-link" style="text-align: center; margin-top: 1.5rem;">
+      <%= link_to "← Back to Meals", meals_path, class: "back-to-meals", style: "text-decoration: none; color: #333; font-size: 0.95rem;" %>
     </div>
+
   </div>
 </div>
