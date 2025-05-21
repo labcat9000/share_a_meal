@@ -7,4 +7,9 @@ class Meal < ApplicationRecord
   def average_rating
     ratings.average(:value)&.round(1) || "No ratings yet"
   end
+
+  def self.search(query)
+    where("name ILIKE ? OR description ILIKE ?", "%#{query}%", "%#{query}%")
+  end
+
 end

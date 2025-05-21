@@ -1,5 +1,21 @@
 <div class="spacer-top"></div>
 
+<div class="container px-3 pt-4">
+  <%= form_with url: meals_path, method: :get, local: true, class: "meal-search-form position-relative" do |f| %>
+    <i class="fa fa-search meal-search-icon"></i>
+    <%= f.text_field :query,
+          value: params[:query],
+          placeholder: "Search meals...",
+          class: "form-control meal-search-input ps-5" %>
+  <% end %>
+</div>
+
+<% if params[:query].present? %>
+  <div class="text-center text-muted mt-2 mb-3">
+    Showing results for: <strong><%= params[:query] %></strong>
+  </div>
+<% end %>
+
 <!-- Wrapper controlled by Stimulus -->
 <div data-controller="index-display">
   <div class="view-toggle">
@@ -20,8 +36,6 @@
         <%= link_to meal_path(meal), class: "meal-card-link" do %>
           <div class="meal-card">
             <div class="meal-card-inner">
-
-              <!-- LEFT: Image or Placeholder -->
               <div class="meal-card-image">
                 <% if meal.photo.attached? %>
                   <%= cl_image_tag meal.photo.key, class: "meal-image" %>
@@ -29,14 +43,10 @@
                   <%= image_tag "meal-default.png.jpeg", class: "meal-image" %>
                 <% end %>
               </div>
-
-              <!-- RIGHT: Text Content -->
               <div class="meal-card-content">
                 <h3 class="meal-title"><%= meal.name %></h3>
                 <p class="meal-description"><%= truncate(meal.description, length: 80) %></p>
                 <p class="meal-author">Cooked by: <strong><%= "#{meal.user.first_name} #{meal.user.last_name}" if meal.user %></strong></p>
-
-                <!-- Admin Actions -->
                 <div class="meal-actions">
                   <%= link_to edit_meal_path(meal), title: "Edit" do %>
                     <i class="fa fa-edit"></i>
@@ -47,10 +57,17 @@
                   <% end %>
                 </div>
               </div>
-
             </div>
           </div>
         <% end %>
+      <% end %>
+
+      <!-- No results message -->
+      <% if @meals.empty? && params[:query].present? %>
+        <div class="text-center mt-5 text-muted">
+          <p>No meals found for "<strong><%= params[:query] %></strong>".</p>
+          <%= link_to "Clear search", meals_path, class: "btn btn-outline-secondary mt-2" %>
+        </div>
       <% end %>
     </div>
   </div>
