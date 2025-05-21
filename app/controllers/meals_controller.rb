@@ -2,7 +2,28 @@ class MealsController < ApplicationController
   before_action :set_meal, only: [:show, :edit, :update, :destroy]
 
   def index
-    @meals = params[:query].present? ? Meal.search(params[:query]) : Meal.all
+    @meals_by_name = Meal.all
+    @meals_by_ingredients = []
+
+    if params[:query].present?
+      query = "%#{params[:query]}%"
+      @meals_by_name = Meal.where("name ILIKE ? OR description ILIKE ?", query, query)
+
+      if @meals_by_name.empty?
+        @meals_by_ingredients = Meal.where("ingredients ILIKE ?", query)
+      end
+    end
+
+    # Filtering after search so filters apply to all matching results
+    if params[:category].present?
+      @meals_by_name = @meals_by_name.where(category: params[:category])
+      @meals_by_ingredients = @meals_by_ingredients.where(category: params[:category]) if @meals_by_ingredients.any?
+    end
+
+    if params[:cuisine].present?
+      @meals_by_name = @meals_by_name.where(cuisine: params[:cuisine])
+      @meals_by_ingredients = @meals_by_ingredients.where(cuisine: params[:cuisine]) if @meals_by_ingredients.any?
+    end
   end
 
   def show

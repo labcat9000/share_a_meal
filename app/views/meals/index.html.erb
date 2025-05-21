@@ -1,22 +1,64 @@
 <div class="spacer-top"></div>
 
-<div class="container px-3 pt-4">
-  <%= form_with url: meals_path, method: :get, local: true, class: "meal-search-form position-relative" do |f| %>
-    <i class="fa fa-search meal-search-icon"></i>
-    <%= f.text_field :query,
-          value: params[:query],
-          placeholder: "Search meals...",
-          class: "form-control meal-search-input ps-5" %>
-  <% end %>
+<!-- SEARCH + FILTER (ALL under filter controller) -->
+<div data-controller="filter">
+  <div class="container px-3 pt-4">
+    <%= form_with url: meals_path, method: :get, local: true, class: "meal-search-form d-flex align-items-center gap-2" do |f| %>
+      <!-- Search input -->
+      <div class="position-relative flex-grow-1">
+        <i class="fa fa-search meal-search-icon"></i>
+        <%= f.text_field :query,
+              value: params[:query],
+              placeholder: "Search meals...",
+              class: "form-control meal-search-input ps-5" %>
+      </div>
+
+      <!-- Filter button -->
+      <button type="button"
+              class="btn btn-outline-secondary rounded-circle"
+              data-action="click->filter#toggle">
+        <i class="fa fa-sliders-h"></i>
+      </button>
+    <% end %>
+  </div>
+
+  <!-- FILTER DRAWER (target for toggle) -->
+  <div class="filter-drawer mt-3" data-filter-target="panel" hidden>
+    <h5 class="mb-3">Filter Meals</h5>
+
+    <%= form_with url: meals_path, method: :get, local: true do |f| %>
+      <%= f.hidden_field :query, value: params[:query] %>
+
+      <div class="mb-3">
+        <%= f.label :category, class: "form-label" %>
+        <%= f.select :category,
+              options_for_select([""] + Meal.pluck(:category).uniq.compact.sort, params[:category]),
+              {}, class: "form-select" %>
+      </div>
+
+      <div class="mb-3">
+        <%= f.label :cuisine, class: "form-label" %>
+        <%= f.select :cuisine,
+              options_for_select([""] + Meal.pluck(:cuisine).uniq.compact.sort, params[:cuisine]),
+              {}, class: "form-select" %>
+      </div>
+
+      <div class="d-flex justify-content-between mt-3">
+        <%= link_to "Clear Filters", meals_path, class: "btn btn-outline-secondary" %>
+        <%= f.submit "Apply Filters", class: "btn btn-warning" %>
+      </div>
+    <% end %>
+  </div>
 </div>
 
+<!-- QUERY MESSAGE -->
 <% if params[:query].present? %>
   <div class="text-center text-muted mt-2 mb-3">
     Showing results for: <strong><%= params[:query] %></strong>
   </div>
 <% end %>
 
-<!-- Wrapper controlled by Stimulus -->
+<!-- DISPLAY CONTROLLER -->
 <div data-controller="index-display">
   <div class="view-toggle">
     <button class="toggle-button active"
@@ -29,50 +71,46 @@
             data-index-display-target="mapButton">Map</button>
   </div>
 
-  <!-- Meal List -->
+  <!-- MEAL LIST -->
   <div id="meal-list" data-index-display-target="mealList">
     <div class="meal-cards">
-      <% @meals.each do |meal| %>
-        <%= link_to meal_path(meal), class: "meal-card-link" do %>
-          <div class="meal-card">
-            <div class="meal-card-inner">
-              <div class="meal-card-image">
-                <% if meal.photo.attached? %>
-                  <%= cl_image_tag meal.photo.key, class: "meal-image" %>
-                <% else %>
-                  <%= image_tag "meal-default.png.jpeg", class: "meal-image" %>
-                <% end %>
-              </div>
-              <div class="meal-card-content">
-                <h3 class="meal-title"><%= meal.name %></h3>
-                <p class="meal-description"><%= truncate(meal.description, length: 80) %></p>
-                <p class="meal-author">Cooked by: <strong><%= "#{meal.user.first_name} #{meal.user.last_name}" if meal.user %></strong></p>
-                <div class="meal-actions">
-                  <%= link_to edit_meal_path(meal), title: "Edit" do %>
-                    <i class="fa fa-edit"></i>
-                  <% end %>
-                  |
-                  <%= link_to meal_path(meal), method: :delete, data: { confirm: 'Are you sure?' }, title: "Delete" do %>
-                    <i class="fa fa-trash"></i>
-                  <% end %>
-                </div>
-              </div>
-            </div>
-          </div>
+
+      <% if @meals_by_name.present? %>
+        <% @meals_by_name.each do |meal| %>
+          <%= link_to meal_path(meal), class: "meal-card-link" do %>
+            <%= render partial: "meal_card", locals: { meal: meal } %>
+          <% end %>
         <% end %>
       <% end %>
 
-      <!-- No results message -->
-      <% if @meals.empty? && params[:query].present? %>
+      <% if @meals_by_name.blank? && @meals_by_ingredients.present? %>
+        <div class="text-muted text-center my-4">
+          <p>
+            <strong>No meals found by name or description for "<%= params[:query] %>".</strong><br>
+            But here are some meals that contain "<%= params[:query] %>" as an ingredient:
+          </p>
+        </div>
+      <% end %>
+
+      <% if @meals_by_ingredients.present? %>
+        <% @meals_by_ingredients.each do |meal| %>
+          <%= link_to meal_path(meal), class: "meal-card-link" do %>
+            <%= render partial: "meal_card", locals: { meal: meal } %>
+          <% end %>
+        <% end %>
+      <% end %>
+
+      <% if @meals_by_name.blank? && @meals_by_ingredients.blank? %>
         <div class="text-center mt-5 text-muted">
-          <p>No meals found for "<strong><%= params[:query] %></strong>".</p>
+          <p>No meals found for your search.</p>
           <%= link_to "Clear search", meals_path, class: "btn btn-outline-secondary mt-2" %>
         </div>
       <% end %>
+
     </div>
   </div>
 
-  <!-- Map Section -->
+  <!-- MAP -->
   <div id="meal-map"
        style="display: none;"
        data-index-display-target="mealMap"
