@@ -12,9 +12,39 @@
     <meta name="mapbox-token" content="<%= ENV['MAPBOX_API_KEY'] %>">
   </head>
 
-  <body>
-    <%= render "shared/navbar" %>
+  <body class="pb-5">
+    <% if controller_name == "meals" && action_name == "index" %>
+      <%= render "shared/navbar" %>
+    <% end %>
+
     <%= render "shared/flashes" %>
     <%= yield %>
+
+    <!-- Sticky Icon Footer -->
+    <footer class="fixed-bottom bg-white border-top shadow d-flex justify-content-around align-items-center"
+            style="height: 65px; z-index: 1030;">
+
+      <!-- Home Button -->
+      <%= link_to root_path, class: "text-dark text-decoration-none text-center" do %>
+        <div>
+          <i class="fa fa-home fa-lg d-block"></i>
+        </div>
+      <% end %>
+
+      <!-- Create Meal Button (centered & emphasized) -->
+      <%= link_to new_meal_path, class: "text-dark text-decoration-none text-center" do %>
+        <div class="bg-light rounded-circle d-flex align-items-center justify-content-center"
+             style="width: 46px; height: 46px;">
+          <i class="fa fa-plus fa-lg"></i>
+        </div>
+      <% end %>
+
+      <!-- Profile Button -->
+      <a href="#" class="text-dark text-decoration-none text-center">
+        <div>
+          <i class="fa fa-user fa-lg d-block"></i>
+        </div>
+      </a>
+    </footer>
   </body>
 </html>

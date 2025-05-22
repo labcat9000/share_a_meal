@@ -1,63 +1,5 @@
 <div class="spacer-top"></div>
 
-<!-- SEARCH + FILTER (ALL under filter controller) -->
-<div data-controller="filter">
-  <div class="container px-3 pt-4">
-    <%= form_with url: meals_path, method: :get, local: true, class: "meal-search-form d-flex align-items-center gap-2" do |f| %>
-      <!-- Search input -->
-      <div class="position-relative flex-grow-1">
-        <i class="fa fa-search meal-search-icon"></i>
-        <%= f.text_field :query,
-              value: params[:query],
-              placeholder: "Search meals...",
-              class: "form-control meal-search-input ps-5" %>
-      </div>
-
-      <!-- Filter button -->
-      <button type="button"
-              class="btn btn-outline-secondary rounded-circle"
-              data-action="click->filter#toggle">
-        <i class="fa fa-sliders-h"></i>
-      </button>
-    <% end %>
-  </div>
-
-  <!-- FILTER DRAWER (target for toggle) -->
-  <div class="filter-drawer mt-3" data-filter-target="panel" hidden>
-    <h5 class="mb-3">Filter Meals</h5>
-
-    <%= form_with url: meals_path, method: :get, local: true do |f| %>
-      <%= f.hidden_field :query, value: params[:query] %>
-
-      <div class="mb-3">
-        <%= f.label :category, class: "form-label" %>
-        <%= f.select :category,
-              options_for_select([""] + Meal.pluck(:category).uniq.compact.sort, params[:category]),
-              {}, class: "form-select" %>
-      </div>
-
-      <div class="mb-3">
-        <%= f.label :cuisine, class: "form-label" %>
-        <%= f.select :cuisine,
-              options_for_select([""] + Meal.pluck(:cuisine).uniq.compact.sort, params[:cuisine]),
-              {}, class: "form-select" %>
-      </div>
-
-      <div class="d-flex justify-content-between mt-3">
-        <%= link_to "Clear Filters", meals_path, class: "btn btn-outline-secondary" %>
-        <%= f.submit "Apply Filters", class: "btn btn-warning" %>
-      </div>
-    <% end %>
-  </div>
-</div>
-
-<!-- QUERY MESSAGE -->
-<% if params[:query].present? %>
-  <div class="text-center text-muted mt-2 mb-3">
-    Showing results for: <strong><%= params[:query] %></strong>
-  </div>
-<% end %>
-
 <!-- DISPLAY CONTROLLER -->
 <div data-controller="index-display">
   <div class="view-toggle">
@@ -70,6 +12,13 @@
             data-action="click->index-display#displayMealMap"
             data-index-display-target="mapButton">Map</button>
   </div>
+
+<!-- QUERY MESSAGE -->
+<% if params[:query].present? %>
+  <div class="text-center text-muted mt-2 mb-3">
+    Showing results for: <strong><%= params[:query] %></strong>
+  </div>
+<% end %>
 
   <!-- MEAL LIST -->
   <div id="meal-list" data-index-display-target="mealList">
