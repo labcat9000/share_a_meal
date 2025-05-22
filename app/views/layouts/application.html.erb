@@ -9,6 +9,7 @@
     <%= stylesheet_link_tag "https://api.mapbox.com/mapbox-gl-js/v2.15.0/mapbox-gl.css" %>
     <%= javascript_importmap_tags %>
     <%= javascript_include_tag "https://api.mapbox.com/mapbox-gl-js/v2.15.0/mapbox-gl.js" %>
+    <%= javascript_include_tag "https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" %>
     <meta name="mapbox-token" content="<%= ENV['MAPBOX_API_KEY'] %>">
   </head>
 
@@ -16,22 +17,16 @@
     <% if controller_name == "meals" && action_name == "index" %>
       <%= render "shared/navbar" %>
     <% end %>
-
     <%= render "shared/flashes" %>
     <%= yield %>
-
-    <!-- Sticky Icon Footer -->
     <footer class="fixed-bottom bg-white border-top shadow d-flex justify-content-around align-items-center"
             style="height: 65px; z-index: 1030;">
-
-      <!-- Home Button -->
       <%= link_to root_path, class: "text-dark text-decoration-none text-center" do %>
         <div>
           <i class="fa fa-home fa-lg d-block"></i>
         </div>
       <% end %>
 
-      <!-- Create Meal Button (centered & emphasized) -->
       <%= link_to new_meal_path, class: "text-dark text-decoration-none text-center" do %>
         <div class="bg-light rounded-circle d-flex align-items-center justify-content-center"
              style="width: 46px; height: 46px;">
@@ -39,7 +34,6 @@
         </div>
       <% end %>
 
-      <!-- Profile Button -->
       <a href="#" class="text-dark text-decoration-none text-center">
         <div>
           <i class="fa fa-user fa-lg d-block"></i>

@@ -54,6 +54,7 @@ gem "sassc-rails"
 gem "pundit"
 gem 'geocoder'
 gem "cloudinary"
+gem "activestorage-cloudinary-service"
 gem 'faker'
 
 group :development, :test do

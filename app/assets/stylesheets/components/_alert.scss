@@ -1,6 +1,24 @@
+// General alert position and layout
 .alert {
   position: fixed;
-  bottom: 16px;
+  top: 16px;
   right: 16px;
-  z-index: 1000;
+  z-index: 2000;
+  min-width: 280px;
+  max-width: 350px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+  opacity: 1;
+  transition: opacity 0.5s ease;
+}
+
+// Optional: Customize Bootstrap's default yellow (if needed)
+.alert-warning {
+  background-color: #fff3cd; // default Bootstrap yellow
+  color: #856404;
+}
+
+// Optional: Reset .btn-close so it's visible
+.btn-close {
+  filter: none;  // Removes inverted styling
+  opacity: 1;
 }
