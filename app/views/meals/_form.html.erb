@@ -1,4 +1,4 @@
-<%= simple_form_for(meal) do |f| %>
+<%= simple_form_for(meal, html: { multipart: true }) do |f| %>
   <% if meal.errors.any? %>
     <div>
       <h2><%= pluralize(meal.errors.count, "error") %> prevented this meal from being saved:</h2>
@@ -15,6 +15,7 @@
   <%= f.input :ingredients, as: :text %>
   <%= f.input :category, collection: ['Starter', 'Main Course', 'Dessert', 'Snack'], prompt: 'Select a category' %>
   <%= f.input :cuisine, collection: ['Italian', 'Chinese', 'Mexican', 'Indian', 'Greek'], prompt: 'Select a cuisine' %>
+  <%= f.input :photo, as: :file, label: "Upload a Photo (optional)" %>
 
   <%= f.button :submit %>
 <% end %>
