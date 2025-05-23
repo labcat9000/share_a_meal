@@ -1,5 +1,15 @@
-<% flash.each do |key, message| %>
-        <div class="alert alert-<%= key == "notice" ? "success" : "danger" %>" id="flash-alert">
-          <%= message %>
-        </div>
-      <% end %>
+<% if notice %>
+  <div class="alert alert-warning alert-dismissible fade show m-1"
+       role="alert" data-controller="flash">
+    <%= notice %>
+    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+  </div>
+<% end %>
+
+<% if alert %>
+  <div class="alert alert-warning alert-dismissible fade show m-1"
+       role="alert" data-controller="flash">
+    <%= alert %>
+    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+  </div>
+<% end %>

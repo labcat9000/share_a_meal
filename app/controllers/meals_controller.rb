@@ -82,7 +82,7 @@ class MealsController < ApplicationController
   end
 
   def meal_params
-    params.require(:meal).permit(:name, :description, :ingredients, :category, :cuisine) # Add any other fields
+    params.require(:meal).permit(:name, :description, :ingredients, :category, :cuisine, :photo)
   end
 
   def authorize_owner!(record)
