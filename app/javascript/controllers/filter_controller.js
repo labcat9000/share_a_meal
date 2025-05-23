@@ -9,6 +9,15 @@ export default class extends Controller {
 
   toggle() {
     console.log("🔁 toggle() fired")
-    this.panelTarget.hidden = !this.panelTarget.hidden
+    if (this.hasPanelTarget) {
+      const isHidden = this.panelTarget.hasAttribute("hidden")
+      if (isHidden) {
+        this.panelTarget.removeAttribute("hidden")
+      } else {
+        this.panelTarget.setAttribute("hidden", "")
+      }
+    } else {
+      console.warn("⚠️ panelTarget not found")
+    }
   }
 }
