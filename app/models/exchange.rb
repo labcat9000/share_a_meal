@@ -1,6 +1,10 @@
 class Exchange < ApplicationRecord
   belongs_to :user
-  belongs_to :meal
+  belongs_to :meal_offered, class_name: 'Meal'
+  belongs_to :meal_requested, class_name: 'Meal'
+
+  validates :meal_offered, presence: true
+  validates :meal_requested, presence: true
 
   validate :no_overlapping_exchangings
   validate :only_one_exchanging_per_user_meal

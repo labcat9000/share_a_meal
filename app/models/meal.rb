@@ -3,7 +3,9 @@ class Meal < ApplicationRecord
   validates :name, presence: true
   validates :description, presence: true
   has_one_attached :photo
-
+  scope :available, -> {
+    where.not(id: Exchange.select(:meal_offered_id))
+  }
   def average_rating
     ratings.average(:value)&.round(1) || "No ratings yet"
   end
