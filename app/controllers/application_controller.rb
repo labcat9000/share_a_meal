@@ -4,6 +4,8 @@ class ApplicationController < ActionController::Base
 
   include Pundit::Authorization
 
+  rescue_from Pundit::NotAuthorizedError, with: :user_not_authorized
+
   # Pundit: allow-list approach
   # after_action :verify_authorized, except: :index, unless: :skip_pundit?
   # after_action :verify_policy_scoped, only: :index, unless: :skip_pundit?
@@ -15,5 +17,9 @@ class ApplicationController < ActionController::Base
 
     devise_parameter_sanitizer.permit(:sign_up, keys: added_attrs)
     devise_parameter_sanitizer.permit(:account_update, keys: added_attrs)
+  end
+
+  def user_not_authorized
+    redirect_to(request.referrer || root_path, alert: "You are not authorized to perform this action.")
   end
 end
