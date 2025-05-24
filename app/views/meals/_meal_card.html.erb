@@ -15,7 +15,8 @@
         <%= link_to edit_meal_path(meal), title: "Edit" do %>
           <i class="fa fa-edit"></i>
         <% end %>
-        | <%= button_to meal_path(meal), method: :delete, data: { turbo_confirm: 'Are you sure?' } do %>
+        |
+        <%= link_to meal_path(meal), data: { turbo_confirm: 'Are you sure?', turbo_method: :delete}, title: "Delete" do %>
           <i class="fa fa-trash"></i>
         <% end %>
       </div>

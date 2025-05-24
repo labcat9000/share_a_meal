@@ -1,16 +1,17 @@
-<% if controller_name == "meals" && action_name == "index" %>
-  <div data-controller="filter">
-    <!-- NAVIGATION BAR -->
-    <nav class="navbar navbar-light bg-white border-bottom py-3 px-3 px-md-5">
-      <div class="container-fluid d-flex align-items-center justify-content-between flex-wrap gap-2">
+<div data-controller="filter">
 
-        <!-- Left: Logo + Brand -->
-        <%= link_to root_path, class: "d-flex align-items-center text-dark text-decoration-none flex-shrink-0" do %>
-          <%= image_tag "share_a_meal.png", height: 32, class: "me-2" %>
-          <span class="fw-bold fs-5 d-none d-md-inline">Share A Meal</span>
-        <% end %>
+  <!-- Navbar -->
+  <nav class="navbar navbar-light bg-white border-bottom py-3 px-3 px-md-5">
+    <div class="container-fluid d-flex align-items-center justify-content-between flex-wrap gap-2">
 
-        <!-- Right: Search + Filter -->
+      <!-- Logo + Brand -->
+      <%= link_to root_path, class: "d-flex align-items-center text-dark text-decoration-none flex-shrink-0" do %>
+        <%= image_tag "share_a_meal.png", height: 32, class: "me-2" %>
+        <span class="fw-bold fs-5 d-none d-md-inline">Share A Meal</span>
+      <% end %>
+
+      <!-- Show Search/Filter only on meals#index -->
+      <% if controller_name == "meals" && action_name == "index" %>
         <div class="d-flex align-items-center flex-grow-1 justify-content-end mt-2 mt-md-0" style="max-width: 600px;">
           <%= form_with url: meals_path, method: :get, local: true, class: "d-flex align-items-center flex-grow-1 gap-2" do |f| %>
             <div class="position-relative w-100">
@@ -30,34 +31,44 @@
             </button>
           <% end %>
         </div>
+      <% else %>
+        <!-- Simple search input that redirects to meals#index -->
+        <div class="flex-grow-1 mt-2 mt-md-0" style="max-width: 600px;">
+          <form action="/meals" method="get"
+                class="d-flex gap-2"
+                data-controller="redirect"
+                data-action="focusin->redirect#go">
+            <div class="position-relative w-100">
+              <i class="fa fa-search meal-search-icon position-absolute top-50 start-0 translate-middle-y ps-3"></i>
+              <input type="text"
+                    name="query"
+                    placeholder="Search meals..."
+                    class="form-control ps-5 rounded-pill" />
+            </div>
+          </form>
+        </div>
+      <% end %>
 
-      </div>
-    </nav>
+    </div>
+  </nav>
 
-    <!-- FILTER DRAWER -->
+  <!-- Filter Drawer (only on Index) -->
+  <% if controller_name == "meals" && action_name == "index" %>
     <div class="container-fluid px-3 pt-3 filter-drawer" data-filter-target="panel" hidden>
       <div class="card p-4 shadow-sm">
         <h5 class="mb-3">Filter Meals</h5>
-
         <%= form_with url: meals_path, method: :get, local: true do |f| %>
           <%= f.hidden_field :query, value: params[:query] %>
-
           <div class="row">
             <div class="col-md-6 mb-3">
               <%= f.label :category, class: "form-label" %>
-              <%= f.select :category,
-                    options_for_select([""] + Meal.pluck(:category).uniq.compact.sort, params[:category]),
-                    {}, class: "form-select" %>
+              <%= f.select :category, options_for_select([""] + Meal.distinct.pluck(:category).compact.sort, params[:category]), {}, class: "form-select" %>
             </div>
-
             <div class="col-md-6 mb-3">
               <%= f.label :cuisine, class: "form-label" %>
-              <%= f.select :cuisine,
-                    options_for_select([""] + Meal.pluck(:cuisine).uniq.compact.sort, params[:cuisine]),
-                    {}, class: "form-select" %>
+              <%= f.select :cuisine, options_for_select([""] + Meal.distinct.pluck(:cuisine).compact.sort, params[:cuisine]), {}, class: "form-select" %>
             </div>
           </div>
-
           <div class="d-flex justify-content-between mt-3">
             <%= link_to "Clear Filters", meals_path, class: "btn btn-outline-secondary" %>
             <%= f.submit "Apply Filters", class: "btn btn-warning" %>
@@ -65,5 +76,6 @@
         <% end %>
       </div>
     </div>
-  </div>
-<% end %>
+  <% end %>
+
+</div> <!-- END data-controller="filter" -->

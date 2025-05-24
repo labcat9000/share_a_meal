@@ -1,4 +1,9 @@
 Geocoder.configure(
+
+  lookup: :mapbox,
+  use_https: true,
+  language: :en,
+
   # Geocoding options
   # timeout: 3,                 # geocoding service timeout (secs)
   # lookup: :nominatim,         # name of geocoding service (symbol)

@@ -15,6 +15,7 @@
   <%= f.input :ingredients, as: :text %>
   <%= f.input :category, collection: ['Starter', 'Main Course', 'Dessert', 'Snack'], prompt: 'Select a category' %>
   <%= f.input :cuisine, collection: ['Italian', 'Chinese', 'Mexican', 'Indian', 'Greek'], prompt: 'Select a cuisine' %>
+  <%= f.input :address, placeholder: "Enter a location or full address" %>
   <%= f.input :photo, as: :file, label: "Upload a Photo (optional)" %>
 
   <%= f.button :submit %>

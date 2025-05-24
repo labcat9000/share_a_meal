@@ -14,7 +14,6 @@ class MealsController < ApplicationController
       end
     end
 
-    # Filtering after search so filters apply to all matching results
     if params[:category].present?
       @meals_by_name = @meals_by_name.where(category: params[:category])
       @meals_by_ingredients = @meals_by_ingredients.where(category: params[:category]) if @meals_by_ingredients.any?
@@ -24,7 +23,26 @@ class MealsController < ApplicationController
       @meals_by_name = @meals_by_name.where(cuisine: params[:cuisine])
       @meals_by_ingredients = @meals_by_ingredients.where(cuisine: params[:cuisine]) if @meals_by_ingredients.any?
     end
+
+    @displayed_meals = (@meals_by_name + @meals_by_ingredients).uniq
+
+    @markers = @displayed_meals
+      .select { |m| m.latitude.present? && m.longitude.present? }
+      .map do |meal|
+        {
+          lat: meal.latitude,
+          lng: meal.longitude,
+          name: meal.name,
+          description: meal.description.truncate(60),
+          path: Rails.application.routes.url_helpers.meal_path(meal)
+        }
+      end
+
+    # ✅ move this here
+    puts "MARKERS DEBUG:"
+    puts @markers.inspect
   end
+
 
   def show
     @meal = Meal.find(params[:id])
@@ -82,7 +100,7 @@ class MealsController < ApplicationController
   end
 
   def meal_params
-    params.require(:meal).permit(:name, :description, :ingredients, :category, :cuisine, :photo)
+    params.require(:meal).permit(:name, :description, :ingredients, :category, :cuisine, :photo, :address)
   end
 
   def authorize_owner!(record)
