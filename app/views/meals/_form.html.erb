@@ -1,22 +1,49 @@
-<%= simple_form_for(meal, html: { multipart: true }) do |f| %>
-  <% if meal.errors.any? %>
-    <div>
-      <h2><%= pluralize(meal.errors.count, "error") %> prevented this meal from being saved:</h2>
-      <ul>
-        <% meal.errors.full_messages.each do |msg| %>
-          <li><%= msg %></li>
+<div class="bg-white min-vh-100 d-flex flex-column justify-content-between" style="padding-bottom: 70px;">
+  <div class="w-100 px-3 py-4">
+    <div class="bg-white rounded-4 shadow-sm px-4 py-5">
+      <div class="d-flex justify-content-center mb-4">
+      </div>
+
+      <%= simple_form_for(meal, html: { multipart: true }) do |f| %>
+        <% if meal.errors.any? %>
+          <div class="alert alert-danger rounded-3 px-3 py-2 mb-3">
+            <h5 class="mb-2"><%= pluralize(meal.errors.count, "error") %> prevented this meal from being saved:</h5>
+            <ul class="mb-0">
+              <% meal.errors.full_messages.each do |msg| %>
+                <li><%= msg %></li>
+              <% end %>
+            </ul>
+          </div>
         <% end %>
-      </ul>
+
+        <div class="d-flex flex-column gap-3">
+          <%= f.input :name, label: false, placeholder: "Meal name", input_html: { class: "form-control rounded-pill px-3 py-2 bg-light border-0" } %>
+          <%= f.input :description, label: false, placeholder: "Description", input_html: { class: "form-control rounded-pill px-3 py-2 bg-light border-0" } %>
+          <%= f.input :ingredients, as: :text, label: false, placeholder: "Ingredients", input_html: { class: "form-control rounded-pill px-3 py-2 bg-light border-0" } %>
+
+          <%= f.input :category, label: false,
+                      collection: ['Starter', 'Main Course', 'Dessert', 'Snack', 'Side', 'Breakfast', 'Lunch', 'Dinner'],
+                      prompt: 'Select a category',
+                      input_html: { class: "form-select rounded-pill px-3 py-2 bg-light border-0" } %>
+
+          <%= f.input :cuisine, label: false,
+                      collection: ['Italian', 'Chinese', 'Mexican', 'Indian', 'Greek', 'Thai', 'American'],
+                      prompt: 'Select a cuisine',
+                      input_html: { class: "form-select rounded-pill px-3 py-2 bg-light border-0" } %>
+
+          <%= f.input :address, label: false, placeholder: "Enter a location or full address", input_html: { class: "form-control rounded-pill px-3 py-2 bg-light border-0" } %>
+
+          <%= f.input :photo, as: :file, label: "Upload a Photo (optional)", input_html: { class: "form-control" } %>
+
+          <div class="text-center mt-4">
+            <%= f.button :submit, meal.persisted? ? "Update Meal" : "Create Meal", class: "btn btn-success rounded-pill px-5 py-2" %>
+          </div>
+        </div>
+      <% end %>
     </div>
-  <% end %>
 
-  <%= f.input :name %>
-  <%= f.input :description %>
-  <%= f.input :ingredients, as: :text %>
-  <%= f.input :category, collection: ['Starter', 'Main Course', 'Dessert', 'Snack'], prompt: 'Select a category' %>
-  <%= f.input :cuisine, collection: ['Italian', 'Chinese', 'Mexican', 'Indian', 'Greek'], prompt: 'Select a cuisine' %>
-  <%= f.input :address, placeholder: "Enter a location or full address" %>
-  <%= f.input :photo, as: :file, label: "Upload a Photo (optional)" %>
-
-  <%= f.button :submit %>
-<% end %>
+    <div class="text-center mt-4">
+      <%= link_to "Back", meals_path, class: "text-muted" %>
+    </div>
+  </div>
+</div>
