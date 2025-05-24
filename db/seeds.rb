@@ -7,7 +7,6 @@
 #   ["Action", "Comedy", "Drama", "Horror"].each do |genre_name|
 #     MovieGenre.find_or_create_by!(name: genre_name)
 #   end
-require 'faker'
 
 Exchange.destroy_all
 puts "Destroyed all exchanges"
@@ -15,33 +14,19 @@ puts "Destroyed all exchanges"
 Meal.destroy_all
 puts "Destroyed all meals"
 
-categories = ['Appetizer', 'Main Course', 'Dessert', 'Snack', 'Side Dish', 'Soup']
-
-meals = 20.times.map do
-  meal = Meal.create!(
-    name: Faker::Food.unique.dish,
-    description: Faker::Food.description,
-    category: categories.sample,
-    ingredients: Array.new(rand(3..6)) { Faker::Food.ingredient }.join(', '),
-    cuisine: Faker::Nation.nationality,
-    user: users.sample
-  )
-end
-puts "Created 20 meals"
-
 # Create one user who owns all meals
 user = User.create!(
   first_name: "test",
   last_name: "123",
-  email: "fake@gmail.com",
-  password: "123456"
+  email: "new_unique_email@example.com",
+  password: "password"
 )
 puts "Created chef user"
 
 user2 = User.create!(
   first_name: "test2",
   last_name: "123",
-  email: "fake2@gmail.com",
+  email: "unique_email@example.com",
   password: "123456"
 )
 puts "Created second user"
@@ -49,7 +34,7 @@ puts "Created second user"
 meal1 = Meal.create!(
   name: "Poutine",
   description: "Classic Quebec dish with fries, cheese curds, and gravy.",
-  category: "Main Course",
+  category: "Dinner",
   ingredients: "Potatoes, Cheese Curds, Gravy",
   cuisine: "Quebecois",
   address: "Plateau-Mont-Royal, Montreal, QC",
@@ -61,7 +46,7 @@ meal1 = Meal.create!(
 meal2 = Meal.create!(
   name: "Sushi",
   description: "Fresh sushi rolls made in Rosemont.",
-  category: "Main Course",
+  category: "Lunch",
   ingredients: "Rice, Fish, Seaweed",
   cuisine: "Japanese",
   address: "Rosemont–La Petite-Patrie, Montreal, QC",
@@ -73,7 +58,7 @@ meal2 = Meal.create!(
 Meal.create!(
   name: "Pho",
   description: "Vietnamese noodle soup with beef broth.",
-  category: "Soup",
+  category: "Side",
   ingredients: "Beef, Noodles, Herbs",
   cuisine: "Vietnamese",
   address: "Ville-Marie, Montreal, QC",
@@ -97,7 +82,7 @@ Meal.create!(
 Meal.create!(
   name: "Pizza",
   description: "Wood-fired pizza in Verdun.",
-  category: "Main Course",
+  category: "Lunch",
   ingredients: "Dough, Tomato, Mozzarella",
   cuisine: "Italian",
   address: "Verdun, Montreal, QC",
@@ -109,7 +94,7 @@ Meal.create!(
 Meal.create!(
   name: "Kebab",
   description: "Grilled kebab served in Hochelaga.",
-  category: "Main Course",
+  category: "Dinner",
   ingredients: "Lamb, Onion, Spices",
   cuisine: "Middle Eastern",
   address: "Hochelaga-Maisonneuve, Montreal, QC",
@@ -121,7 +106,7 @@ Meal.create!(
 Meal.create!(
   name: "Lasagna",
   description: "Home-style lasagna from Côte-des-Neiges.",
-  category: "Main Course",
+  category: "Dinner",
   ingredients: "Pasta, Tomato Sauce, Cheese",
   cuisine: "Italian",
   address: "Côte-des-Neiges, Montreal, QC",
@@ -133,7 +118,7 @@ Meal.create!(
 Meal.create!(
   name: "Ramen",
   description: "Hot and comforting ramen bowl.",
-  category: "Soup",
+  category: "Snack",
   ingredients: "Broth, Noodles, Pork",
   cuisine: "Japanese",
   address: "Villeray, Montreal, QC",
@@ -145,7 +130,7 @@ Meal.create!(
 Meal.create!(
   name: "Paella",
   description: "Seafood paella in Lachine.",
-  category: "Main Course",
+  category: "Side",
   ingredients: "Rice, Seafood, Saffron",
   cuisine: "Spanish",
   address: "Lachine, Montreal, QC",
@@ -157,7 +142,7 @@ Meal.create!(
 Meal.create!(
   name: "Fajitas",
   description: "Sizzling fajitas from Saint-Laurent.",
-  category: "Main Course",
+  category: "Lunch",
   ingredients: "Chicken, Peppers, Onion",
   cuisine: "Tex-Mex",
   address: "Saint-Laurent, Montreal, QC",
@@ -172,5 +157,5 @@ exchange1 = Exchange.create!(
   meal_offered_id: meal1.id,
   meal_requested_id: meal2.id
 )
-puts "Created 1 exchange"
 
+puts "Created 1 exchange"
