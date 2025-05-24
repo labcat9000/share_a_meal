@@ -1,9 +1,10 @@
-<h1>My Exchanges</h1>
+<% if params[:view] == "current" %>
+  <%#= @exchanges.where(status: "accepted") %>
+  <% @exchanges.each do |exchange| %>
 
-<% @exchanges.each do |exchange| %>
-  <p>
-    <strong>Requested Meal:</strong> <%= link_to exchange.meal.name, meal_path(exchange.meal) %><br>
-    <strong>Offered Meal:</strong> <%= link_to exchange.your_meal.name, meal_path(exchange.your_meal) %><br>
-    <strong>Status:</strong> <%= exchange.status %>
-  </p>
+  <% end %>
+<% end %>
+
+<% if params[:view] == "past" %>
+  <%= @exchanges.where(status: "complete") %>
 <% end %>

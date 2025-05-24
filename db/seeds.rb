@@ -7,9 +7,27 @@
 #   ["Action", "Comedy", "Drama", "Horror"].each do |genre_name|
 #     MovieGenre.find_or_create_by!(name: genre_name)
 #   end
+require 'faker'
+
+Exchange.destroy_all
+puts "Destroyed all exchanges"
+
 Meal.destroy_all
-User.destroy_all
-puts "Destroyed all meals and users"
+puts "Destroyed all meals"
+
+categories = ['Appetizer', 'Main Course', 'Dessert', 'Snack', 'Side Dish', 'Soup']
+
+meals = 20.times.map do
+  meal = Meal.create!(
+    name: Faker::Food.unique.dish,
+    description: Faker::Food.description,
+    category: categories.sample,
+    ingredients: Array.new(rand(3..6)) { Faker::Food.ingredient }.join(', '),
+    cuisine: Faker::Nation.nationality,
+    user: users.sample
+  )
+end
+puts "Created 20 meals"
 
 # Create one user who owns all meals
 user = User.create!(
@@ -18,9 +36,17 @@ user = User.create!(
   email: "fake@gmail.com",
   password: "123456"
 )
-puts "Created user"
+puts "Created chef user"
 
-Meal.create!(
+user2 = User.create!(
+  first_name: "test2",
+  last_name: "123",
+  email: "fake2@gmail.com",
+  password: "123456"
+)
+puts "Created second user"
+
+meal1 = Meal.create!(
   name: "Poutine",
   description: "Classic Quebec dish with fries, cheese curds, and gravy.",
   category: "Main Course",
@@ -32,7 +58,7 @@ Meal.create!(
   user: user
 )
 
-Meal.create!(
+meal2 = Meal.create!(
   name: "Sushi",
   description: "Fresh sushi rolls made in Rosemont.",
   category: "Main Course",
@@ -41,7 +67,7 @@ Meal.create!(
   address: "Rosemont–La Petite-Patrie, Montreal, QC",
   latitude: 45.5451,
   longitude: -73.5983,
-  user: user
+  user: user2
 )
 
 Meal.create!(
@@ -141,3 +167,10 @@ Meal.create!(
 )
 
 puts "Created 10 meals across different boroughs"
+
+exchange1 = Exchange.create!(
+  meal_offered_id: meal1.id,
+  meal_requested_id: meal2.id
+)
+puts "Created 1 exchange"
+
