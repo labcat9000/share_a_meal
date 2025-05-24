@@ -1,6 +1,6 @@
 class MealsController < ApplicationController
   before_action :set_meal, only: [:show, :edit, :update, :destroy]
-
+  before_action :authenticate_user!
   def index
     @meals_by_name = Meal.all
     @meals_by_ingredients = []
@@ -45,14 +45,14 @@ class MealsController < ApplicationController
 
 
   def show
-    @meal = Meal.find_by(id: params[:id])
-    if @meal.nil?
-      redirect_to meals_path, alert: "Meal not found."
-    end
+    @meal = Meal.find(params[:id])
+    authorize @meal
+    @exchange = Exchange.new(meal_requested_id: @meal.id)
   end
 
   def new
     @meal = Meal.new
+    authorize @meal
   end
 
   def create
@@ -65,9 +65,14 @@ class MealsController < ApplicationController
   end
 
   def edit
+    @meal = Meal.find(params[:id])
+    authorize @meal
   end
 
+
   def update
+    @meal = current_user.meals.find(params[:id])
+    authorize @meal
     if @meal.update(meal_params)
       redirect_to meals_path, notice: 'Meal was successfully updated.'
     else
@@ -75,9 +80,17 @@ class MealsController < ApplicationController
     end
   end
 
+  def my_meals
+    @meals = current_user.meals
+    @pending_exchanges = Exchange.joins(:meal).where(meals: { user_id: current_user.id }, status: "pending")
+    @my_offers = current_user.exchanges.includes(:meal)
+  end
   def destroy
-    @meal.destroy
-    redirect_to meals_path, notice: 'Meal was successfully deleted.'
+    set_meal
+    if authorize @meal
+      @meal.destroy
+      redirect_to meals_path, notice: 'Meal was successfully deleted.'
+    end
   end
 
   private
@@ -88,5 +101,9 @@ class MealsController < ApplicationController
 
   def meal_params
     params.require(:meal).permit(:name, :description, :ingredients, :category, :cuisine, :photo, :address)
+  end
+
+  def authorize_owner!(record)
+    redirect_to root_path, alert: "Not authorized" unless record.user == current_user
   end
 end

@@ -3,12 +3,12 @@ class User < ApplicationRecord
   has_many :exchanges
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable, :trackable and :omniauthable
-  def meal_owner?
+  def owner?
     role == 'owner'
   end
 
-  def exchanger?
-    role == 'exchanger'
+  def consumer?
+    role == 'consumer'
   end
 
   def name

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2025_05_22_233926) do
+ActiveRecord::Schema[7.1].define(version: 2025_05_23_010202) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -46,10 +46,13 @@ ActiveRecord::Schema[7.1].define(version: 2025_05_22_233926) do
     t.string "rating"
     t.string "status", default: "Pending"
     t.bigint "user_id", null: false
-    t.bigint "meal_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["meal_id"], name: "index_exchanges_on_meal_id"
+    t.boolean "seen_status", default: true
+    t.bigint "meal_offered_id"
+    t.bigint "meal_requested_id"
+    t.index ["meal_offered_id"], name: "index_exchanges_on_meal_offered_id"
+    t.index ["meal_requested_id"], name: "index_exchanges_on_meal_requested_id"
     t.index ["user_id"], name: "index_exchanges_on_user_id"
   end
 
@@ -86,7 +89,8 @@ ActiveRecord::Schema[7.1].define(version: 2025_05_22_233926) do
 
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
-  add_foreign_key "exchanges", "meals"
+  add_foreign_key "exchanges", "meals", column: "meal_offered_id"
+  add_foreign_key "exchanges", "meals", column: "meal_requested_id"
   add_foreign_key "exchanges", "users"
   add_foreign_key "meals", "users"
 end
