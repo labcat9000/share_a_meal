@@ -1,3 +1,58 @@
-<h1>Pages#home</h1>
-<p>Find me in app/views/pages/home.html.erb</p>
-<%= link_to "Contact Us", contact_path %>
+<div class="d-flex overflow-auto px-3 py-2 gap-5 justify-content-start text-center">
+  <% categories = [
+    { name: "Breakfast", image: "categories/breakfast-icons.svg" },
+    { name: "Lunch", image: "categories/lunch-icons.svg" },
+    { name: "Snack", image: "categories/snack-btn.svg" },
+    { name: "Side", image: "categories/side-icons.svg" },
+    { name: "Dinner", image: "categories/dinner-icons.svg" },
+    { name: "Dessert", image: "categories/dessert-icons.svg" }
+  ] %>
+
+  <% categories.each do |category| %>
+    <div>
+      <%= image_tag category[:image], width: 80, height: 80, class: "rounded-circle d-block mx-auto mb-1 shadow-sm" %>
+      <small class="d-block text-dark fw-medium" style="font-size: 0.95rem;"><%= category[:name] %></small>
+    </div>
+  <% end %>
+</div>
+
+<div class="d-flex justify-content-between align-items-center px-3 pt-2">
+  <h2 class="fw-semibold mb-0" style="font-family: system-ui, sans-serif;">Fresh meals!</h2>
+  <button class="btn btn-outline-success btn-sm rounded-pill px-3 py-1">Radius</button>
+</div>
+
+<div class="px-3 pt-3">
+  <div class="meal-cards">
+    <% if @meals_by_name.present? %>
+      <% @meals_by_name.each do |meal| %>
+        <%= link_to meal_path(meal), class: "meal-card-link" do %>
+          <%= render partial: "meals/meal_card", locals: { meal: meal } %>
+        <% end %>
+      <% end %>
+    <% end %>
+
+    <% if @meals_by_name.blank? && @meals_by_ingredients.present? %>
+      <div class="text-muted text-center my-4">
+        <p>
+          <strong>No meals found by name or description for "<%= params[:query] %>".</strong><br>
+          But here are some meals that contain "<%= params[:query] %>" as an ingredient:
+        </p>
+      </div>
+    <% end %>
+
+    <% if @meals_by_ingredients.present? %>
+      <% @meals_by_ingredients.each do |meal| %>
+        <%= link_to meal_path(meal), class: "meal-card-link" do %>
+          <%= render partial: "meals/meal_card", locals: { meal: meal } %>
+        <% end %>
+      <% end %>
+    <% end %>
+
+    <% if @meals_by_name.blank? && @meals_by_ingredients.blank? %>
+      <div class="text-center mt-5 text-muted">
+        <p>No meals found for your search.</p>
+        <%= link_to "Clear search", meals_path, class: "btn btn-outline-secondary mt-2" %>
+      </div>
+    <% end %>
+  </div>
+</div>

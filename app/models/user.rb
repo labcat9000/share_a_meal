@@ -1,8 +1,13 @@
 class User < ApplicationRecord
-  has_many :meals
+  has_many :meals, dependent: :destroy
   has_many :exchanges
-  # Include default devise modules. Others available are:
-  # :confirmable, :lockable, :timeoutable, :trackable and :omniauthable
+  has_one_attached :profile_photo
+
+  # Devise modules
+  devise :database_authenticatable, :registerable,
+         :recoverable, :rememberable, :validatable
+
+  # Custom roles
   def owner?
     role == 'owner'
   end
@@ -14,8 +19,4 @@ class User < ApplicationRecord
   def name
     "#{first_name} #{last_name}"
   end
-
-  devise :database_authenticatable, :registerable,
-         :recoverable, :rememberable, :validatable
-  has_many :meals, dependent: :destroy
 end
