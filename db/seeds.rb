@@ -7,35 +7,137 @@
 #   ["Action", "Comedy", "Drama", "Horror"].each do |genre_name|
 #     MovieGenre.find_or_create_by!(name: genre_name)
 #   end
-require 'faker'
-
 Meal.destroy_all
-puts "Destroyed all meals"
 User.destroy_all
-puts "Destroyed all users"
+puts "Destroyed all meals and users"
 
-users = 6.times.map do
-  User.create!(
-    first_name: Faker::Name.first_name,
-    last_name: Faker::Name.last_name,
-    phone_number: Faker::PhoneNumber.cell_phone,
-    address: Faker::Address.full_address,
-    email: Faker::Internet.unique.email,
-    password: 'password'
-  )
-end
+# Create one user who owns all meals
+user = User.create!(
+  first_name: "test",
+  last_name: "123",
+  email: "fake@gmail.com",
+  password: "123456"
+)
+puts "Created user"
 
-categories = ['Appetizer', 'Main Course', 'Dessert', 'Snack', 'Side Dish', 'Soup']
+Meal.create!(
+  name: "Poutine",
+  description: "Classic Quebec dish with fries, cheese curds, and gravy.",
+  category: "Main Course",
+  ingredients: "Potatoes, Cheese Curds, Gravy",
+  cuisine: "Quebecois",
+  address: "Plateau-Mont-Royal, Montreal, QC",
+  latitude: 45.5231,
+  longitude: -73.5817,
+  user: user
+)
 
-20.times do
-  Meal.create!(
-    name: Faker::Food.unique.dish,
-    description: Faker::Food.description,
-    category: categories.sample,
-    ingredients: Array.new(rand(3..6)) { Faker::Food.ingredient }.join(', '),
-    cuisine: Faker::Nation.nationality,
-    user: users.sample
-  )
-end
+Meal.create!(
+  name: "Sushi",
+  description: "Fresh sushi rolls made in Rosemont.",
+  category: "Main Course",
+  ingredients: "Rice, Fish, Seaweed",
+  cuisine: "Japanese",
+  address: "Rosemont–La Petite-Patrie, Montreal, QC",
+  latitude: 45.5451,
+  longitude: -73.5983,
+  user: user
+)
 
-puts "Created 20 meals"
+Meal.create!(
+  name: "Pho",
+  description: "Vietnamese noodle soup with beef broth.",
+  category: "Soup",
+  ingredients: "Beef, Noodles, Herbs",
+  cuisine: "Vietnamese",
+  address: "Ville-Marie, Montreal, QC",
+  latitude: 45.5074,
+  longitude: -73.5547,
+  user: user
+)
+
+Meal.create!(
+  name: "Tacos",
+  description: "Delicious tacos in Outremont.",
+  category: "Snack",
+  ingredients: "Tortilla, Beef, Cheese",
+  cuisine: "Mexican",
+  address: "Outremont, Montreal, QC",
+  latitude: 45.5208,
+  longitude: -73.6056,
+  user: user
+)
+
+Meal.create!(
+  name: "Pizza",
+  description: "Wood-fired pizza in Verdun.",
+  category: "Main Course",
+  ingredients: "Dough, Tomato, Mozzarella",
+  cuisine: "Italian",
+  address: "Verdun, Montreal, QC",
+  latitude: 45.4583,
+  longitude: -73.5672,
+  user: user
+)
+
+Meal.create!(
+  name: "Kebab",
+  description: "Grilled kebab served in Hochelaga.",
+  category: "Main Course",
+  ingredients: "Lamb, Onion, Spices",
+  cuisine: "Middle Eastern",
+  address: "Hochelaga-Maisonneuve, Montreal, QC",
+  latitude: 45.5500,
+  longitude: -73.5400,
+  user: user
+)
+
+Meal.create!(
+  name: "Lasagna",
+  description: "Home-style lasagna from Côte-des-Neiges.",
+  category: "Main Course",
+  ingredients: "Pasta, Tomato Sauce, Cheese",
+  cuisine: "Italian",
+  address: "Côte-des-Neiges, Montreal, QC",
+  latitude: 45.4998,
+  longitude: -73.6274,
+  user: user
+)
+
+Meal.create!(
+  name: "Ramen",
+  description: "Hot and comforting ramen bowl.",
+  category: "Soup",
+  ingredients: "Broth, Noodles, Pork",
+  cuisine: "Japanese",
+  address: "Villeray, Montreal, QC",
+  latitude: 45.5461,
+  longitude: -73.6206,
+  user: user
+)
+
+Meal.create!(
+  name: "Paella",
+  description: "Seafood paella in Lachine.",
+  category: "Main Course",
+  ingredients: "Rice, Seafood, Saffron",
+  cuisine: "Spanish",
+  address: "Lachine, Montreal, QC",
+  latitude: 45.4312,
+  longitude: -73.6757,
+  user: user
+)
+
+Meal.create!(
+  name: "Fajitas",
+  description: "Sizzling fajitas from Saint-Laurent.",
+  category: "Main Course",
+  ingredients: "Chicken, Peppers, Onion",
+  cuisine: "Tex-Mex",
+  address: "Saint-Laurent, Montreal, QC",
+  latitude: 45.5023,
+  longitude: -73.6987,
+  user: user
+)
+
+puts "Created 10 meals across different boroughs"
