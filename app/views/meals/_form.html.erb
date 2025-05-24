@@ -1,8 +1,6 @@
 <div class="bg-white min-vh-100 d-flex flex-column justify-content-between" style="padding-bottom: 70px;">
   <div class="w-100 px-3 py-4">
     <div class="bg-white rounded-4 shadow-sm px-4 py-5">
-      <div class="d-flex justify-content-center mb-4">
-      </div>
 
       <%= simple_form_for(meal, html: { multipart: true }) do |f| %>
         <% if meal.errors.any? %>
@@ -18,28 +16,44 @@
 
         <div class="d-flex flex-column gap-3">
           <%= f.input :name, label: false, placeholder: "Meal name", input_html: { class: "form-control rounded-pill px-3 py-2 bg-light border-0" } %>
+
           <%= f.input :description, label: false, placeholder: "Description", input_html: { class: "form-control rounded-pill px-3 py-2 bg-light border-0" } %>
-          <%= f.input :ingredients, as: :text, label: false, placeholder: "Ingredients", input_html: { class: "form-control rounded-pill px-3 py-2 bg-light border-0" } %>
+
+          <%= f.input :ingredients, as: :text, label: false, placeholder: "Ingredients (comma separated)", input_html: { class: "form-control rounded-pill px-3 py-2 bg-light border-0" } %>
 
           <%= f.input :category, label: false,
-                      collection: ['Starter', 'Main Course', 'Dessert', 'Snack', 'Side', 'Breakfast', 'Lunch', 'Dinner'],
-                      prompt: 'Select a category',
-                      input_html: { class: "form-select rounded-pill px-3 py-2 bg-light border-0" } %>
+                collection: Meal::CATEGORY_OPTIONS,
+                prompt: 'Select a category',
+                input_html: { class: "form-select rounded-pill px-3 py-2 bg-light border-0" } %>
 
-          <%= f.input :cuisine, label: false,
-                      collection: ['Italian', 'Chinese', 'Mexican', 'Indian', 'Greek', 'Thai', 'American'],
-                      prompt: 'Select a cuisine',
-                      input_html: { class: "form-select rounded-pill px-3 py-2 bg-light border-0" } %>
+          <!-- Datalist-based searchable cuisine input -->
+          <div>
+            <%= f.input_field :cuisine,
+                list: "cuisine-options",
+                placeholder: "e.g. Chinese, French, Korean",
+                class: "form-control rounded-pill px-3 py-2 bg-light border-0" %>
 
-          <%= f.input :address, label: false, placeholder: "Enter a location or full address", input_html: { class: "form-control rounded-pill px-3 py-2 bg-light border-0" } %>
+            <datalist id="cuisine-options">
+              <% ['Italian', 'Chinese', 'Mexican', 'Indian', 'Greek', 'Thai', 'American'].each do |cuisine| %>
+                <option value="<%= cuisine %>">
+              <% end %>
+            </datalist>
+          </div>
 
-          <%= f.input :photo, as: :file, label: "Upload a Photo (optional)", input_html: { class: "form-control" } %>
+          <%= f.input :address, label: false,
+                placeholder: "Enter a location or full address",
+                input_html: { class: "form-control rounded-pill px-3 py-2 bg-light border-0" } %>
+
+          <%= f.input :photo, as: :file,
+                label: "Upload a Photo (optional)",
+                input_html: { class: "form-control" } %>
 
           <div class="text-center mt-4">
             <%= f.button :submit, meal.persisted? ? "Update Meal" : "Create Meal", class: "btn btn-success rounded-pill px-5 py-2" %>
           </div>
         </div>
       <% end %>
+
     </div>
 
     <div class="text-center mt-4">
