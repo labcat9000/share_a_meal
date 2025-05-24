@@ -8,7 +8,7 @@ Rails.application.routes.draw do
   # Reveal health status on /up that returns 200 if the app boots with no exceptions, otherwise 500.
   # Can be used by load balancers and uptime monitors to verify that the app is live.
   resources :meals do
-    resources :exchanges, only: [:new, :create]
+    resources :exchanges, only: [:new, :create, :index]
   end
 
   resources :exchanges, only: [] do
@@ -18,7 +18,7 @@ Rails.application.routes.draw do
     end
   end
 
-  get '/my-meals', to: 'meals#my_meals', as: :user_meals
+  get '/your-meals', to: 'meals#your_meals', as: :user_meals
   get '/my-exchanges', to: 'exchanges#my_exchanges', as: :user_exchanges
   get '/profile', to: 'users#show', as: :user_profile
 

@@ -40,11 +40,12 @@
         </div>
       <% end %>
 
-      <a href="#" class="text-dark text-decoration-none text-center">
-        <div>
-          <i class="fa fa-user fa-lg d-block"></i>
+      <%= link_to meal_exchanges_path(@meal), class: "text-dark text-decoration-none text-center" do %>
+        <div class="d-flex align-items-center justify-content-center"
+            style="width: 46px; height: 46px;">
+          <i class="fa-solid fa-handshake-angle"></i>
         </div>
-      </a>
+      <% end %>
     </footer>
   </body>
 </html>
