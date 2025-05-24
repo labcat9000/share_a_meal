@@ -19,8 +19,10 @@ Rails.application.routes.draw do
   end
 
   get '/my-meals', to: 'meals#my_meals', as: :user_meals
-  get '/my-exchanges', to: 'exchanges#my_exchanges', as: :user_exchanges
+  get '/my-shares', to: 'exchanges#my_exchanges', as: :user_exchanges
+  get '/shares-dashboard', to: 'exchanges#exchanges_dashboard', as: :exchanges_dashboard
   get '/profile', to: 'profiles#show', as: :user_profile
+  get '/share-requests', to: 'exchanges#exchange_requests', as: :exchange_requests
 
   get "up" => "rails/health#show", as: :rails_health_check
 end

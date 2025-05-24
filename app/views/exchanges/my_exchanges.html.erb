@@ -1,0 +1,10 @@
+<% if params[:view] == "current" %>
+  <%#= @exchanges.where(status: "accepted") %>
+  <% @exchanges.each do |exchange| %>
+
+  <% end %>
+<% end %>
+
+<% if params[:view] == "past" %>
+  <%= @exchanges.where(status: "complete") %>
+<% end %>

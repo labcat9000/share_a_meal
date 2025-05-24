@@ -1,7 +1,7 @@
 class ExchangesController < ApplicationController
   before_action :set_meal, only: [:new, :create]
 
-  def def new
+  def new
     @exchanges = Exchange.new
   end
 
@@ -31,33 +31,29 @@ class ExchangesController < ApplicationController
         render :edit
       end
     else
-      flash[:alert] = "You're not authorized to change this exchange"
+      flash[:alert] = "You're not authorized to edit this exchange"
       redirect_to root_path
     end
   end
 
-  def my_exchanges
-    @exchanges = current_user.exchanges.includes(:meal)
-  end
   def create
     @exchange = Exchange.new(exchange_params)
     @exchange.meal_requested = Meal.find(params[:exchange][:meal_requested_id])
     @exchange.meal_offered = Meal.find(params[:exchange][:meal_offered_id])
 
     if @exchange.save
-      redirect_to meal_path(@exchange.meal_requested), notice: "Exchange proposed!"
+      redirect_to meal_path(@exchange.meal_requested), notice: "Share requested!"
     else
       redirect_to meal_path(@exchange.meal_requested), alert: "Something went wrong."
     end
-  end
 
-  if @exchange.save
-    redirect_to meal_path(@meal), notice: 'Exchange was successfully created.'
-  else
-    @exchanges = Exchange.new
-    render :new, status: :unprocessable_entity
+    if @exchange.save
+      redirect_to meal_path(@meal), notice: 'Exchange was successfully created.'
+    else
+      @exchanges = Exchange.new
+      render :new, status: :unprocessable_entity
+    end
   end
-end
 
   def destroy
     @exchanges = Exchange.find(params[:id])
@@ -65,10 +61,20 @@ end
 
     if @exchange.user == current_user
       @exchange.destroy
-      redirect_to meal_path(meal), notice: "exchange was successfully deleted!"
+      redirect_to meal_path(meal), notice: "Exchange was successfully deleted!"
     else
       redirect_to root_path, alert: "Unauthorized."
     end
+  end
+
+  def my_exchanges
+    @exchanges = current_user.exchanges.includes(:meal)
+  end
+
+  def exchanges_dashboard
+  end
+
+  def exchange_requests
   end
 
   private

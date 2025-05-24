@@ -9,10 +9,11 @@
 #   end
 require 'faker'
 
+Exchange.destroy_all
+puts "Destroyed all exchanges"
+
 Meal.destroy_all
 puts "Destroyed all meals"
-User.destroy_all
-puts "Destroyed all users"
 
 users = 6.times.map do
   User.create!(
@@ -27,8 +28,8 @@ end
 
 categories = ['Appetizer', 'Main Course', 'Dessert', 'Snack', 'Side Dish', 'Soup']
 
-20.times do
-  Meal.create!(
+meals = 20.times.map do
+  meal = Meal.create!(
     name: Faker::Food.unique.dish,
     description: Faker::Food.description,
     category: categories.sample,
@@ -39,3 +40,11 @@ categories = ['Appetizer', 'Main Course', 'Dessert', 'Snack', 'Side Dish', 'Soup
 end
 
 puts "Created 20 meals"
+
+exchange1 = Exchange.create!(
+  user_id: users.first.id,
+  meal_offered_id: meals[0].id,
+  meal_requested_id: meals[1].id
+)
+
+puts "Created 1 exchange"
