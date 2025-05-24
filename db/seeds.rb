@@ -20,7 +20,6 @@ user = User.create!(
 )
 puts "Created user"
 
-# Create 10 meals, one per borough
 Meal.create!(
   name: "Poutine",
   description: "Classic Quebec dish with fries, cheese curds, and gravy.",

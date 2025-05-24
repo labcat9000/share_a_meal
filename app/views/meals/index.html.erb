@@ -1,6 +1,3 @@
-<div class="spacer-top"></div>
-
-<!-- DISPLAY CONTROLLER -->
 <div data-controller="index-display">
   <div class="view-toggle">
     <button class="toggle-button active"
@@ -13,14 +10,12 @@
             data-index-display-target="mapButton">Map</button>
   </div>
 
-  <!-- QUERY MESSAGE -->
   <% if params[:query].present? %>
     <div class="text-center text-muted mt-2 mb-3">
       Showing results for: <strong><%= params[:query] %></strong>
     </div>
   <% end %>
 
-  <!-- MEAL LIST -->
   <div id="meal-list" data-index-display-target="mealList">
     <div class="meal-cards">
       <% if @meals_by_name.present? %>
@@ -57,7 +52,6 @@
     </div>
   </div>
 
-  <!-- MAP -->
   <div id="meal-map"
       style="display: none;"
       data-index-display-target="mealMap"
@@ -82,6 +76,4 @@
       </div>
     </div>
   </div>
-
 </div>
-<div class="spacer-bottom"></div>

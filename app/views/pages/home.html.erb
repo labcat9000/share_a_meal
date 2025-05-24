@@ -1,7 +1,4 @@
-<div class="spacer-top"></div>
-
-<!-- Category Icons with Labels Below and Bigger Size -->
-<div class="d-flex overflow-auto px-3 py-3 gap-4 justify-content-between text-center">
+<div class="d-flex overflow-auto px-3 py-2 gap-5 justify-content-start text-center">
   <% categories = [
     { name: "Breakfast", image: "categories/breakfast-icons.svg" },
     { name: "Lunch", image: "categories/lunch-icons.svg" },
@@ -13,20 +10,17 @@
 
   <% categories.each do |category| %>
     <div>
-      <%= image_tag category[:image], width: 60, height: 60, class: "rounded-circle d-block mx-auto mb-1 shadow-sm" %>
-      <small class="d-block text-dark"><%= category[:name] %></small>
+      <%= image_tag category[:image], width: 80, height: 80, class: "rounded-circle d-block mx-auto mb-1 shadow-sm" %>
+      <small class="d-block text-dark fw-medium" style="font-size: 0.95rem;"><%= category[:name] %></small>
     </div>
   <% end %>
 </div>
 
-
-<!-- Header and Radius -->
-<div class="d-flex justify-content-between align-items-center px-3 pt-3">
-  <h5 class="mb-0">Fresh meals!</h5>
-  <button class="btn btn-outline-success btn-sm rounded-pill">Radius</button>
+<div class="d-flex justify-content-between align-items-center px-3 pt-2">
+  <h2 class="fw-semibold mb-0" style="font-family: system-ui, sans-serif;">Fresh meals!</h2>
+  <button class="btn btn-outline-success btn-sm rounded-pill px-3 py-1">Radius</button>
 </div>
 
-<!-- Meal Cards -->
 <div class="px-3 pt-3">
   <div class="meal-cards">
     <% if @meals_by_name.present? %>

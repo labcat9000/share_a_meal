@@ -4,7 +4,7 @@ export default class extends Controller {
   static targets = ["panel"]
 
   connect() {
-    console.log("✅ FilterController connected")
+    console.log("FilterController connected")
   }
 
   toggle() {
