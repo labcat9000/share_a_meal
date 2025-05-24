@@ -66,12 +66,10 @@
 
     <!-- Back link -->
     <div class="back-link" style="text-align: center; margin-top: 1.5rem;">
+      <%= link_to new_meal_exchange_path(@meal), class: "text-dark text-decoration-none rounded" do %>
+        <i class="fa-solid fa-forward"></i> Request Exchange
+      <% end %><br>
       <%= link_to "← Back to Meals", meals_path, class: "back-to-meals", style: "text-decoration: none; color: #333; font-size: 0.95rem;" %>
     </div>
-
   </div>
-  <!-- Show requester profile -->
-  <%= link_to new_meal_exchange_path(@meal) do %>
-    <i class="fa-solid fa-handshake-angle"></i> Request Exchange
-  <% end %>
 </div>
