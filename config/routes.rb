@@ -20,7 +20,7 @@ Rails.application.routes.draw do
 
   get '/my-meals', to: 'meals#my_meals', as: :user_meals
   get '/my-exchanges', to: 'exchanges#my_exchanges', as: :user_exchanges
-  get '/profile', to: 'profiles#show', as: :user_profile
+  get '/profile', to: 'users#show', as: :user_profile
 
   get "up" => "rails/health#show", as: :rails_health_check
 end
