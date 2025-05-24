@@ -1,5 +1,4 @@
 <div data-controller="filter">
-
   <nav class="navbar navbar-light bg-white border-bottom py-3 px-3 px-md-5">
     <div class="container-fluid d-flex align-items-center justify-content-between flex-wrap gap-2">
 
@@ -8,7 +7,6 @@
         <span class="fw-bold fs-5 d-none d-md-inline">Share A Meal</span>
       <% end %>
 
-      <!-- Show Search/Filter only on meals#index -->
       <% if controller_name == "meals" && action_name == "index" %>
         <div class="d-flex align-items-center flex-grow-1 justify-content-end mt-2 mt-md-0" style="max-width: 600px;">
           <%= form_with url: meals_path, method: :get, local: true, class: "d-flex align-items-center flex-grow-1 gap-2" do |f| %>
@@ -20,7 +18,6 @@
                     class: "form-control ps-5 rounded-pill" %>
             </div>
 
-            <!-- Filter Button -->
             <button type="button"
                     class="btn btn-outline-secondary rounded-circle"
                     data-action="click->filter#toggle"
@@ -30,7 +27,6 @@
           <% end %>
         </div>
       <% else %>
-        <!-- Simple search input that redirects to meals#index -->
         <div class="flex-grow-1 mt-2 mt-md-0" style="max-width: 600px;">
           <form action="/meals" method="get"
                 class="d-flex gap-2"
@@ -39,9 +35,9 @@
             <div class="position-relative w-100">
               <i class="fa fa-search meal-search-icon position-absolute top-50 start-0 translate-middle-y ps-3"></i>
               <input type="text"
-                    name="query"
-                    placeholder="Search meals..."
-                    class="form-control ps-5 rounded-pill" />
+                     name="query"
+                     placeholder="Search meals..."
+                     class="form-control ps-5 rounded-pill" />
             </div>
           </form>
         </div>
@@ -50,23 +46,58 @@
     </div>
   </nav>
 
-  <!-- Filter Drawer (only on Index) -->
   <% if controller_name == "meals" && action_name == "index" %>
     <div class="container-fluid px-3 pt-3 filter-drawer" data-filter-target="panel" hidden>
       <div class="card p-4 shadow-sm">
         <h5 class="mb-3">Filter Meals</h5>
+
         <%= form_with url: meals_path, method: :get, local: true do |f| %>
           <%= f.hidden_field :query, value: params[:query] %>
+
           <div class="row">
             <div class="col-md-6 mb-3">
               <%= f.label :category, class: "form-label" %>
-              <%= f.select :category, options_for_select([""] + Meal.distinct.pluck(:category).compact.sort, params[:category]), {}, class: "form-select" %>
+              <%= f.select :category,
+                    options_for_select([""] + Meal::CATEGORY_OPTIONS, params[:category]),
+                    {}, class: "form-select" %>
+
             </div>
+
             <div class="col-md-6 mb-3">
               <%= f.label :cuisine, class: "form-label" %>
-              <%= f.select :cuisine, options_for_select([""] + Meal.distinct.pluck(:cuisine).compact.sort, params[:cuisine]), {}, class: "form-select" %>
+              <%= f.text_field :cuisine,
+                    list: "cuisine-options",
+                    value: params[:cuisine],
+                    class: "form-select" %>
+
+              <datalist id="cuisine-options">
+                <% Meal.distinct.pluck(:cuisine).compact.sort.each do |cuisine| %>
+                  <option value="<%= cuisine %>">
+                <% end %>
+              </datalist>
+            </div>
+
+            <!-- Radius Slider -->
+            <div class="col-12 mb-3" data-controller="radius">
+              <label for="radius-range" class="form-label">
+                Radius: <span data-radius-target="radiusValue"><%= params[:radius] || 10 %></span> km
+              </label>
+
+              <input type="range"
+                     id="radius-range"
+                     name="radius"
+                     class="form-range"
+                     min="1"
+                     max="50"
+                     step="1"
+                     value="<%= params[:radius] || 10 %>"
+                     data-action="input->radius#updateDisplay" />
+
+              <%= hidden_field_tag :latitude, nil, id: "radius-lat" %>
+              <%= hidden_field_tag :longitude, nil, id: "radius-lng" %>
             </div>
           </div>
+
           <div class="d-flex justify-content-between mt-3">
             <%= link_to "Clear Filters", meals_path, class: "btn btn-outline-secondary" %>
             <%= f.submit "Apply Filters", class: "btn btn-warning" %>
@@ -75,5 +106,4 @@
       </div>
     </div>
   <% end %>
-
-</div> <!-- END data-controller="filter" -->
+</div>

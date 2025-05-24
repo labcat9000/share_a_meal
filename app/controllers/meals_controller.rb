@@ -1,18 +1,21 @@
 class MealsController < ApplicationController
   before_action :set_meal, only: [:show, :edit, :update, :destroy]
   before_action :authenticate_user!
+
   def index
-    @meals_by_name = Meal.all
+    base_scope = Meal.all
+    @meals_by_name = base_scope
     @meals_by_ingredients = []
 
     if params[:query].present?
       query = "%#{params[:query]}%"
-      @meals_by_name = Meal.where("name ILIKE ? OR description ILIKE ?", query, query)
+      @meals_by_name = Meal.where("name ILIKE ? OR description ILIKE ? OR cuisine ILIKE ?", query, query, query)
 
       if @meals_by_name.empty?
-        @meals_by_ingredients = Meal.where("ingredients ILIKE ?", query)
+        @meals_by_ingredients = Meal.where("ingredients ILIKE ? OR cuisine ILIKE ?", query, query)
       end
     end
+
 
     if params[:category].present?
       @meals_by_name = @meals_by_name.where(category: params[:category])
@@ -20,8 +23,17 @@ class MealsController < ApplicationController
     end
 
     if params[:cuisine].present?
-      @meals_by_name = @meals_by_name.where(cuisine: params[:cuisine])
-      @meals_by_ingredients = @meals_by_ingredients.where(cuisine: params[:cuisine]) if @meals_by_ingredients.any?
+      pattern = "%#{params[:cuisine].strip.downcase}%"
+      @meals_by_name = @meals_by_name.where("LOWER(cuisine) ILIKE ?", pattern)
+      @meals_by_ingredients = @meals_by_ingredients.where("LOWER(cuisine) ILIKE ?", pattern) if @meals_by_ingredients.any?
+    end
+
+    if params[:radius].present? && params[:latitude].present? && params[:longitude].present?
+      coords = [params[:latitude].to_f, params[:longitude].to_f]
+      radius = params[:radius].to_f
+
+      @meals_by_name = @meals_by_name.near(coords, radius)
+      @meals_by_ingredients = @meals_by_ingredients.near(coords, radius) if @meals_by_ingredients.any?
     end
 
     @displayed_meals = (@meals_by_name + @meals_by_ingredients).uniq
@@ -38,10 +50,10 @@ class MealsController < ApplicationController
         }
       end
 
-    # ✅ move this here
     puts "MARKERS DEBUG:"
     puts @markers.inspect
   end
+
 
 
   def show
@@ -100,8 +112,11 @@ class MealsController < ApplicationController
   end
 
   def meal_params
-    params.require(:meal).permit(:name, :description, :ingredients, :category, :cuisine, :photo, :address)
+    permitted = params.require(:meal).permit(:name, :description, :ingredients, :category, :cuisine, :photo, :address)
+    permitted[:cuisine] = permitted[:cuisine].to_s.titleize if permitted[:cuisine].present?
+    permitted
   end
+
 
   def authorize_owner!(record)
     redirect_to root_path, alert: "Not authorized" unless record.user == current_user
