@@ -9,16 +9,18 @@
   ] %>
 
   <% categories.each do |category| %>
-    <div>
-      <%= image_tag category[:image], width: 80, height: 80, class: "rounded-circle d-block mx-auto mb-1 shadow-sm" %>
-      <small class="d-block text-dark fw-medium" style="font-size: 0.95rem;"><%= category[:name] %></small>
-    </div>
+    <%= link_to meals_path(category: category[:name]), class: "text-decoration-none" do %>
+      <div>
+        <%= image_tag category[:image], width: 80, height: 80, class: "rounded-circle d-block mx-auto mb-1 shadow-sm" %>
+        <small class="d-block text-dark fw-medium" style="font-size: 0.95rem;"><%= category[:name] %></small>
+      </div>
+    <% end %>
   <% end %>
 </div>
 
+
 <div class="d-flex justify-content-between align-items-center px-3 pt-2">
   <h2 class="fw-semibold mb-0" style="font-family: system-ui, sans-serif;">Fresh meals!</h2>
-  <button class="btn btn-outline-success btn-sm rounded-pill px-3 py-1">Radius</button>
 </div>
 
 <div class="px-3 pt-3">
