@@ -1,5 +1,6 @@
 class Meal < ApplicationRecord
   belongs_to :user, optional: true
+  has_many :exchanges
   validates :name, presence: true
   validates :description, presence: true
   has_one_attached :photo

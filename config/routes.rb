@@ -11,7 +11,7 @@ Rails.application.routes.draw do
     resources :exchanges, only: [:new, :create]
   end
 
-  resources :exchanges, only: [:update, :destroy] do
+  resources :exchanges, only: [] do
     member do
       patch :accept
       patch :decline

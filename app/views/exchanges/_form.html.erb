@@ -1,14 +1,6 @@
-<%= simple_form_for(@exchange) do |f| %>
-  <!-- Hidden field for the meal being requested -->
-  <%= f.hidden_field :meal_requested_id, value: @meal.id %>
-
-  <!-- Dropdown for the user to choose which of their meals they want to offer -->
-  <%= f.input :meal_offered_id,
-              collection: current_user.meals.available,
-              label: "Which of your meals would you like to offer in exchange?",
-              prompt: "Select a meal",
-              value_method: :id,
-              label_method: :name %>
-
-  <%= f.submit "Propose Exchange", class: "btn btn-warning mt-2" %>
+<%= simple_form_for([meal, exchange], html: { class: "exchange-form" }) do |f| %>
+  <div class="mb-3">
+    <%= f.input :your_meal_id, label: "Choose a meal to offer", collection: current_user.meals, prompt: "Select your meal" %>
+  </div>
+  <%= f.submit "Request Exchange", class: "btn btn-warning rounded-pill px-4" %>
 <% end %>
