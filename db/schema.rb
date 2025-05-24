@@ -51,6 +51,8 @@ ActiveRecord::Schema[7.1].define(version: 2025_05_24_191348) do
     t.bigint "meal_requested_id"
     t.string "offering_user_rating"
     t.string "requesting_user_rating"
+    t.boolean "accepted", default: false
+    t.boolean "seen", default: false
     t.index ["meal_offered_id"], name: "index_exchanges_on_meal_offered_id"
     t.index ["meal_requested_id"], name: "index_exchanges_on_meal_requested_id"
   end
