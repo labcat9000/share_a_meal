@@ -70,18 +70,8 @@
     </div>
 
   </div>
-  <%= render "exchanges/form", meal: @meal, exchange: Exchange.new %>
   <!-- Show requester profile -->
-<% @meal.exchanges.each do |exchange| %>
-  <p>
-    <strong>Requested by:</strong>
-    <%= link_to exchange.user.name, user_path(exchange.user) %>
-  </p>
-
-  <p>
-    <strong>Offered Meal:</strong>
-    <%= link_to exchange.your_meal.name, meal_path(exchange.your_meal) %>
-  </p>
-<% end %>
-
+  <%= link_to new_meal_exchange_path(@meal) do %>
+    <i class="fa-solid fa-handshake-angle"></i> Request Exchange
+  <% end %>
 </div>

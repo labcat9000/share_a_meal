@@ -2,6 +2,10 @@ class ExchangesController < ApplicationController
   before_action :authenticate_user!
   before_action :set_meal
 
+  def index
+    @meal = Meal.find(params[:meal_id])
+    @exchanges = @meal.exchanges
+  end
   def new
     @exchange = Exchange.new
   end

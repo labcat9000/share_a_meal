@@ -1,6 +1,0 @@
-<% if exchange.user && exchange.your_meal %>
-  <p><strong>Requester:</strong> <%= link_to exchange.user.name, user_path(exchange.user) %></p>
-  <p><strong>Offered meal:</strong> <%= link_to exchange.your_meal.name, meal_path(exchange.your_meal) %></p>
-<% else %>
-  <p>Exchange details are incomplete.</p>
-<% end %>
