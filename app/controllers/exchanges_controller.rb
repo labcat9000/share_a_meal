@@ -1,13 +1,17 @@
 class ExchangesController < ApplicationController
   before_action :authenticate_user!
-  before_action :set_meal
+  before_action :set_meal, only: [:new, :create, :show]
 
-  def index
-    @meal = Meal.find(params[:meal_id])
-    @exchanges = @meal.exchanges
+
+  def new
+    @exchange = Exchange.new
   end
   def new
     @exchange = Exchange.new
+  end
+
+  def show
+    @exchange = Exchange.new(meal_requested_id: @meal.id)
   end
 
   def accept
@@ -32,10 +36,15 @@ class ExchangesController < ApplicationController
     @exchange.user = current_user
 
     if @exchange.save
-      redirect_to meal_path(@meal), notice: "Exchange requested!"
+      redirect_to meal_path(@meal), notice: "Exchange request sent!"
     else
-      render "meals/show", status: :unprocessable_entity
+      render :new, status: :unprocessable_entity
     end
+  end
+
+
+  def my_exchanges
+    @exchanges = Exchange.where(user: current_user)
   end
 
   private
