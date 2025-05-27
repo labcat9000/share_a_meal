@@ -6,11 +6,29 @@ class Exchange < ApplicationRecord
 
   validates :meal_offered, presence: true
   validates :meal_requested, presence: true
+  validates :offering_user_rating, numericality: { only_integer: true, greater_than_or_equal_to: 1, less_than_or_equal_to: 5 }, allow_nil: true
+  validates :requesting_user_rating, numericality: { only_integer: true, greater_than_or_equal_to: 1, less_than_or_equal_to: 5 }, allow_nil: true
+
 
 #   validate :no_overlapping_exchanges
 #   validate :only_one_exchange_per_user_meal
 
   before_validation :set_default_status, on: :create
+
+  def rated_by_offering_user?
+    offering_user_rating.present?
+  end
+
+  def rated_by_requesting_user?
+    requesting_user_rating.present?
+  end
+
+  def average_rating
+    ratings = [offering_user_rating, requesting_user_rating].compact
+    return nil if ratings.empty?
+
+    (ratings.sum.to_f / ratings.size).round(2)
+  end
 
   private
 

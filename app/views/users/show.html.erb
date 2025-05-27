@@ -48,6 +48,11 @@
         <p class="fw-bold fs-6 mb-1">Pickup address</p>
         <p class="text-muted mb-0 fs-6"><%= @user.address.presence || "No address set" %></p>
       </div>
+
+      <div>
+        <p class="fw-bold fs-6 mb-1">Rating</p>
+        <p class="text-muted mb-0 fs-6"><%= @user.average_combined_rating %></p>
+      </div>
     </div>
 
   </div>
