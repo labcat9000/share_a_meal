@@ -24,11 +24,19 @@ class Meal < ApplicationRecord
     where.not(id: Exchange.select(:meal_offered_id))
   }
 
+  before_validation :set_default_posted_on
+
   def average_rating
     ratings.average(:value)&.round(1) || "No ratings yet"
   end
 
   def self.search(query)
     where("name ILIKE ? OR description ILIKE ?", "%#{query}%", "%#{query}%")
+  end
+
+  private
+
+  def set_default_posted_on
+    self.posted_on ||= Date.today
   end
 end

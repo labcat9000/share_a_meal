@@ -48,6 +48,14 @@
                 label: "Upload a Photo (optional)",
                 input_html: { class: "form-control" } %>
 
+          <%= f.input :posted_on,
+                as: :date,
+                label: false,
+                input_html: {
+                  class: "form-control rounded-pill px-3 py-2 bg-light border-0",
+                  value: f.object.posted_on || Date.today
+                } %>
+
           <div class="text-center mt-4">
             <%= f.button :submit, meal.persisted? ? "Update Meal" : "Create Meal", class: "btn btn-success rounded-pill px-5 py-2" %>
           </div>
