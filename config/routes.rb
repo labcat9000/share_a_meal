@@ -23,6 +23,7 @@ Rails.application.routes.draw do
   get '/shares-dashboard', to: 'exchanges#exchanges_dashboard', as: :exchanges_dashboard
   get '/profile', to: 'users#show', as: :user_profile
   get '/share-requests', to: 'exchanges#exchange_requests', as: :exchange_requests
+  get '/users/:id/view', to: 'users#view', as: :view_user
 
   get "up" => "rails/health#show", as: :rails_health_check
 end

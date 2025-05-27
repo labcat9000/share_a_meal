@@ -1,74 +1,83 @@
 <div style="display: flex; justify-content: center; padding: 2rem 1rem;">
   <div style="max-width: 500px; width: 100%; background: #fff; border-radius: 24px; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08); padding: 1.5rem;">
 
-    <!-- Image -->
+    <!-- Meal Title (at the very top) -->
+    <h2 style="font-size: 1.5rem; font-weight: 700; color: #2e3e1d; margin-bottom: 1rem; text-align: left;">
+      <%= @meal.name %>
+    </h2>
+
+
+    <!-- Meal Image -->
     <div style="width: 100%; border-radius: 20px; overflow: hidden; margin-bottom: 1rem;">
       <% if @meal.photo.attached? %>
-        <%= cl_image_tag @meal.photo.key, class: "img-fluid", style: "width: 100%; height: auto; object-fit: cover; border-radius: 20px;" %>
+        <%= cl_image_tag @meal.photo.key, class: "img-fluid", style: "width: 100%; height: auto; object-fit: cover;" %>
       <% else %>
-        <%= image_tag "meal-default.png.jpeg", class: "img-fluid", style: "width: 100%; height: auto; object-fit: cover; border-radius: 20px;" %>
+        <%= image_tag "meal-default.png.jpeg", class: "img-fluid", style: "width: 100%; height: auto; object-fit: cover;" %>
       <% end %>
     </div>
 
-    <!-- Dots -->
+    <!-- Carousel Dots -->
     <div class="dots-nav" style="display: flex; justify-content: center; gap: 6px; margin-bottom: 1rem;">
       <span class="dot active" style="width: 8px; height: 8px; border-radius: 50%; background-color: #222;"></span>
       <span class="dot" style="width: 8px; height: 8px; border-radius: 50%; background-color: #bbb;"></span>
       <span class="dot" style="width: 8px; height: 8px; border-radius: 50%; background-color: #bbb;"></span>
     </div>
 
-    <!-- Meal Name -->
-    <h2 style="font-size: 1.5rem; font-weight: 700; color: #2e3e1d; margin-bottom: 1rem;"><%= @meal.name %></h2>
+    <!-- Request Button -->
+    <div style="text-align: center; margin-bottom: 0.5rem;">
+      <%= link_to new_meal_exchange_path(@meal),
+          class: "btn border rounded-pill",
+          style: "display: inline-block; font-weight: 500; font-size: 0.95rem; padding: 0.5rem 2.5rem;" do %>
+        Request Share
+      <% end %>
+    </div>
 
-    <!-- Description -->
-    <p style="font-size: 1rem; color: #333; margin-bottom: 1.5rem; text-align: center;">
-      <%= simple_format(@meal.description) %>
-    </p>
 
-    <!-- Cooked By -->
+    <!-- Cooked by (moved directly under the button) -->
     <% if @meal.user.present? %>
-      <p style="font-size: 0.95rem; color: #666; margin-bottom: 0.5rem;">
-        Cooked by: <strong><%= @meal.user.first_name %> <%= @meal.user.last_name %></strong>
+      <p style="text-align: center; font-size: 0.95rem; margin-bottom: 1.25rem;">
+        Cooked by:
+        <strong>
+          <%= link_to "#{@meal.user.first_name} #{@meal.user.last_name}", view_user_path(@meal.user), style: "font-weight: bold; color: #2e3e1d; text-decoration: none;" %>
+        </strong>
       </p>
     <% end %>
 
-    <!-- Category and Cuisine -->
-    <p style="font-size: 0.95rem; color: #666; margin-bottom: 1.5rem;">
+    <!-- Meal Info Section -->
+    <div style="padding: 0 0.5rem; font-size: 0.95rem; color: #333;">
+      <!-- Description -->
+      <p style="margin-bottom: 1rem;"><%= simple_format(@meal.description) %></p>
+
+      <!-- Category & Cuisine -->
       <% if @meal.category.present? %>
-        <strong>Category:</strong> <%= @meal.category %><br>
+        <p style="margin-bottom: 0.25rem;"><strong>Category:</strong> <%= @meal.category %></p>
       <% end %>
       <% if @meal.cuisine.present? %>
-        <strong>Cuisine:</strong> <%= @meal.cuisine %>
+        <p style="margin-bottom: 0.75rem;"><strong>Cuisine:</strong> <%= @meal.cuisine %></p>
       <% end %>
-    </p>
 
-    <!-- Ingredients -->
-    <% if @meal.ingredients.present? %>
-      <p style="font-size: 0.95rem; color: #333; margin-bottom: 2rem;">
-        <strong>Ingredients:</strong> <%= @meal.ingredients %>
-      </p>
-    <% end %>
+      <!-- Ingredients -->
+      <% if @meal.ingredients.present? %>
+        <p style="margin-bottom: 1.5rem;"><strong>Ingredients:</strong> <%= @meal.ingredients %></p>
+      <% end %>
+    </div>
 
     <!-- Map -->
-      <% if @meal.latitude.present? && @meal.longitude.present? %>
-        <div class="map-wrapper" style="margin-top: 1.5rem; border-radius: 12px; overflow: hidden;">
-          <div id="show-map"
-              class="map-container"
-              data-controller="map-show"
-              data-map-show-api-key-value="<%= ENV['MAPBOX_API_KEY'] %>"
-              data-map-show-latitude-value="<%= @meal.latitude.to_f %>"
-              data-map-show-longitude-value="<%= @meal.longitude.to_f %>"
-              style="width: 100%; height: 200px; border-radius: 12px;">
-          </div>
+    <% if @meal.latitude.present? && @meal.longitude.present? %>
+      <div class="map-wrapper" style="margin-top: 1.5rem; border-radius: 12px; overflow: hidden;">
+        <div id="show-map"
+             class="map-container"
+             data-controller="map-show"
+             data-map-show-api-key-value="<%= ENV['MAPBOX_API_KEY'] %>"
+             data-map-show-latitude-value="<%= @meal.latitude.to_f %>"
+             data-map-show-longitude-value="<%= @meal.longitude.to_f %>"
+             style="width: 100%; height: 200px; border-radius: 12px;">
         </div>
-      <% end %>
-
+      </div>
+    <% end %>
 
     <!-- Back link -->
     <div class="back-link" style="text-align: center; margin-top: 1.5rem;">
-      <%= link_to new_meal_exchange_path(@meal), class: "text-dark text-decoration-none rounded" do %>
-        <i class="fa-solid fa-forward"></i> Request Exchange
-      <% end %><br>
       <%= link_to "← Back to Meals", meals_path, class: "back-to-meals", style: "text-decoration: none; color: #333; font-size: 0.95rem;" %>
     </div>
   </div>

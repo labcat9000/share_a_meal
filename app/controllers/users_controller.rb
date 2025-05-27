@@ -10,7 +10,15 @@ class UsersController < ApplicationController
 
   def show
     @user = current_user
+    @meals = @user.meals
   end
+
+
+  def view
+    @user = User.find(params[:id])
+    @meals = @user.meals
+  end
+
 
   def offers
     @exchanges = current_user.exchanges
