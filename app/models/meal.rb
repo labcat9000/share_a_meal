@@ -8,9 +8,9 @@ class Meal < ApplicationRecord
     'Dessert'
   ].freeze
 
-  has_many :offered_exchanges, class_name: "Exchange", foreign_key: "offering_user_id"
-  has_many :requested_exchanges, class_name: "Exchange", foreign_key: "requesting_user_id"
-  has_many :meal_ratings, through: :meals, source: :ratings
+  has_many :offered_exchanges, class_name: "Exchange", foreign_key: "meal_offered_id"
+  has_many :requested_exchanges, class_name: "Exchange", foreign_key: "meal_requested_id"
+  has_many :meal_ratings, class_name: "MealRating"
 
   belongs_to :user, optional: true
   has_many :exchanges

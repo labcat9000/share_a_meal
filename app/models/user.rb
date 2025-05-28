@@ -7,7 +7,6 @@ class User < ApplicationRecord
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :validatable
 
-  # Custom roles
   def owner?
     role == 'owner'
   end
@@ -18,5 +17,15 @@ class User < ApplicationRecord
 
   def name
     "#{first_name} #{last_name}"
+  end
+
+  def average_combined_rating
+    ratings = meals.map do |meal|
+      meal.average_combined_rating unless meal.average_combined_rating == "No ratings yet"
+    end.compact.map(&:to_f)
+
+    return "No ratings yet" if ratings.empty?
+
+    (ratings.sum / ratings.size).round(2)
   end
 end
