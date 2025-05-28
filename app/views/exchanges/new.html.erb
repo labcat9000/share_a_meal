@@ -1,0 +1,6 @@
+<%= simple_form_for([@meal, @exchange], html: { class: "exchange-form" }) do |f| %>
+  <div class="mb-3">
+    <%= f.input :meal_offered_id, label: "Choose a meal to offer", collection: current_user.meals, prompt: "Select your meal" %>
+  </div>
+  <%= f.submit "Request Exchange", class: "btn btn-warning rounded-pill px-4" %>
+<% end %>
