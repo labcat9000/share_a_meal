@@ -23,13 +23,6 @@ class Exchange < ApplicationRecord
     requesting_user_rating.present?
   end
 
-  def average_rating
-    ratings = [offering_user_rating, requesting_user_rating].compact
-    return nil if ratings.empty?
-
-    (ratings.sum.to_f / ratings.size).round(2)
-  end
-
   private
 
   def set_default_status

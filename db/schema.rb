@@ -10,7 +10,8 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2025_05_28_000820) do
+ActiveRecord::Schema[7.1].define(version: 2025_05_28_012450) do
+
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -56,9 +57,22 @@ ActiveRecord::Schema[7.1].define(version: 2025_05_28_000820) do
     t.integer "requesting_user_rating"
     t.text "offering_user_comment"
     t.text "requesting_user_comment"
+    t.bigint "requesting_user_id"
+    t.index ["meal_id"], name: "index_exchanges_on_meal_id"
     t.index ["meal_offered_id"], name: "index_exchanges_on_meal_offered_id"
     t.index ["meal_requested_id"], name: "index_exchanges_on_meal_requested_id"
     t.index ["requesting_user_id"], name: "index_exchanges_on_requesting_user_id"
+    t.index ["your_meal_id"], name: "index_exchanges_on_your_meal_id"
+  end
+
+  create_table "meal_ratings", force: :cascade do |t|
+    t.integer "value"
+    t.bigint "meal_id", null: false
+    t.bigint "user_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["meal_id"], name: "index_meal_ratings_on_meal_id"
+    t.index ["user_id"], name: "index_meal_ratings_on_user_id"
   end
 
   create_table "meals", force: :cascade do |t|
@@ -95,7 +109,11 @@ ActiveRecord::Schema[7.1].define(version: 2025_05_28_000820) do
 
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
+  add_foreign_key "exchanges", "meals"
   add_foreign_key "exchanges", "meals", column: "meal_offered_id"
   add_foreign_key "exchanges", "meals", column: "meal_requested_id"
+  add_foreign_key "exchanges", "meals", column: "your_meal_id"
+  add_foreign_key "meal_ratings", "meals"
+  add_foreign_key "meal_ratings", "users"
   add_foreign_key "meals", "users"
 end
