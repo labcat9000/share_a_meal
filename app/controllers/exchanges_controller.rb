@@ -1,15 +1,16 @@
 class ExchangesController < ApplicationController
   before_action :authenticate_user!
-  before_action :set_meal, only: [:new, :create, :show]
+  before_action :set_meal, only: [:new, :create]
   before_action :set_exchange, only: [:edit_rating, :update_rating]
 
   def new
     @exchanges = Exchange.new
   end
 
-  def show
-    @exchange = Exchange.new(meal_requested_id: @meal.id)
-  end
+  # no need for an exchanges show page
+  # def show
+  #   @exchange = Exchange.new(meal_requested_id: @meal.id)
+  # end
 
   def accept
     @exchange = Exchange.find(params[:id])
@@ -75,6 +76,7 @@ class ExchangesController < ApplicationController
   end
 
   def exchanges_dashboard
+    @exchanges = Exchange.where(requesting_user_id: current_user)
   end
 
   def exchange_requests

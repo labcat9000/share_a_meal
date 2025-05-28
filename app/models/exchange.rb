@@ -1,14 +1,14 @@
 class Exchange < ApplicationRecord
-  belongs_to :meal # the requested meal
+  # belongs_to :meal # the requested meal
   belongs_to :meal_requested, class_name: "Meal", foreign_key: "meal_requested_id"
-  belongs_to :meal_offered, class_name: "Meal", foreign_key: "meal_offered_id"
-  belongs_to :user
+  # belongs_to :meal_offered, class_name: "Meal", foreign_key: "meal_offered_id"
+  # belongs_to :user
 
-  validates :meal_offered, presence: true
-  validates :meal_requested, presence: true
+  validates :meal_requested_id, presence: true
+  validates :requesting_user_id, presence: true
+  validates :meal_offered_id, presence: true
   validates :offering_user_rating, numericality: { only_integer: true, greater_than_or_equal_to: 1, less_than_or_equal_to: 5 }, allow_nil: true
   validates :requesting_user_rating, numericality: { only_integer: true, greater_than_or_equal_to: 1, less_than_or_equal_to: 5 }, allow_nil: true
-
 
 #   validate :no_overlapping_exchanges
 #   validate :only_one_exchange_per_user_meal

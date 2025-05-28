@@ -97,6 +97,7 @@ class MealsController < ApplicationController
     @pending_exchanges = Exchange.joins(:meal).where(meals: { user_id: current_user.id }, status: "pending")
     @my_offers = current_user.exchanges.includes(:meal)
   end
+
   def destroy
     set_meal
     if authorize @meal
