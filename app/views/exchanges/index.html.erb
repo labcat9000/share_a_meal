@@ -1,11 +1,18 @@
 <h1>Exchanges Pending</h1>
+
 <% @meal.exchanges.each do |exchange| %>
   <p>
     <strong>Requested by:</strong>
     <%= link_to exchange.user.name, user_path(exchange.my_exchange) %>
   </p>
+
   <p>
     <strong>Offered Meal:</strong>
     <%= link_to exchange.your_meals.name, meal_path(exchange.your_meals) %>
   </p>
+
+  <p>
+    <%= link_to "Rate", edit_rating_exchange_path(exchange, user: "offering") %>
+  </p>
+   <% end %>
 <% end %>

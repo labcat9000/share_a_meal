@@ -11,6 +11,7 @@
       <h3 class="meal-title"><%= meal.name %></h3>
       <p class="meal-description"><%= truncate(meal.description, length: 80) %></p>
       <p class="meal-author">Cooked by: <strong><%= "#{meal.user.first_name} #{meal.user.last_name}" if meal.user %></strong></p>
+      <p class="text-muted">Posted on: <%= meal.posted_on.strftime("%B %d, %Y") if meal.posted_on %></p>
       <div class="meal-actions">
         <%= link_to edit_meal_path(meal), title: "Edit" do %>
           <i class="fa fa-edit"></i>

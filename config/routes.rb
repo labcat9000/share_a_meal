@@ -15,6 +15,8 @@ Rails.application.routes.draw do
     member do
       patch :accept
       patch :decline
+      get :edit_rating
+      patch :update_rating
     end
   end
 

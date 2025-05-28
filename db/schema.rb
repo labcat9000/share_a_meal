@@ -11,6 +11,7 @@
 # It's strongly recommended that you check this file into your version control system.
 
 ActiveRecord::Schema[7.1].define(version: 2025_05_28_000820) do
+
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -49,11 +50,14 @@ ActiveRecord::Schema[7.1].define(version: 2025_05_28_000820) do
     t.boolean "seen_status", default: true
     t.bigint "meal_offered_id"
     t.bigint "meal_requested_id"
-    t.string "offering_user_rating"
-    t.string "requesting_user_rating"
+    t.bigint "requesting_user_id"
+    t.bigint "your_meal_id", null: false
     t.boolean "accepted", default: false
     t.boolean "seen", default: false
-    t.bigint "requesting_user_id"
+    t.integer "offering_user_rating"
+    t.integer "requesting_user_rating"
+    t.text "offering_user_comment"
+    t.text "requesting_user_comment"
     t.index ["meal_offered_id"], name: "index_exchanges_on_meal_offered_id"
     t.index ["meal_requested_id"], name: "index_exchanges_on_meal_requested_id"
     t.index ["requesting_user_id"], name: "index_exchanges_on_requesting_user_id"
@@ -71,6 +75,7 @@ ActiveRecord::Schema[7.1].define(version: 2025_05_28_000820) do
     t.float "latitude"
     t.float "longitude"
     t.string "address"
+    t.date "posted_on"
     t.index ["user_id"], name: "index_meals_on_user_id"
   end
 

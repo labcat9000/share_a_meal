@@ -8,6 +8,10 @@ class Meal < ApplicationRecord
     'Dessert'
   ].freeze
 
+  has_many :offered_exchanges, class_name: "Exchange", foreign_key: "offering_user_id"
+  has_many :requested_exchanges, class_name: "Exchange", foreign_key: "requesting_user_id"
+  has_many :meal_ratings, through: :meals, source: :ratings
+
   belongs_to :user, optional: true
   has_many :exchanges
 
@@ -24,11 +28,30 @@ class Meal < ApplicationRecord
     where.not(id: Exchange.select(:meal_offered_id))
   }
 
-  def average_rating
-    ratings.average(:value)&.round(1) || "No ratings yet"
+  before_validation :set_default_posted_on
+
+  def average_combined_rating
+    # Get meal ratings
+    meal_ratings_values = meal_ratings.pluck(:value).compact
+
+    # Get exchange ratings
+    exchange_ratings = offered_exchanges.where.not(offering_user_rating: nil).pluck(:offering_user_rating) +
+                       requested_exchanges.where.not(requesting_user_rating: nil).pluck(:requesting_user_rating)
+
+    all_ratings = meal_ratings_values + exchange_ratings
+
+    return "No ratings yet" if all_ratings.empty?
+
+    (all_ratings.sum.to_f / all_ratings.size).round(2)
   end
 
   def self.search(query)
     where("name ILIKE ? OR description ILIKE ?", "%#{query}%", "%#{query}%")
+  end
+
+  private
+
+  def set_default_posted_on
+    self.posted_on ||= Date.today
   end
 end

@@ -1,6 +1,7 @@
 class ExchangesController < ApplicationController
   before_action :authenticate_user!
   before_action :set_meal, only: [:new, :create]
+  before_action :set_exchange, only: [:edit_rating, :update_rating]
 
   def new
     @exchanges = Exchange.new
@@ -81,11 +82,31 @@ class ExchangesController < ApplicationController
   def exchange_requests
   end
 
+  def edit_rating
+    @rating_user = params[:user] # expecting 'offering' or 'requesting'
+  end
+
+  def update_rating
+    @rating_user = params[:user] # "offering" or "requesting"
+    rating_params = params.require(:exchange).permit(:rating, :comment)
+
+    if %w[offering requesting].include?(@rating_user)
+      @exchange.update(
+        "#{@rating_user}_user_rating": rating_params[:rating],
+        "#{@rating_user}_user_comment": rating_params[:comment]
+      )
+      redirect_to @exchange, notice: "Thank you for your rating!"
+    else
+      redirect_to @exchange, alert: "Invalid user type for rating"
+    end
+  end
+
   private
 
   def set_meal
     @meal = Meal.find(params[:meal_id])
   end
+
 
   def exchange_params
     params.require(:exchange).permit(:meal_offered_id, :meal_requested_id)
