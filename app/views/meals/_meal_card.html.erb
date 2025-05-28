@@ -1,8 +1,8 @@
 <div class="meal-card">
   <div class="meal-card-inner">
     <div class="meal-card-image">
-      <% if meal.photo.attached? %>
-        <%= cl_image_tag meal.photo.key, class: "meal-image" %>
+      <% if meal.photos.attached? && meal.photos.first.present? %>
+        <%= cl_image_tag meal.photos.first.key, class: "meal-image" %>
       <% else %>
         <%= image_tag "meal-default.png.jpeg", class: "meal-image" %>
       <% end %>

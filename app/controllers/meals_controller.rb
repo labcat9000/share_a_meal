@@ -16,7 +16,6 @@ class MealsController < ApplicationController
       end
     end
 
-
     if params[:category].present?
       @meals_by_name = @meals_by_name.where(category: params[:category])
       @meals_by_ingredients = @meals_by_ingredients.where(category: params[:category]) if @meals_by_ingredients.any?
@@ -49,12 +48,7 @@ class MealsController < ApplicationController
           path: Rails.application.routes.url_helpers.meal_path(meal)
         }
       end
-
-    puts "MARKERS DEBUG:"
-    puts @markers.inspect
   end
-
-
 
   def show
     @meal = Meal.find(params[:id])
@@ -69,6 +63,8 @@ class MealsController < ApplicationController
 
   def create
     @meal = Meal.new(meal_params)
+    authorize @meal
+
     if @meal.save
       redirect_to meals_path, notice: 'Meal was successfully created.'
     else
@@ -81,22 +77,30 @@ class MealsController < ApplicationController
     authorize @meal
   end
 
-
   def update
     @meal = current_user.meals.find(params[:id])
     authorize @meal
-    if @meal.update(meal_params)
-      redirect_to meals_path, notice: 'Meal was successfully updated.'
+
+    if meal_params[:photos]
+      meal_params[:photos].each do |photo|
+        @meal.photos.attach(photo)
+      end
+    end
+
+    if @meal.update(meal_params.except(:photos))
+      redirect_to @meal, notice: 'Meal updated with photos.'
     else
       render :edit, status: :unprocessable_entity
     end
   end
+
 
   def my_meals
     @meals = current_user.meals
     @pending_exchanges = Exchange.joins(:meal).where(meals: { user_id: current_user.id }, status: "pending")
     @my_offers = current_user.exchanges.includes(:meal)
   end
+
   def destroy
     set_meal
     if authorize @meal
@@ -105,6 +109,8 @@ class MealsController < ApplicationController
     end
   end
 
+
+
   private
 
   def set_meal
@@ -112,11 +118,18 @@ class MealsController < ApplicationController
   end
 
   def meal_params
-    permitted = params.require(:meal).permit(:name, :description, :ingredients, :category, :cuisine, :photo, :address)
+    permitted = params.require(:meal).permit(
+      :name,
+      :description,
+      :ingredients,
+      :category,
+      :cuisine,
+      :address,
+      photos: []
+    )
     permitted[:cuisine] = permitted[:cuisine].to_s.titleize if permitted[:cuisine].present?
     permitted
   end
-
 
   def authorize_owner!(record)
     redirect_to root_path, alert: "Not authorized" unless record.user == current_user

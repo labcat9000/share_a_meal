@@ -21,18 +21,10 @@
 
           <%= f.input :ingredients, as: :text, label: false, placeholder: "Ingredients (comma separated)", input_html: { class: "form-control rounded-pill px-3 py-2 bg-light border-0" } %>
 
-          <%= f.input :category, label: false,
-                collection: Meal::CATEGORY_OPTIONS,
-                prompt: 'Select a category',
-                input_html: { class: "form-select rounded-pill px-3 py-2 bg-light border-0" } %>
+          <%= f.input :category, label: false, collection: Meal::CATEGORY_OPTIONS, prompt: 'Select a category', input_html: { class: "form-select rounded-pill px-3 py-2 bg-light border-0" } %>
 
-          <!-- Datalist-based searchable cuisine input -->
           <div>
-            <%= f.input_field :cuisine,
-                list: "cuisine-options",
-                placeholder: "e.g. Chinese, French, Korean",
-                class: "form-control rounded-pill px-3 py-2 bg-light border-0" %>
-
+            <%= f.input_field :cuisine, list: "cuisine-options", placeholder: "e.g. Chinese, French, Korean", class: "form-control rounded-pill px-3 py-2 bg-light border-0" %>
             <datalist id="cuisine-options">
               <% ['Italian', 'Chinese', 'Mexican', 'Indian', 'Greek', 'Thai', 'American'].each do |cuisine| %>
                 <option value="<%= cuisine %>">
@@ -40,13 +32,39 @@
             </datalist>
           </div>
 
-          <%= f.input :address, label: false,
-                placeholder: "Enter a location or full address",
-                input_html: { class: "form-control rounded-pill px-3 py-2 bg-light border-0" } %>
+          <%= f.input :address, label: false, placeholder: "Enter a location or full address", input_html: { class: "form-control rounded-pill px-3 py-2 bg-light border-0" } %>
 
-          <%= f.input :photo, as: :file,
-                label: "Upload a Photo (optional)",
-                input_html: { class: "form-control" } %>
+          <% if meal.photos.attached? %>
+            <div class="mb-2">
+              <label class="form-label">Already Attached Photos</label>
+              <ul class="list-unstyled">
+                <% meal.photos.each do |photo| %>
+                  <li class="d-flex justify-content-between align-items-center mb-2">
+                    <%= image_tag photo.variant(resize_to_limit: [80, 80]), class: "me-2 rounded", style: "border: 1px solid #ddd;" %>
+                    <span><%= photo.filename.to_s %></span>
+                  </li>
+                <% end %>
+              </ul>
+            </div>
+          <% end %>
+
+          <div data-controller="file-list">
+            <%= f.input :photos,
+              as: :file,
+              label: "Upload Photos (you can select more than one)",
+              input_html: {
+                class: "form-control",
+                multiple: true,
+                data: {
+                  action: "change->file-list#preview",
+                  file_list_target: "input"
+                }
+              } %>
+
+            <!-- Just the names of newly selected photos + remove buttons -->
+            <ul data-file-list-target="list" class="list-unstyled mt-2"></ul>
+          </div>
+
 
           <div class="text-center mt-4">
             <%= f.button :submit, meal.persisted? ? "Update Meal" : "Create Meal", class: "btn btn-success rounded-pill px-5 py-2" %>
@@ -54,10 +72,9 @@
         </div>
       <% end %>
 
-    </div>
-
-    <div class="text-center mt-4">
-      <%= link_to "Back", meals_path, class: "text-muted" %>
+      <div class="text-center mt-4">
+        <%= link_to "Back", meals_path, class: "text-muted" %>
+      </div>
     </div>
   </div>
 </div>

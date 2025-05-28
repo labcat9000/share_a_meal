@@ -1,29 +1,36 @@
 <div style="display: flex; justify-content: center; padding: 2rem 1rem;">
   <div style="max-width: 500px; width: 100%; background: #fff; border-radius: 24px; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08); padding: 1.5rem;">
 
-    <!-- Meal Title (at the very top) -->
     <h2 style="font-size: 1.5rem; font-weight: 700; color: #2e3e1d; margin-bottom: 1rem; text-align: left;">
       <%= @meal.name %>
     </h2>
 
-
-    <!-- Meal Image -->
-    <div style="width: 100%; border-radius: 20px; overflow: hidden; margin-bottom: 1rem;">
-      <% if @meal.photo.attached? %>
-        <%= cl_image_tag @meal.photo.key, class: "img-fluid", style: "width: 100%; height: auto; object-fit: cover;" %>
-      <% else %>
+    <% if @meal.photos.attached? && @meal.photos.count > 0 %>
+      <div data-controller="carousel" class="carousel-container" style="position: relative; overflow: hidden; border-radius: 20px; margin-bottom: 0.5rem;">
+        <div data-carousel-target="track" class="carousel-track"
+             style="display: flex; width: 100%; transition: transform 0.3s ease;">
+          <% @meal.photos.each do |photo| %>
+            <div style="flex-shrink: 0; width: 100%;">
+              <%= cl_image_tag photo.key, style: "width: 100%; height: 300px; object-fit: cover;" %>
+            </div>
+          <% end %>
+        </div>
+        <div class="carousel-dots" style="display: flex; justify-content: center; gap: 6px; margin: 0.75rem 0 1rem;">
+          <% @meal.photos.each_with_index do |_, index| %>
+            <span class="carousel-dot"
+                  data-carousel-target="dot"
+                  style="width: 8px; height: 8px; border-radius: 50%; background-color: <%= index == 0 ? '#000' : '#bbb' %>;">
+            </span>
+          <% end %>
+        </div>
+      </div>
+    <% else %>
+      <div style="width: 100%; border-radius: 20px; overflow: hidden; margin-bottom: 1rem;">
         <%= image_tag "meal-default.png.jpeg", class: "img-fluid", style: "width: 100%; height: auto; object-fit: cover;" %>
-      <% end %>
-    </div>
+      </div>
+    <% end %>
 
-    <!-- Carousel Dots -->
-    <div class="dots-nav" style="display: flex; justify-content: center; gap: 6px; margin-bottom: 1rem;">
-      <span class="dot active" style="width: 8px; height: 8px; border-radius: 50%; background-color: #222;"></span>
-      <span class="dot" style="width: 8px; height: 8px; border-radius: 50%; background-color: #bbb;"></span>
-      <span class="dot" style="width: 8px; height: 8px; border-radius: 50%; background-color: #bbb;"></span>
-    </div>
 
-    <!-- Request Button -->
     <div style="text-align: center; margin-bottom: 0.5rem;">
       <%= link_to new_meal_exchange_path(@meal),
           class: "btn border rounded-pill",
@@ -33,30 +40,35 @@
     </div>
 
 
-    <!-- Cooked by (moved directly under the button) -->
     <% if @meal.user.present? %>
-      <p style="text-align: center; font-size: 0.95rem; margin-bottom: 1.25rem;">
-        Cooked by:
-        <strong>
-          <%= link_to "#{@meal.user.first_name} #{@meal.user.last_name}", view_user_path(@meal.user), style: "font-weight: bold; color: #2e3e1d; text-decoration: none;" %>
-        </strong>
-      </p>
+      <%= link_to view_user_path(@meal.user), style: "text-decoration: none; color: inherit;" do %>
+        <div style="display: flex; align-items: center; justify-content: center; gap: 10px; font-size: 0.95rem; margin-bottom: 1.25rem;">
+          <div style="width: 40px; height: 40px; border-radius: 50%; overflow: hidden;">
+            <% if @meal.user.profile_photo.attached? %>
+              <%= image_tag @meal.user.profile_photo, class: "w-100 h-100 object-fit-cover" %>
+            <% else %>
+              <%= image_tag "default-avatar.png", class: "w-100 h-100 object-fit-cover" %>
+            <% end %>
+          </div>
+          <span>
+            Cooked by:
+            <strong style="color: #2e3e1d;">
+              <%= "#{@meal.user.first_name} #{@meal.user.last_name}" %>
+            </strong>
+          </span>
+        </div>
+      <% end %>
     <% end %>
 
-    <!-- Meal Info Section -->
+    <!-- Meal Info -->
     <div style="padding: 0 0.5rem; font-size: 0.95rem; color: #333;">
-      <!-- Description -->
       <p style="margin-bottom: 1rem;"><%= simple_format(@meal.description) %></p>
-
-      <!-- Category & Cuisine -->
       <% if @meal.category.present? %>
         <p style="margin-bottom: 0.25rem;"><strong>Category:</strong> <%= @meal.category %></p>
       <% end %>
       <% if @meal.cuisine.present? %>
         <p style="margin-bottom: 0.75rem;"><strong>Cuisine:</strong> <%= @meal.cuisine %></p>
       <% end %>
-
-      <!-- Ingredients -->
       <% if @meal.ingredients.present? %>
         <p style="margin-bottom: 1.5rem;"><strong>Ingredients:</strong> <%= @meal.ingredients %></p>
       <% end %>
@@ -80,5 +92,6 @@
     <div class="back-link" style="text-align: center; margin-top: 1.5rem;">
       <%= link_to "← Back to Meals", meals_path, class: "back-to-meals", style: "text-decoration: none; color: #333; font-size: 0.95rem;" %>
     </div>
+
   </div>
 </div>
