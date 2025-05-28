@@ -1,0 +1,17 @@
+<h2>Rate Your Exchange</h2>
+
+<%= form_with(model: @exchange, url: update_rating_exchange_path(@exchange, user: @rating_user), local: true) do |f| %>
+  <div class="field">
+    <%= f.label :rating, "Rating (1 to 5)" %><br>
+    <%= f.number_field :rating, in: 1..5, step: 1, value: (@rating_user == 'offering' ? @exchange.offering_user_rating : @exchange.requesting_user_rating) %>
+  </div>
+
+  <div class="field">
+    <%= f.label :comment %><br>
+    <%= f.text_area :comment, rows: 4, value: (@rating_user == 'offering' ? @exchange.offering_user_comment : @exchange.requesting_user_comment) %>
+  </div>
+
+  <div class="actions">
+    <%= f.submit "Submit Rating" %>
+  </div>
+<% end %>
