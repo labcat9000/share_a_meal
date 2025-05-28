@@ -4,7 +4,7 @@ class ExchangesController < ApplicationController
   before_action :set_exchange, only: [:edit_rating, :update_rating]
 
   def new
-    @exchanges = Exchange.new
+    @exchange = Exchange.new
   end
 
   # no need for an exchanges show page
@@ -49,8 +49,8 @@ class ExchangesController < ApplicationController
 
   def create
     @exchange = Exchange.new(exchange_params)
-    @exchange.meal = @meal
-    @exchange.user = current_user
+    @exchange.meal_requested = @meal
+    @exchange.requesting_user_id = current_user.id
 
     if @exchange.save
       redirect_to meal_path(@exchange.meal_requested), notice: "Share requested!"
@@ -76,7 +76,11 @@ class ExchangesController < ApplicationController
   end
 
   def exchanges_dashboard
-    @exchanges = Exchange.where(requesting_user_id: current_user)
+    @current_exchanges = Exchange.where(requesting_user_id: current_user.id, status: ["Accepted", "Pending"])
+    @past_exchanges = Exchange.where(requesting_user_id: current_user.id, status: ["Declined", "Complete"])
+    # @exchange_requests = Exchange.where(meal_offered.user = current_user.id)
+    @exchange_requests = Exchange.joins(:meal_offered).where(meals: { user_id: current_user.id })
+    @my_meals = Meal.where(user_id: current_user.id)
   end
 
   def exchange_requests

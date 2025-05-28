@@ -2,11 +2,13 @@
 <div class="d-flex justify-content-around">
   <div>
     <%= link_to "Current Shares", user_exchanges_path(view: 'current') %>
-    <%= @exchanges.length %>
-    <% raise %>
+    <br>
+    <%= @current_exchanges.length %>
   </div>
   <div>
     <%= link_to "Past Shares", user_exchanges_path(view: 'past') %>
+    <br>
+    <%= @past_exchanges.length %>
   </div>
 </div>
 
@@ -14,8 +16,13 @@
 <div class="d-flex justify-content-around">
   <div>
     <%= link_to "Share Requests", exchange_requests_path %>
+    <br>
+    <%= @exchange_requests.length %>
   </div>
   <div>
     <%= link_to "My Meals", user_meals_path %>
+    <br>
+    <%= @my_meals.length %>
   </div>
 </div>
+<% console %>
