@@ -2,6 +2,8 @@
 <div class="d-flex justify-content-around">
   <div>
     <%= link_to "Current Shares", user_exchanges_path(view: 'current') %>
+    <%= @exchanges.length %>
+    <% raise %>
   </div>
   <div>
     <%= link_to "Past Shares", user_exchanges_path(view: 'past') %>
