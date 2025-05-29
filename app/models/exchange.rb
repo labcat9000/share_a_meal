@@ -1,13 +1,8 @@
 class Exchange < ApplicationRecord
-  # Requested and offered meals
   belongs_to :meal_requested, class_name: "Meal", foreign_key: "meal_requested_id"
   belongs_to :meal_offered, class_name: "Meal", foreign_key: "meal_offered_id"
-
-  # User who is requesting the meal
   belongs_to :requesting_user, class_name: "User", foreign_key: "requesting_user_id"
 
-  # Optional: You can add this if you want to explicitly track the offering user
-  # belongs_to :offering_user, class_name: "User", foreign_key: "offering_user_id", optional: true
 
   validates :meal_requested_id, presence: true
   validates :meal_offered_id, presence: true
