@@ -1,5 +1,5 @@
 class MealsController < ApplicationController
-  before_action :set_meal, only: [:show, :edit, :update, :destroy]
+  before_action :set_meal, only: [:show, :edit, :update, :destroy, :remove_photo]
   before_action :authenticate_user!
 
   def index
@@ -30,7 +30,6 @@ class MealsController < ApplicationController
     if params[:radius].present? && params[:latitude].present? && params[:longitude].present?
       coords = [params[:latitude].to_f, params[:longitude].to_f]
       radius = params[:radius].to_f
-
       @meals_by_name = @meals_by_name.near(coords, radius)
       @meals_by_ingredients = @meals_by_ingredients.near(coords, radius) if @meals_by_ingredients.any?
     end
@@ -52,6 +51,7 @@ class MealsController < ApplicationController
 
   def show
     @meal = Meal.find(params[:id])
+    @meal.photos.reload
     authorize @meal
     @exchange = Exchange.new(meal_requested_id: @meal.id)
   end
@@ -73,41 +73,49 @@ class MealsController < ApplicationController
   end
 
   def edit
-    @meal = Meal.find(params[:id])
     authorize @meal
+    @meal.photos.reload
   end
 
   def update
-    @meal = current_user.meals.find(params[:id])
     authorize @meal
 
-    if meal_params[:photos]
-      meal_params[:photos].each do |photo|
+    if params[:meal][:remove_photo_ids].present?
+      params[:meal][:remove_photo_ids].each do |photo_id|
+        photo = @meal.photos.find_by(id: photo_id)
+        photo&.purge
+      end
+    end
+
+    if params[:meal][:photos].present?
+      params[:meal][:photos].each do |photo|
         @meal.photos.attach(photo)
       end
     end
 
-    if @meal.update(meal_params.except(:photos))
-      redirect_to @meal, notice: 'Meal updated with photos.'
+    if @meal.update(meal_params.except(:photos, :remove_photo_ids))
+      redirect_to @meal, notice: 'Meal updated successfully.'
     else
       render :edit, status: :unprocessable_entity
     end
   end
 
-
-  def my_meals
-    @meals = current_user.meals
-    @pending_exchanges = Exchange.joins(:meal).where(meals: { user_id: current_user.id }, status: "pending")
-    @my_offers = current_user.exchanges.includes(:meal)
-  end
-
   def destroy
-    set_meal
-    if authorize @meal
-      @meal.destroy
-      redirect_to meals_path, notice: 'Meal was successfully deleted.'
-    end
+    authorize @meal
+    @meal.destroy
+    redirect_to meals_path, notice: 'Meal was successfully deleted.'
   end
+
+
+  def remove_photo
+    @meal = Meal.find(params[:id])
+    photo = @meal.photos.find(params[:photo_id])
+    photo.purge
+    redirect_to edit_meal_path(@meal), notice: "Photo removed."
+  end
+
+
+
 
 
 
@@ -119,13 +127,8 @@ class MealsController < ApplicationController
 
   def meal_params
     permitted = params.require(:meal).permit(
-      :name,
-      :description,
-      :ingredients,
-      :category,
-      :cuisine,
-      :address,
-      photos: []
+      :name, :description, :ingredients, :category, :cuisine, :address, :posted_on,
+      photos: [], remove_photo_ids: [], photos_attachments_attributes: [:id, :_destroy]
     )
     permitted[:cuisine] = permitted[:cuisine].to_s.titleize if permitted[:cuisine].present?
     permitted

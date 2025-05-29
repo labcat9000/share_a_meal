@@ -28,7 +28,7 @@
             <% if meal.photos.attached? %>
               <%= cl_image_tag meal.photos.first.key, style: "width: 90px; height: 90px; object-fit: cover; border-radius: 12px;" %>
             <% else %>
-              <%= image_tag "meal-default.png.jpeg", style: "width: 90px; height: 90px; object-fit: cover; border-radius: 12px;" %>
+              <%= image_tag "meal-default.jpeg", style: "width: 90px; height: 90px; object-fit: cover; border-radius: 12px;" %>
             <% end %>
           </div>
           <div class="flex-grow-1">

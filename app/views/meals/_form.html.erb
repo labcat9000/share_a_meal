@@ -14,67 +14,84 @@
           </div>
         <% end %>
 
-        <div class="d-flex flex-column gap-3">
-          <%= f.input :name, label: false, placeholder: "Meal name", input_html: { class: "form-control rounded-pill px-3 py-2 bg-light border-0" } %>
-
-          <%= f.input :description, label: false, placeholder: "Description", input_html: { class: "form-control rounded-pill px-3 py-2 bg-light border-0" } %>
-
-          <%= f.input :ingredients, as: :text, label: false, placeholder: "Ingredients (comma separated)", input_html: { class: "form-control rounded-pill px-3 py-2 bg-light border-0" } %>
-
-          <%= f.input :category, label: false, collection: Meal::CATEGORY_OPTIONS, prompt: 'Select a category', input_html: { class: "form-select rounded-pill px-3 py-2 bg-light border-0" } %>
-
-          <div>
-            <%= f.input_field :cuisine, list: "cuisine-options", placeholder: "e.g. Chinese, French, Korean", class: "form-control rounded-pill px-3 py-2 bg-light border-0" %>
-            <datalist id="cuisine-options">
-              <% ['Italian', 'Chinese', 'Mexican', 'Indian', 'Greek', 'Thai', 'American'].each do |cuisine| %>
-                <option value="<%= cuisine %>">
-              <% end %>
-            </datalist>
+        <div class="d-flex flex-column gap-4">
+          <!-- 🥘 Meal Name -->
+          <div class="text-center">
+            <%= f.input :name, label: false, placeholder: "Meal Name", input_html: { class: "form-control fs-4 fw-bold text-center bg-light border-0 rounded-pill" } %>
           </div>
 
-          <%= f.input :address, label: false, placeholder: "Enter a location or full address", input_html: { class: "form-control rounded-pill px-3 py-2 bg-light border-0" } %>
+          <!-- 🖼️ Photos Area -->
+          <div class="mb-4">
+            <h6 class="fw-semibold mb-2">Attached Photos</h6>
 
-          <% if meal.photos.attached? %>
-            <div class="mb-2">
-              <label class="form-label">Already Attached Photos</label>
-              <ul class="list-unstyled">
+            <div class="d-flex gap-3 flex-wrap p-3 bg-light rounded-3 border"
+                 data-controller="file-list"
+                 data-file-list-target="list"
+                 style="min-height: 110px;">
+
+              <% if meal.photos.attached? %>
                 <% meal.photos.each do |photo| %>
-                  <li class="d-flex justify-content-between align-items-center mb-2">
-                    <%= image_tag photo.variant(resize_to_limit: [80, 80]), class: "me-2 rounded", style: "border: 1px solid #ddd;" %>
-                    <span><%= photo.filename.to_s %></span>
-                  </li>
+                  <div class="position-relative"
+                       style="width: 100px; height: 100px; border-radius: 8px; overflow: hidden; box-shadow: 0 0 4px rgba(0,0,0,0.1);">
+                    <%= cl_image_tag photo.key, style: "width: 100%; height: 100%; object-fit: cover;" %>
+                    <%= link_to "✕",
+                        remove_photo_meal_path(meal, photo_id: photo.id),
+                        method: :delete,
+                        data: { turbo: false, confirm: "Delete this photo?" },
+                        class: "btn btn-sm btn-danger d-flex align-items-center justify-content-center position-absolute top-0 end-0 rounded-circle",
+                        style: "width: 20px; height: 20px; font-size: 12px; padding: 0; line-height: 1;" %>
+                  </div>
                 <% end %>
-              </ul>
-            </div>
-          <% end %>
+              <% end %>
 
-          <div data-controller="file-list">
+              <!-- ➕ Plus Sign -->
+              <label for="add-photo-input"
+                     class="d-flex align-items-center justify-content-center bg-white border border-secondary-subtle"
+                     style="cursor: pointer; width: 100px; height: 100px; border-radius: 8px; font-size: 32px; color: #999; box-shadow: 0 0 4px rgba(0,0,0,0.1);">
+                +
+              </label>
+            </div>
+
+            <!-- Hidden Upload Input -->
             <%= f.input :photos,
               as: :file,
-              label: "Upload Photos (you can select more than one)",
+              label: false,
               input_html: {
-                class: "form-control",
+                id: "add-photo-input",
+                class: "form-control d-none",
                 multiple: true,
                 data: {
                   action: "change->file-list#preview",
                   file_list_target: "input"
                 }
               } %>
-
-            <!-- Just the names of newly selected photos + remove buttons -->
-            <ul data-file-list-target="list" class="list-unstyled mt-2"></ul>
           </div>
 
+          <!-- 📝 Description -->
+          <%= f.input :description, label: "Description", input_html: { class: "form-control bg-light rounded-4 p-3", rows: 3 } %>
 
-          <%= f.input :posted_on,
-                as: :date,
-                label: false,
-                input_html: {
-                  class: "form-control rounded-pill px-3 py-2 bg-light border-0",
-                  value: f.object.posted_on || Date.today
-                } %>
+          <!-- 🧂 Ingredients -->
+          <%= f.input :ingredients, label: "Ingredients", input_html: { class: "form-control bg-light rounded-4 p-3" } %>
 
-          <div class="text-center mt-4">
+          <!-- 🍽️ Category -->
+          <%= f.input :category, label: "Category", collection: Meal::CATEGORY_OPTIONS, prompt: "Select Category", input_html: { class: "form-select bg-light rounded-4 p-2" } %>
+
+          <!-- 🌍 Cuisine -->
+          <%= f.input_field :cuisine, list: "cuisine-options", placeholder: "e.g. Chinese, French", class: "form-control bg-light rounded-4 p-3" %>
+          <datalist id="cuisine-options">
+            <% ['Italian', 'Chinese', 'Mexican', 'Indian', 'Greek', 'Thai', 'American'].each do |cuisine| %>
+              <option value="<%= cuisine %>">
+            <% end %>
+          </datalist>
+
+          <!-- 📍 Address -->
+          <%= f.input :address, label: "Location", input_html: { class: "form-control bg-light rounded-4 p-3" } %>
+
+          <!-- 🗓️ Date -->
+          <%= f.input :posted_on, as: :date, label: "Date", input_html: { class: "form-control bg-light rounded-pill p-2", value: f.object.posted_on || Date.today } %>
+
+          <!-- ✅ Submit -->
+          <div class="text-center">
             <%= f.button :submit, meal.persisted? ? "Update Meal" : "Create Meal", class: "btn btn-success rounded-pill px-5 py-2" %>
           </div>
         </div>

@@ -56,6 +56,9 @@ gem 'geocoder'
 gem "cloudinary"
 gem "activestorage-cloudinary-service"
 gem 'faker'
+gem 'image_processing'
+gem 'mini_magick'
+
 
 group :development, :test do
   gem "dotenv-rails"
