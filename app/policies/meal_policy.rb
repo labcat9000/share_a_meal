@@ -24,6 +24,11 @@ class MealPolicy < ApplicationPolicy
     user_is_owner?
   end
 
+  def remove_photo?
+    user_is_owner?
+  end
+
+
   private
 
   def user_is_owner?

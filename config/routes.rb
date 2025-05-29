@@ -9,6 +9,10 @@ Rails.application.routes.draw do
   # Can be used by load balancers and uptime monitors to verify that the app is live.
   resources :meals do
     resources :exchanges, only: [:index, :new, :create]
+
+    member do
+      delete 'remove_photo/:photo_id', to: 'meals#remove_photo', as: :remove_photo
+    end
   end
 
   resources :exchanges, only: [] do

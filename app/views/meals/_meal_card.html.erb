@@ -4,7 +4,7 @@
       <% if meal.photos.attached? && meal.photos.first.present? %>
         <%= cl_image_tag meal.photos.first.key, class: "meal-image" %>
       <% else %>
-        <%= image_tag "meal-default.png.jpeg", class: "meal-image" %>
+        <%= image_tag "meal-default.jpeg", class: "meal-image" %>
       <% end %>
     </div>
     <div class="meal-card-content">
@@ -12,15 +12,6 @@
       <p class="meal-description"><%= truncate(meal.description, length: 80) %></p>
       <p class="meal-author">Cooked by: <strong><%= "#{meal.user.first_name} #{meal.user.last_name}" if meal.user %></strong></p>
       <p class="text-muted">Posted on: <%= meal.posted_on.strftime("%B %d, %Y") if meal.posted_on %></p>
-      <div class="meal-actions">
-        <%= link_to edit_meal_path(meal), title: "Edit" do %>
-          <i class="fa fa-edit"></i>
-        <% end %>
-        |
-        <%= link_to meal_path(meal), data: { turbo_confirm: 'Are you sure?', turbo_method: :delete}, title: "Delete" do %>
-          <i class="fa fa-trash"></i>
-        <% end %>
-      </div>
     </div>
   </div>
 </div>

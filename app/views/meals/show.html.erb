@@ -1,62 +1,92 @@
 <div style="display: flex; justify-content: center; padding: 2rem 1rem;">
   <div style="max-width: 500px; width: 100%; background: #fff; border-radius: 24px; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08); padding: 1.5rem;">
 
+    <!-- Meal Title -->
     <h2 style="font-size: 1.5rem; font-weight: 700; color: #2e3e1d; margin-bottom: 1rem; text-align: left;">
       <%= @meal.name %>
     </h2>
 
-    <% if @meal.photos.attached? && @meal.photos.count > 0 %>
+    <!-- Carousel or Default Image -->
+    <% if @meal.photos.attached? %>
       <div data-controller="carousel" class="carousel-container" style="position: relative; overflow: hidden; border-radius: 20px; margin-bottom: 0.5rem;">
-        <div data-carousel-target="track" class="carousel-track"
-             style="display: flex; width: 100%; transition: transform 0.3s ease;">
+        <div data-carousel-target="track" class="carousel-track" style="display: flex; width: 100%; transition: transform 0.3s ease;">
           <% @meal.photos.each do |photo| %>
             <div style="flex-shrink: 0; width: 100%;">
-              <%= cl_image_tag photo.key, style: "width: 100%; height: 300px; object-fit: cover;" %>
+              <%= cl_image_tag photo.key, version: photo.created_at.to_i, style: "width: 100%; height: 300px; object-fit: cover;" %>
             </div>
           <% end %>
         </div>
         <div class="carousel-dots" style="display: flex; justify-content: center; gap: 6px; margin: 0.75rem 0 1rem;">
           <% @meal.photos.each_with_index do |_, index| %>
-            <span class="carousel-dot"
-                  data-carousel-target="dot"
-                  style="width: 8px; height: 8px; border-radius: 50%; background-color: <%= index == 0 ? '#000' : '#bbb' %>;">
+            <span class="carousel-dot" data-carousel-target="dot" style="width: 8px; height: 8px; border-radius: 50%; background-color: <%= index == 0 ? '#000' : '#bbb' %>;">
             </span>
           <% end %>
         </div>
       </div>
     <% else %>
       <div style="width: 100%; border-radius: 20px; overflow: hidden; margin-bottom: 1rem;">
-        <%= image_tag "meal-default.png.jpeg", class: "img-fluid", style: "width: 100%; height: auto; object-fit: cover;" %>
+        <%= image_tag asset_path("meal-default.jpeg"), class: "img-fluid" %>
       </div>
     <% end %>
 
 
-    <div style="text-align: center; margin-bottom: 0.5rem;">
-      <%= link_to new_meal_exchange_path(@meal),
-          class: "btn border rounded-pill",
-          style: "display: inline-block; font-weight: 500; font-size: 0.95rem; padding: 0.5rem 2.5rem;" do %>
-        Request Share
-      <% end %>
-    </div>
+    <% if current_user == @meal.user %>
+      <!-- OWNER VIEW -->
+      <div style="display: flex; justify-content: center; gap: 10px; margin-bottom: 1.25rem;">
+        <%= link_to edit_meal_path(@meal), class: "btn border rounded-pill", style: "font-weight: 500; font-size: 0.95rem; padding: 0.5rem 1.5rem; background-color: #d4eac7;" do %>
+          <i class="fa fa-pen"></i> Edit
+        <% end %>
 
+        <%= link_to meal_path(@meal), method: :delete, data: { confirm: "Are you sure you want to delete this meal?" }, class: "btn border rounded-pill", style: "font-weight: 500; font-size: 0.95rem; padding: 0.5rem 1.5rem; background-color: #eac7c7;" do %>
+          <i class="fa fa-trash"></i> Delete
+        <% end %>
+      </div>
 
-    <% if @meal.user.present? %>
-      <%= link_to view_user_path(@meal.user), style: "text-decoration: none; color: inherit;" do %>
-        <div style="display: flex; align-items: center; justify-content: center; gap: 10px; font-size: 0.95rem; margin-bottom: 1.25rem;">
-          <div style="width: 40px; height: 40px; border-radius: 50%; overflow: hidden;">
-            <% if @meal.user.profile_photo.attached? %>
-              <%= image_tag @meal.user.profile_photo, class: "w-100 h-100 object-fit-cover" %>
-            <% else %>
-              <%= image_tag "default-avatar.png", class: "w-100 h-100 object-fit-cover" %>
-            <% end %>
+    <% else %>
+      <!-- NON-OWNER VIEW -->
+
+      <!-- Request Button -->
+      <div style="text-align: center; margin-bottom: 0.5rem;">
+        <%= link_to "Request Share", new_meal_exchange_path(@meal),
+          style: "
+            display: inline-block;
+            font-weight: 500;
+            font-size: 0.95rem;
+            padding: 0.5rem 2.5rem;
+            border: 2px solid #2e3e1d;
+            border-radius: 999px;
+            background-color: #f0f9eb;
+            color: #2e3e1d;
+            text-align: center;
+            text-decoration: none;
+            transition: all 0.3s ease;
+          ",
+          onmouseover: "this.style.backgroundColor='#cfeac0'; this.style.color='#1c2b12'; this.style.transform='scale(1.03)';",
+          onmouseout: "this.style.backgroundColor='#f0f9eb'; this.style.color='#2e3e1d'; this.style.transform='scale(1)';",
+          onmousedown: "this.style.backgroundColor='#b5d9a8'; this.style.transform='scale(0.97)';",
+          onmouseup: "this.style.backgroundColor='#cfeac0'; this.style.transform='scale(1.03)';"
+        %>
+      </div>
+
+      <!-- Cooked by -->
+      <% if @meal.user.present? %>
+        <%= link_to view_user_path(@meal.user), style: "text-decoration: none; color: inherit;" do %>
+          <div style="display: flex; align-items: center; justify-content: center; gap: 10px; font-size: 0.95rem; margin-bottom: 1.25rem;">
+            <div style="width: 40px; height: 40px; border-radius: 50%; overflow: hidden;">
+              <% if @meal.user.profile_photo.attached? %>
+                <%= image_tag @meal.user.profile_photo, class: "w-100 h-100 object-fit-cover" %>
+              <% else %>
+                <%= image_tag "default-avatar.png", class: "w-100 h-100 object-fit-cover" %>
+              <% end %>
+            </div>
+            <span>
+              Cooked by:
+              <strong style="color: #2e3e1d;">
+                <%= "#{@meal.user.first_name} #{@meal.user.last_name}" %>
+              </strong>
+            </span>
           </div>
-          <span>
-            Cooked by:
-            <strong style="color: #2e3e1d;">
-              <%= "#{@meal.user.first_name} #{@meal.user.last_name}" %>
-            </strong>
-          </span>
-        </div>
+        <% end %>
       <% end %>
     <% end %>
 
