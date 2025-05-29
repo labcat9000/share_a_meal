@@ -20,7 +20,10 @@
     <!-- DEBUG: controller_name=<%= controller_name %> | action_name=<%= action_name %> -->
     <% if (controller_name == "meals" && action_name == "index") || (controller_name == "pages" && action_name == "home") %>
       <%= render "shared/navbar" %>
+    <% elsif (controller_name == "users" && action_name == "show") || (controller_name == "meals" && action_name == "my_meals") || (controller_name == "exchanges" && action_name == "exchanges_dashboard") %>
+      <%= render "shared/internal_navbar" %>
     <% end %>
+
 
     <%= render "shared/flashes" %>
     <%= yield %>
