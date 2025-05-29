@@ -1,10 +1,50 @@
-<% if params[:view] == "current" %>
-  <%#= @exchanges.where(status: "accepted") %>
-  <% @exchanges.each do |exchange| %>
+<div data-controller="exchanges-toggle"
+  data-exchanges-toggle-current-url-value="<%= url_for(params.permit!.merge(view: 'current')) %>"
+  data-exchanges-toggle-past-url-value="<%= url_for(params.permit!.merge(view: 'past')) %>">
+  <button data-action="click->exchanges-toggle#toggle"
+    data-view="current"
+    class="<%= 'active' if params[:view] == 'current' %>">
+    Current Shares
+  </button>
+  <button data-action="click->exchanges-toggle#toggle"
+    data-view="past"
+    class="<%= 'active' if params[:view] == 'past' %>">
+    Past Shares
+  </button>
+</div>
 
+<% if params[:view] == "current" %>
+  <h2>Current Shares</h2>
+  <% @current_exchanges.each do |exchange| %>
+    <div class="card h-100 shadow-sm border-1 rounded-4">
+      <div>
+        <h3><%= exchange.requesting_user.first_name %></h3>
+        <%= exchange.status %>
+      </div>
+      <div>
+        They get: <%=exchange.meal_offered.name %>
+        <br>
+        You get: <%= exchange.meal_requested.name %>
+      <div>
+    </div>
   <% end %>
 <% end %>
 
 <% if params[:view] == "past" %>
-  <%= @exchanges.where(status: "complete") %>
+  <h2>Past Shares</h2>
+  <% @past_exchanges.each do |exchange| %>
+    <div class="card h-100 shadow-sm border-1 rounded-4">
+      <div>
+        <h2><%= exchange.requesting_user.first_name %></h2>
+        <%= exchange.status %>
+      </div>
+      <div>
+        They got: <%=exchange.meal_offered.name %>
+        <br>
+        You got: <%= exchange.meal_requested.name %>
+        <br>
+        Date exchanged: <%= exchange.updated_at.strftime("%Y-%m-%d") %>
+      <div>
+    </div>
+  <% end %>
 <% end %>
