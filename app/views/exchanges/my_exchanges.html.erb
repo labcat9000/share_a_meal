@@ -3,12 +3,12 @@
   data-exchanges-toggle-past-url-value="<%= url_for(params.permit!.merge(view: 'past')) %>">
   <button data-action="click->exchanges-toggle#toggle"
     data-view="current"
-    class="<%= 'active' if params[:view] == 'current' %>">
+    class="toggle-button <%= 'active' if params[:view] == 'current' %>">
     Current Shares
   </button>
   <button data-action="click->exchanges-toggle#toggle"
     data-view="past"
-    class="<%= 'active' if params[:view] == 'past' %>">
+    class="toggle-button <%= 'active' if params[:view] == 'past' %>">
     Past Shares
   </button>
 </div>
