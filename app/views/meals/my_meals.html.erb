@@ -5,41 +5,26 @@
   </div>
   <div class="view-toggle">
     <button class="toggle-button active"
+            data-action="click->meal-toggle#showMyExchanges"
+            data-meal-toggle-target="myExchangesButton">
+      Share Requests
+    </button>
+    <button class="toggle-button"
             data-action="click->meal-toggle#showMyMeals"
             data-meal-toggle-target="myMealsButton">
       My Meals
     </button>
-    <button class="toggle-button"
-            data-action="click->meal-toggle#showMyExchanges"
-            data-meal-toggle-target="myExchangesButton">
-      My Exchanges
-    </button>
   </div>
 
-  <!-- === My Meals Section === -->
-  <div data-meal-toggle-target="myMealsSection">
-    <% if @meals.any? %>
-      <div class="meal-cards mt-4">
-        <% @meals.each do |meal| %>
-          <%= link_to meal_path(meal), class: "meal-card-link" do %>
-            <%= render partial: "meal_card", locals: { meal: meal } %>
-          <% end %>
-        <% end %>
-      </div>
-    <% else %>
-      <p class="text-muted text-center mt-4">You haven't listed any meals yet.</p>
-    <% end %>
-  </div>
-
-  <!-- === My Exchanges Section === -->
-  <div data-meal-toggle-target="myExchangesSection" style="display: none;">
+  <!-- === My Share Requests Section === -->
+  <div data-meal-toggle-target="myExchangesSection">
     <% if @my_exchanges.any? %>
       <div class="mt-4">
         <% @my_exchanges.each do |exchange| %>
           <div class="card p-3 mb-3">
-            <p><strong>Meal Offered:</strong> <%= exchange.meal_offered&.name || "N/A" %></p>
             <p><strong>Meal Requested:</strong> <%= exchange.meal_requested&.name || "N/A" %></p>
-            <p><strong>Requester:</strong> <%= exchange.requesting_user&.name || "N/A" %></p>
+            <p><strong>Cooked By:</strong> <%= exchange.meal_requested.user.first_name || "N/A" %></p>
+            <p><strong>Meal Offered:</strong> <%= exchange.meal_offered&.name || "N/A" %></p>
             <p><strong>Status:</strong>
               <span class="badge bg-<%= exchange.status == "accepted" ? "success" : "secondary" %>">
                 <%= exchange.status.capitalize %>
@@ -50,6 +35,21 @@
       </div>
     <% else %>
       <p class="text-muted text-center mt-4">You don't have any exchanges yet.</p>
+    <% end %>
+  </div>
+
+  <!-- === My Meals Section === -->
+  <div data-meal-toggle-target="myMealsSection" style="display: none;">
+    <% if @meals.any? %>
+      <div class="meal-cards mt-4">
+        <% @meals.each do |meal| %>
+          <%= link_to meal_path(meal), class: "meal-card-link" do %>
+            <%= render partial: "meal_card", locals: { meal: meal } %>
+          <% end %>
+        <% end %>
+      </div>
+    <% else %>
+      <p class="text-muted text-center mt-4">You haven't listed any meals yet.</p>
     <% end %>
   </div>
 </div>
