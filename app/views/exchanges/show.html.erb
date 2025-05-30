@@ -1,0 +1,8 @@
+<%= turbo_stream_from "exchanges_#{@exchange.id}_messages" %>
+<div id="messages" class="messages">
+  <% @exchange.messages.each do |message| %>
+    <%= render "messages/message", message: message %>
+  <% end %>
+</div>
+
+<%= render "messages/message", message: message, user: current_user %>

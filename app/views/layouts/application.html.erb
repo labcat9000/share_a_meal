@@ -16,7 +16,7 @@
     <meta name="mapbox-token" content="<%= ENV['MAPBOX_API_KEY'] %>">
   </head>
 
-  <body class="pb-5">
+  <body data-current-user-id="<%= current_user ? current_user.id : "" %>" class="pb-5">
     <!-- DEBUG: controller_name=<%= controller_name %> | action_name=<%= action_name %> -->
     <% if (controller_name == "meals" && action_name == "index") || (controller_name == "pages" && action_name == "home") %>
       <%= render "shared/navbar" %>
