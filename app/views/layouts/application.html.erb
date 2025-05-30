@@ -12,7 +12,9 @@
     <%= javascript_importmap_tags %>
   </head>
 
-  <body class="pb-5">
+  <body data-current-user-id="<%= current_user ? current_user.id : "" %>" class="pb-5">
+    <!-- DEBUG: controller_name=<%= controller_name %> | action_name=<%= action_name %> -->
+
     <% if (controller_name == "meals" && action_name == "index") || (controller_name == "pages" && action_name == "home") %>
       <%= render "shared/navbar" %>
     <% elsif (controller_name == "users" && action_name == "show") || (controller_name == "meals" && action_name == "my_meals") || (controller_name == "exchanges" && action_name == "exchanges_dashboard") %>

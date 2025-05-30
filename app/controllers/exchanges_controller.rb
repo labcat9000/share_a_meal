@@ -7,10 +7,10 @@ class ExchangesController < ApplicationController
     @exchange = Exchange.new
   end
 
-  # no need for an exchanges show page
-  # def show
-  #   @exchange = Exchange.new(meal_requested_id: @meal.id)
-  # end
+  def show
+    @exchange = Exchange.find(params[:id])
+    @messages = @exchange.messages.includes(:user)
+  end
 
   def accept
     @exchange = Exchange.find(params[:id])
@@ -48,14 +48,15 @@ class ExchangesController < ApplicationController
   end
 
   def create
-    @exchange = Exchange.new(exchange_params)
-    @exchange.meal_requested = @meal
-    @exchange.requesting_user_id = current_user.id
+    @meal = Meal.new(params[:meal_id])
+    @exchanges = Exchange.new(exchange_params)
+    @exchange.meal = @meal
+    @exchange.user = current_user
 
     if @exchange.save
       redirect_to meal_path(@exchange.meal_requested), notice: "Share requested!"
     else
-      render :new, status: :unprocessable_entity
+      render "meal/show"
     end
   end
 
@@ -83,6 +84,7 @@ class ExchangesController < ApplicationController
     # @exchange_requests = Exchange.where(meal_offered.user = current_user.id)
     @exchange_requests = Exchange.joins(:meal_offered).where(meals: { user_id: current_user.id })
     @my_meals = Meal.where(user_id: current_user.id)
+    @messages = Message.includes(:user).order(created_at: :asc) # or scoped by user or exchange
   end
 
   def exchange_requests
@@ -115,6 +117,6 @@ class ExchangesController < ApplicationController
 
 
   def exchange_params
-    params.require(:exchange).permit(:meal_offered_id, :meal_requested_id)
+    params.require(:exchange).permit(:meal_offered_id, :meal_requested_id, :date)
   end
 end

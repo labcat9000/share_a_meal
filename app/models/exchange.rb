@@ -1,9 +1,11 @@
 class Exchange < ApplicationRecord
   belongs_to :meal_requested, class_name: "Meal", foreign_key: "meal_requested_id"
   belongs_to :meal_offered, class_name: "Meal", foreign_key: "meal_offered_id"
+
+  # belongs_to :user
+  has_many :messages
   belongs_to :requesting_user, class_name: "User", foreign_key: "requesting_user_id"
-
-
+  
   validates :meal_requested_id, presence: true
   validates :meal_offered_id, presence: true
   validates :requesting_user_id, presence: true

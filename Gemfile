@@ -58,7 +58,7 @@ gem "activestorage-cloudinary-service"
 gem 'faker'
 gem 'image_processing'
 gem 'mini_magick'
-
+gem "solid_cable"
 
 group :development, :test do
   gem "dotenv-rails"
