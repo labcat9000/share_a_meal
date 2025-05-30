@@ -8,6 +8,15 @@ export default class extends Controller {
     "myExchangesButton"
   ]
 
+  connect() {
+    const section = new URLSearchParams(window.location.search).get("section")
+    if (section === "meals") {
+      this.showMyMeals()
+    } else {
+      this.showMyExchanges()
+    }
+  }
+
   showMyMeals() {
     this.myMealsSectionTarget.style.display = "block"
     this.myExchangesSectionTarget.style.display = "none"
