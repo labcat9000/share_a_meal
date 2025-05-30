@@ -1,26 +1,24 @@
-<nav class="navbar navbar-light bg-white border-bottom py-3 px-3">
-  <div class="container-fluid d-flex justify-content-between align-items-center">
+<nav class="d-flex justify-content-between align-items-center px-3 py-2 bg-white border-bottom">
+  <%= link_to root_path, class: "internal-logo" do %>
+    <%= image_tag "share_a_meal.png", height: 78, class: "me-2" %>
+  <% end %>
 
-    <!-- Left: Logo -->
-    <%= link_to root_path, class: "d-flex align-items-center text-dark text-decoration-none" do %>
-      <%= image_tag "share_a_meal.png", height: 32, class: "me-2" %>
-    <% end %>
+  <% if user_signed_in? %>
+    <div class="dropdown">
+      <button class="btn text-dark dropdown-toggle"
+              id="profileDropdown"
+              type="button"
+              data-bs-toggle="dropdown"
+              aria-expanded="false">
+        <i class="fa-solid fa-user fa-2x"></i>
+      </button>
 
-    <!-- Right: Profile Dropdown -->
-    <div class="position-relative" data-controller="profile-menu">
-      <i class="fa fa-user text-muted fs-5"
-         style="cursor: pointer;"
-         data-action="click->profile-menu#toggleMenu"></i>
-
-      <div class="profile-dropdown-menu shadow-sm"
-           data-profile-menu-target="menu"
-           style="display: none;">
-        <ul class="list-unstyled mb-0">
-          <li><%= link_to "My Meals", user_meals_path, class: "dropdown-link" %></li>
-          <li><%= link_to "My Profile", user_profile_path, class: "dropdown-link" %></li>
-          <li><%= link_to "Logout", destroy_user_session_path, method: :delete, class: "dropdown-link" %></li>
-        </ul>
-      </div>
+      <ul class="dropdown-menu dropdown-menu-end my-dropdown" aria-labelledby="profileDropdown">
+        <li><%= link_to "Dashboard", exchanges_dashboard_path, class: "dropdown-item" %></li>
+        <li><%= link_to "My Meals", user_meals_path, class: "dropdown-item" %></li>
+        <li><%= link_to "My Profile", user_profile_path, class: "dropdown-item" %></li>
+        <li><%= link_to "Logout", destroy_user_session_path, method: :delete, class: "dropdown-item text-danger" %></li>
+      </ul>
     </div>
-  </div>
+  <% end %>
 </nav>
