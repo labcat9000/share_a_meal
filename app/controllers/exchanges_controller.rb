@@ -73,7 +73,9 @@ class ExchangesController < ApplicationController
   end
 
   def my_exchanges
-    @exchanges = Exchange.where(user: current_user)
+    # @exchanges = Exchange.where(requesting_user_id: current_user.id)
+    @current_exchanges = Exchange.where(requesting_user_id: current_user.id, status: ["Accepted", "Pending"])
+    @past_exchanges = Exchange.where(requesting_user_id: current_user.id, status: ["Declined", "Complete"])
   end
 
   def exchanges_dashboard

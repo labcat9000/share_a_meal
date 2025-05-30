@@ -2,24 +2,23 @@
 <html>
   <head>
     <title>ShareAMeal</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
-
+    <%= stylesheet_link_tag "https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" %>
+    <%= stylesheet_link_tag "https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" %>
     <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
     <%= stylesheet_link_tag "https://api.mapbox.com/mapbox-gl-js/v2.15.0/mapbox-gl.css" %>
-
     <%= javascript_importmap_tags %>
-    <%= javascript_include_tag "https://api.mapbox.com/mapbox-gl-js/v2.15.0/mapbox-gl.js" %>
-    <%= javascript_include_tag "https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" %>
-
-    <meta name="mapbox-token" content="<%= ENV['MAPBOX_API_KEY'] %>">
   </head>
 
   <body data-current-user-id="<%= current_user ? current_user.id : "" %>" class="pb-5">
     <!-- DEBUG: controller_name=<%= controller_name %> | action_name=<%= action_name %> -->
+
     <% if (controller_name == "meals" && action_name == "index") || (controller_name == "pages" && action_name == "home") %>
       <%= render "shared/navbar" %>
+    <% elsif (controller_name == "users" && action_name == "show") || (controller_name == "meals" && action_name == "my_meals") || (controller_name == "exchanges" && action_name == "exchanges_dashboard") %>
+      <%= render "shared/internal_navbar" %>
     <% end %>
 
     <%= render "shared/flashes" %>
@@ -28,9 +27,7 @@
     <footer class="fixed-bottom bg-white border-top shadow d-flex justify-content-around align-items-center"
             style="height: 65px; z-index: 1030;">
       <%= link_to root_path, class: "text-dark text-decoration-none text-center" do %>
-        <div>
-          <i class="fa fa-home fa-lg d-block"></i>
-        </div>
+        <div><i class="fa fa-home fa-lg d-block"></i></div>
       <% end %>
 
       <%= link_to new_meal_path, class: "text-dark text-decoration-none text-center" do %>
@@ -45,8 +42,7 @@
           <i class="fa-solid fa-handshake-angle"></i>
         </div>
       <% end %>
-
-
     </footer>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js" integrity="sha384-w77wwc6Rt20A8C8Mdq4Kg2XJ2fB4Up43qgqYF9D2LtM6q/5T2Lgh5BdceFbEvT5z" crossorigin="anonymous"></script>
   </body>
 </html>

@@ -114,9 +114,18 @@ class MealsController < ApplicationController
     redirect_to edit_meal_path(@meal), notice: "Photo removed."
   end
 
+  def my_meals
+    @meals = current_user.meals
+    @my_exchanges = Exchange
+      .includes(:meal_offered, :meal_requested, :requesting_user)
+      .where("requesting_user_id = :id OR meal_offered_id IN (:meal_ids)",
+            id: current_user.id,
+            meal_ids: @meals.pluck(:id))
 
-
-
+    @pending_exchanges = Exchange
+      .where(meal_offered_id: @meals.pluck(:id), status: "pending")
+      .includes(:meal_requested, :requesting_user)
+  end
 
 
   private

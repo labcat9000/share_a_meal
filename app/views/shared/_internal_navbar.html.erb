@@ -1,0 +1,24 @@
+<nav class="d-flex justify-content-between align-items-center px-3 py-2 bg-white border-bottom">
+  <%= link_to root_path, class: "internal-logo" do %>
+    <%= image_tag "share_a_meal.png", height: 78, class: "me-2" %>
+  <% end %>
+
+  <% if user_signed_in? %>
+    <div class="dropdown">
+      <button class="btn text-dark dropdown-toggle"
+              id="profileDropdown"
+              type="button"
+              data-bs-toggle="dropdown"
+              aria-expanded="false">
+        <i class="fa-solid fa-user fa-2x"></i>
+      </button>
+
+      <ul class="dropdown-menu dropdown-menu-end my-dropdown" aria-labelledby="profileDropdown">
+        <li><%= link_to "Dashboard", exchanges_dashboard_path, class: "dropdown-item" %></li>
+        <li><%= link_to "My Meals", user_meals_path, class: "dropdown-item" %></li>
+        <li><%= link_to "My Profile", user_profile_path, class: "dropdown-item" %></li>
+        <li><%= link_to "Logout", destroy_user_session_path, method: :delete, class: "dropdown-item text-danger" %></li>
+      </ul>
+    </div>
+  <% end %>
+</nav>
