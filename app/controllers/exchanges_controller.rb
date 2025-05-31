@@ -48,10 +48,12 @@ class ExchangesController < ApplicationController
   end
 
   def create
-    @meal = Meal.new(params[:meal_id])
-    @exchanges = Exchange.new(exchange_params)
-    @exchange.meal = @meal
-    @exchange.user = current_user
+    @meal = Meal.find(params[:meal_id])
+    @exchange = Exchange.new(exchange_params)
+    @exchange.meal_requested = @meal
+    @exchange.requesting_user = current_user
+    @exchange.offering_user = @meal.user
+
 
     if @exchange.save
       redirect_to meal_path(@exchange.meal_requested), notice: "Share requested!"

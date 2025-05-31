@@ -13,7 +13,6 @@ class Meal < ApplicationRecord
   has_many :meal_ratings, class_name: "MealRating"
 
   belongs_to :user, optional: true
-  has_many :exchanges
 
   has_many_attached :photos
 

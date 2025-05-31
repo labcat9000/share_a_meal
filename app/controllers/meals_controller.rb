@@ -53,7 +53,7 @@ class MealsController < ApplicationController
     @meal = Meal.find(params[:id])
     @meal.photos.reload
     authorize @meal
-    @exchanges = Meal.exchanges.where(requesting_user_id: current_user.id)
+    @exchange = Exchange.new
   end
 
   def new
