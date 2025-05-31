@@ -1,19 +1,20 @@
 <div id="message-<%= message.id %>">
   <small>
-    <strong><%= message.user.nickname %></strong>
+    <strong><%= message.user.first_name %></strong>
     <i><%= message.created_at.strftime("%a %b %e at %l:%M %p") %></i>
   </small>
   <p><%= message.content %></p>
 </div>
 
 <div
-    id="message-<%= message.id %>"
-    class="message <%= message.user === user ? 'sent' : 'received' %>"
-    data-controller="message"
-    data-message-user-id-value="<%= message.user.id %>">
-  <small class="message-info">
-    <strong><%= message.user.username %></strong>
-    <i><%= message.created_at.strftime("%a %b %e at %l:%M %p") %></i>
+  id="message-<%= message.id %>"
+  class="message-bubble <%= message.user == user ? 'sent' : 'received' %>"
+  data-controller="message"
+  data-message-user-id-value="<%= message.user.id %>">
+
+  <p class="mb-1"><%= message.content %></p>
+  <small class="text-muted d-block">
+    <strong><%= message.user.first_name %></strong>,
+    <%= message.created_at.strftime("%a %b %e at %l:%M %p") %>
   </small>
-  <p class="message-content"><%= message.content %></p>
 </div>
