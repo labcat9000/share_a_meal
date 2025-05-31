@@ -29,6 +29,9 @@
                 <br>
                 You get: <%= exchange.meal_requested.name %>
               </div>
+              <% if exchange.status == "Accepted" %>
+                <%= link_to "chat", exchange_messages_path(exchange) %>
+              <% end %>
             </div>
           <% end %>
         <% else %>

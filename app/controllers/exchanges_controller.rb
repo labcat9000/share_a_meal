@@ -29,7 +29,7 @@ class ExchangesController < ApplicationController
   end
 
   def update
-    @exchanges =Exchange.find(params[:id])
+    @exchanges = Exchange.find(params[:id])
     if @exchange.meal.user == current_user
       if @exchange.update(exchange_params)
         if @exchange.saved_change_to_status? && %w[accepted declined].include?(@exchange.status)
