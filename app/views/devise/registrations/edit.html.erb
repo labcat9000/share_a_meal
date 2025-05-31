@@ -28,7 +28,7 @@
             <p class="text-muted small">Currently waiting confirmation for: <%= resource.unconfirmed_email %></p>
           <% end %>
 
-          <%= f.input :password, label: false, placeholder: "New Password", hint: "Leave blank if you don’t want to change it", input_html: { class: "form-control", autocomplete: "new-password" } %>
+          <%= f.input :password, label: false, placeholder: "New Password", hint: "Leave blank if you don't want to change it", input_html: { class: "form-control", autocomplete: "new-password" } %>
           <%= f.input :password_confirmation, label: false, placeholder: "Confirm New Password", input_html: { class: "form-control", autocomplete: "new-password" } %>
           <%= f.input :current_password, label: false, placeholder: "Current Password", hint: "Required to save changes", required: true, input_html: { class: "form-control", autocomplete: "current-password" } %>
 

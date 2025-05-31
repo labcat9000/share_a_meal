@@ -80,7 +80,6 @@ class MealsController < ApplicationController
 
   def update
     @meal = current_user.meals.find(params[:id])
-
     authorize @meal
 
     if params[:meal][:remove_photo_ids].present?
