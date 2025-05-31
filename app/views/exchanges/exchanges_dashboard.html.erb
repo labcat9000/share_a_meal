@@ -25,10 +25,3 @@
     <%= @my_meals.length %>
   </div>
 </div>
-
-<h3>Messages</h3>
-<div>
-  <% @messages.each do |message| %>
-    <%= render "messages/message", message: message, user: current_user %>
-  <% end %>
-</div>

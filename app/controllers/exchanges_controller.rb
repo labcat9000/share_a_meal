@@ -111,6 +111,11 @@ class ExchangesController < ApplicationController
     end
   end
 
+  def recipient_for(sender)
+    meal_offered.user == sender ? meal_requested.user : meal_offered.user
+  end
+
+
   private
 
   def set_meal

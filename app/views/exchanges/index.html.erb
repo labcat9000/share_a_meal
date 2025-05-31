@@ -17,4 +17,9 @@
    <% end %>
 <% end %>
 
+  <!-- app/views/layouts/application.html.erb or exchanges_dashboard.html.erb -->
+<div id="alerts">
+  <turbo-stream-source channel="alerts_user_#{current_user.id}" />
+</div>
+
 <%= link_to "View Messages", exchange_path(exchange) %>
