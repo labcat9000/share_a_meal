@@ -14,9 +14,8 @@
 
     <!-- Name -->
     <h4 class="text-center text-capitalize fw-bold mb-5" style="font-size: 1.5rem;">
-      <%= "#{@user.first_name} #{@user.last_name}." %>
+      <%= [@user.first_name, @user.last_name.presence].compact.join(" ") + "." %>
     </h4>
-
     <!-- Info Card -->
     <div class="bg-white border rounded-4 p-4 shadow-sm position-relative" style="min-height: 450px;">
       <%= link_to edit_user_registration_path, class: "position-absolute top-0 end-0 mt-3 me-3 text-muted" do %>

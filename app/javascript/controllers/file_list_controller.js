@@ -4,6 +4,7 @@ export default class extends Controller {
   static targets = ["input", "list"]
 
   connect() {
+    console.log("✅ FileListController connected")
     this.files = []
     this.plusBox = this.listTarget.querySelector('[data-plus-box]') // use existing plus sign
   }
