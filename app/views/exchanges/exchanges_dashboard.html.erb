@@ -1,12 +1,12 @@
 <h3>My Shares</h3>
 <div class="d-flex justify-content-around">
   <div>
-    <%= link_to "Current Shares", user_exchanges_path(section: "current") %>
+    <%= link_to "Current Shares", user_exchanges_path(view: 'current') %>
     <br>
     <%= @current_exchanges.length %>
   </div>
   <div>
-    <%= link_to "Past Shares", user_exchanges_path(section: "past") %>
+    <%= link_to "Past Shares", user_exchanges_path(view: 'past') %>
     <br>
     <%= @past_exchanges.length %>
   </div>
@@ -15,13 +15,20 @@
 <h3>My Meals</h3>
 <div class="d-flex justify-content-around">
   <div>
-    <%= link_to "Share Requests", user_meals_path(section: "exchanges") %>
+    <%= link_to "Share Requests", exchange_requests_path %>
     <br>
     <%= @exchange_requests.length %>
   </div>
   <div>
-    <%= link_to "My Meals", user_meals_path(section: "meals") %>
+    <%= link_to "My Meals", user_meals_path %>
     <br>
     <%= @my_meals.length %>
   </div>
+</div>
+
+<h3>Messages</h3>
+<div>
+  <% @messages.each do |message| %>
+    <%= render "messages/message", message: message, user: current_user %>
+  <% end %>
 </div>
