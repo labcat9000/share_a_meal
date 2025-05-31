@@ -28,7 +28,7 @@ class ExchangesController < ApplicationController
   end
 
   def update
-    @exchanges =Exchange.find(params[:id])
+    @exchanges = Exchange.find(params[:id])
     if @exchange.meal.user == current_user
       if @exchange.update(exchange_params)
         if @exchange.saved_change_to_status? && %w[accepted declined].include?(@exchange.status)
@@ -108,6 +108,11 @@ class ExchangesController < ApplicationController
       redirect_to @exchange, alert: "Invalid user type for rating"
     end
   end
+
+  def recipient_for(sender)
+    meal_offered.user == sender ? meal_requested.user : meal_offered.user
+  end
+
 
   private
 

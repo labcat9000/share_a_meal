@@ -4,8 +4,9 @@ export default class extends Controller {
   static targets = ["input", "list"]
 
   connect() {
+    console.log("✅ FileListController connected")
     this.files = []
-    this.renderPlusBox()
+    this.plusBox = this.listTarget.querySelector('[data-plus-box]') // use existing plus sign
   }
 
   preview(event) {
@@ -42,15 +43,6 @@ export default class extends Controller {
     wrapper.appendChild(img)
     wrapper.appendChild(btn)
     this.listTarget.insertBefore(wrapper, this.plusBox)
-  }
-
-  renderPlusBox() {
-    this.plusBox = document.createElement("div")
-    this.plusBox.className = "d-flex align-items-center justify-content-center bg-white border border-secondary-subtle"
-    this.plusBox.style = "width: 100px; height: 100px; border-radius: 8px; cursor: pointer; font-size: 32px; font-weight: bold; color: #999; box-shadow: 0 0 4px rgba(0,0,0,0.1);"
-    this.plusBox.innerText = "+"
-    this.plusBox.addEventListener("click", () => this.inputTarget.click())
-    this.listTarget.appendChild(this.plusBox)
   }
 
   removeFile(name, wrapper) {

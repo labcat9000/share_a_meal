@@ -1,18 +1,33 @@
-<h2>Forgot your password?</h2>
+<div class="min-vh-100 d-flex align-items-center justify-content-center bg-light">
+  <div class="bg-white shadow rounded-4 p-5" style="max-width: 400px; width: 100%;">
+    <div class="d-flex align-items-center justify-content-center mb-4">
+      <%= link_to root_path, class: "d-flex align-items-center text-decoration-none" do %>
+        <%= image_tag "share_a_meal.png", height: 100, class: "me-2" %>
+        <span class="fw-bold text-dark" style="font-size: 2rem;">Share A Meal</span>
+      <% end %>
+    </div>
+    <h2 class="text-center fw-bold mb-4">Forgot your password?</h2>
+    <p class="text-center text-muted mb-4">We'll send you instructions to reset it.</p>
 
-<%= simple_form_for(resource, as: resource_name, url: password_path(resource_name), html: { method: :post }) do |f| %>
-  <%= f.error_notification %>
+    <%= simple_form_for(resource, as: resource_name, url: password_path(resource_name), html: { method: :post }) do |f| %>
+      <%= f.error_notification %>
 
-  <div class="form-inputs">
-    <%= f.input :email,
-                required: true,
-                autofocus: true,
-                input_html: { autocomplete: "email" } %>
+      <div class="d-flex flex-column gap-3">
+        <%= f.input :email,
+          label: false,
+          placeholder: "Email address",
+          input_html: {
+            class: "form-control rounded-pill px-3 py-2 bg-light border-0",
+            autocomplete: "email",
+            autofocus: true
+          } %>
+
+        <%= f.button :submit, "Send reset instructions", class: "btn btn-success rounded-pill py-2 fw-semibold" %>
+      </div>
+    <% end %>
+
+    <div class="text-center mt-4">
+      <%= render "devise/shared/links" %>
+    </div>
   </div>
-
-  <div class="form-actions">
-    <%= f.button :submit, "Send me reset password instructions" %>
-  </div>
-<% end %>
-
-<%= render "devise/shared/links" %>
+</div>

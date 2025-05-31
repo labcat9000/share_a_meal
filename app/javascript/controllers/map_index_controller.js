@@ -43,7 +43,15 @@ export default class extends Controller {
       this.map.fitBounds(bounds, { padding: 60, maxZoom: 15, duration: 0 })
     }
 
-    // Update location info whenever map is manually moved
+    this.element.addEventListener("map:visible", () => {
+      if (this.map) this.map.resize()
+    })
+
+    window.addEventListener("resize", () => {
+      if (this.map) this.map.resize()
+    })
+
+
     this.map.on("moveend", () => {
       const center = this.map.getCenter()
       this.updateCityLabel(center.lat, center.lng)
@@ -80,5 +88,4 @@ export default class extends Controller {
       })
       .catch(err => console.error("Geocoding error:", err))
   }
-
 }

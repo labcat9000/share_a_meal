@@ -9,13 +9,13 @@ export default class extends Controller {
   ]
 
   connect() {
-    const section = new URLSearchParams(window.location.search).get("section")
-    if (section === "meals") {
-      this.showMyMeals()
-    } else {
-      this.showMyExchanges()
-    }
+  const section = new URLSearchParams(window.location.search).get("section")
+  if (section === "exchanges") {
+    this.showMyExchanges()
+  } else {
+    this.showMyMeals()
   }
+}
 
   showMyMeals() {
     this.myMealsSectionTarget.style.display = "block"

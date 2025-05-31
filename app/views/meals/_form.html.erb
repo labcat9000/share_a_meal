@@ -24,48 +24,58 @@
           <div class="mb-4">
             <h6 class="fw-semibold mb-2">Attached Photos</h6>
 
-            <div class="d-flex gap-3 flex-wrap p-3 bg-light rounded-3 border"
-                 data-controller="file-list"
-                 data-file-list-target="list"
-                 style="min-height: 110px;">
+            <!-- Wrap everything under one consistent Stimulus controller -->
+            <div data-controller="file-list">
+              <!-- Stimulus Target: list -->
+              <div
+                class="d-flex gap-3 flex-wrap p-3 bg-light rounded-3 border"
+                data-file-list-target="list"
+                style="min-height: 110px;">
 
-              <% if meal.photos.attached? %>
-                <% meal.photos.each do |photo| %>
-                  <div class="position-relative"
-                       style="width: 100px; height: 100px; border-radius: 8px; overflow: hidden; box-shadow: 0 0 4px rgba(0,0,0,0.1);">
-                    <%= cl_image_tag photo.key, style: "width: 100%; height: 100%; object-fit: cover;" %>
-                    <%= link_to "✕",
-                        remove_photo_meal_path(meal, photo_id: photo.id),
-                        method: :delete,
-                        data: { turbo: false, confirm: "Delete this photo?" },
-                        class: "btn btn-sm btn-danger d-flex align-items-center justify-content-center position-absolute top-0 end-0 rounded-circle",
-                        style: "width: 20px; height: 20px; font-size: 12px; padding: 0; line-height: 1;" %>
-                  </div>
+                <!-- ✅ Render already attached photos (Cloudinary) -->
+                <% if meal.photos.attached? %>
+                  <% meal.photos.each do |photo| %>
+                    <div class="position-relative"
+                        style="width: 100px; height: 100px; border-radius: 8px; overflow: hidden; box-shadow: 0 0 4px rgba(0,0,0,0.1);">
+                      <%= cl_image_tag photo.key, style: "width: 100%; height: 100%; object-fit: cover;" %>
+                      <%= link_to "✕",
+                          remove_photo_meal_path(meal, photo_id: photo.id),
+                          method: :delete,
+                          data: { turbo: false, confirm: "Delete this photo?" },
+                          class: "btn btn-sm btn-danger d-flex align-items-center justify-content-center position-absolute top-0 end-0 rounded-circle",
+                          style: "width: 20px; height: 20px; font-size: 12px; padding: 0; line-height: 1;" %>
+                    </div>
+                  <% end %>
                 <% end %>
-              <% end %>
 
-              <!-- ➕ Plus Sign -->
-              <label for="add-photo-input"
-                     class="d-flex align-items-center justify-content-center bg-white border border-secondary-subtle"
-                     style="cursor: pointer; width: 100px; height: 100px; border-radius: 8px; font-size: 32px; color: #999; box-shadow: 0 0 4px rgba(0,0,0,0.1);">
-                +
-              </label>
+
+                <!-- 🟢 Stimulus Preview Goes Here -->
+                <label
+                  for="add-photo-input"
+                  data-plus-box
+                  class="d-flex align-items-center justify-content-center bg-white border border-secondary-subtle"
+                  style="cursor: pointer; width: 100px; height: 100px; border-radius: 8px; font-size: 32px; color: #999; box-shadow: 0 0 4px rgba(0,0,0,0.1);">
+                  +
+                </label>
+              </div>
+
+              <!-- Stimulus Target: input -->
+              <%= f.input :photos,
+                as: :file,
+                label: false,
+                input_html: {
+                  id: "add-photo-input",
+                  class: "form-control d-none",
+                  multiple: true,
+                  data: {
+                    action: "change->file-list#preview",
+                    file_list_target: "input"
+                  }
+                } %>
             </div>
-
-            <!-- Hidden Upload Input -->
-            <%= f.input :photos,
-              as: :file,
-              label: false,
-              input_html: {
-                id: "add-photo-input",
-                class: "form-control d-none",
-                multiple: true,
-                data: {
-                  action: "change->file-list#preview",
-                  file_list_target: "input"
-                }
-              } %>
           </div>
+
+
 
           <!-- 📝 Description -->
           <%= f.input :description, label: "Description", input_html: { class: "form-control bg-light rounded-4 p-3", rows: 3 } %>
