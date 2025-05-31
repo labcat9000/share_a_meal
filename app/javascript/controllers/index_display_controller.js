@@ -1,6 +1,4 @@
 import { Controller } from "@hotwired/stimulus"
-
-// Connects to data-controller="index-display"
 export default class extends Controller {
   static targets = [
     "listButton",
@@ -8,9 +6,6 @@ export default class extends Controller {
     "mealList",
     "mealMap"
   ]
-
-  connect() {
-  }
 
   displayMealList() {
     this.listButtonTarget.classList.add('active')
@@ -24,5 +19,9 @@ export default class extends Controller {
     this.listButtonTarget.classList.remove('active')
     this.mealListTarget.style.display = 'none'
     this.mealMapTarget.style.display = 'block'
+
+    setTimeout(() => {
+      this.mealMapTarget.dispatchEvent(new Event('map:visible'))
+    }, 100)
   }
 }
