@@ -81,7 +81,8 @@
           <%= f.input :address, label: "Location", input_html: { class: "form-control bg-light rounded-4 p-3" } %>
 
           <!-- 🗓️ Date -->
-          <%= f.input :posted_on, as: :date, label: "Date", input_html: { class: "form-control bg-light rounded-pill p-2", value: f.object.posted_on || Date.today } %>
+          <p><strong>Date:</strong> <%= Date.today.strftime("%B %d, %Y") %></p>
+          <%= f.hidden_field :posted_on, value: Date.today %>
 
           <!-- ✅ Submit -->
           <div class="text-center">
