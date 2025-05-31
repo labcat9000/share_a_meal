@@ -1,60 +1,62 @@
-<div data-controller="exchanges-toggle">
-  <div>
-    <div class="view-toggle">
-      <button class="toggle-button active"
-              data-action="click->exchanges-toggle#showCurrentExchanges"
-              data-exchanges-toggle-target="currentExchangesButton">
-        Current Shares
-      </button>
-      <button class="toggle-button"
-              data-action="click->exchanges-toggle#showPastExchanges"
-              data-exchanges-toggle-target="pastExchangesButton">
-        Past Shares
-      </button>
+<div class="container mt-5" data-controller="meal-toggle">
+  <div data-controller="exchanges-toggle">
+    <div>
+      <div class="view-toggle">
+        <button class="toggle-button active"
+                data-action="click->exchanges-toggle#showCurrentExchanges"
+                data-exchanges-toggle-target="currentExchangesButton">
+          Current Shares
+        </button>
+        <button class="toggle-button"
+                data-action="click->exchanges-toggle#showPastExchanges"
+                data-exchanges-toggle-target="pastExchangesButton">
+          Past Shares
+        </button>
+      </div>
     </div>
-  </div>
 
-  <div data-exchanges-toggle-target="currentExchangesSection">
-    <h2>Current Shares</h2>
-    <% if @current_exchanges.any? %>
-      <% @current_exchanges.each do |exchange| %>
-        <div class="card h-100 shadow-sm border-1 rounded-4">
-          <div>
-            <h3><%= exchange.requesting_user.first_name %></h3>
-            <%= exchange.status %>
-          </div>
-          <div>
-            They get: <%= exchange.meal_offered.name %>
-            <br>
-            You get: <%= exchange.meal_requested.name %>
-          </div>
-        </div>
-      <% end %>
-    <% else %>
-      <p class="text-muted text-center mt-4">You don't have any active shares right now.</p>
-    <% end %>
-  </div>
+    <div data-exchanges-toggle-target="currentExchangesSection">
+      <h2>Current Shares</h2>
+        <% if @current_exchanges.any? %>
+          <% @current_exchanges.each do |exchange| %>
+            <div class="meal-card">
+              <div>
+                <h3><%= exchange.requesting_user.first_name %></h3>
+                <%= exchange.status %>
+              </div>
+              <div>
+                They get: <%= exchange.meal_offered.name %>
+                <br>
+                You get: <%= exchange.meal_requested.name %>
+              </div>
+            </div>
+          <% end %>
+        <% else %>
+          <p class="text-muted text-center mt-4">You don't have any active shares right now.</p>
+        <% end %>
+    </div>
 
-  <div data-exchanges-toggle-target="pastExchangesSection" style="display: none;">
-    <h2>Past Shares</h2>
-    <% if @past_exchanges.any? %>
-      <% @past_exchanges.each do |exchange| %>
-        <div class="card h-100 shadow-sm border-1 rounded-4">
-          <div>
-            <h2><%= exchange.requesting_user.first_name %></h2>
-            <%= exchange.status %>
+    <div data-exchanges-toggle-target="pastExchangesSection" style="display: none;">
+      <h2>Past Shares</h2>
+      <% if @past_exchanges.any? %>
+        <% @past_exchanges.each do |exchange| %>
+          <div class="meal-card">
+            <div>
+              <h2><%= exchange.requesting_user.first_name %></h2>
+              <%= exchange.status %>
+            </div>
+            <div>
+              They got: <%=exchange.meal_offered.name %>
+              <br>
+              You got: <%= exchange.meal_requested.name %>
+              <br>
+              Date exchanged: <%= exchange.updated_at.strftime("%Y-%m-%d") %>
+            <div>
           </div>
-          <div>
-            They got: <%=exchange.meal_offered.name %>
-            <br>
-            You got: <%= exchange.meal_requested.name %>
-            <br>
-            Date exchanged: <%= exchange.updated_at.strftime("%Y-%m-%d") %>
-          <div>
-        </div>
+        <% end %>
+      <% else %>
+        <p class="text-muted text-center mt-4">You haven't shared any meals yet.</p>
       <% end %>
-    <% else %>
-      <p class="text-muted text-center mt-4">You haven't shared any meals yet.</p>
-    <% end %>
+    </div>
   </div>
 </div>
