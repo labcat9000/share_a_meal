@@ -76,7 +76,7 @@
               <% if @meal.user.profile_photo.attached? %>
                 <%= image_tag @meal.user.profile_photo, class: "w-100 h-100 object-fit-cover" %>
               <% else %>
-                <%= image_tag "default-avatar.png", class: "w-100 h-100 object-fit-cover" %>
+                <%= image_tag "pfp-default.png", class: "w-100 h-100 object-fit-cover" %>
               <% end %>
             </div>
             <span>
@@ -104,15 +104,7 @@
       <% end %>
     </div>
 
-      <div>
-      <h2>Exchange this <%= @meal.name %></h2>
-          <%= simple_form_for [@meal, @exchanges] do |f| %>
-            <%= f.input :date %>
-            <%= f.submit %>
-          <% end %>
-      </div>
-
-      <%= render "messages/message", message: message, user: current_user %>
+      <%#= render "messages/message", message: @message, user: current_user %>
 
     <!-- Map -->
     <% if @meal.latitude.present? && @meal.longitude.present? %>
@@ -127,17 +119,6 @@
         </div>
       </div>
     <% end %>
-
-    <div>
-      <% if @exchanges.exists? %>
-      <h2>Your exchangess</h2>
-      <ul>
-        <% @exchanges.each do |booking| %>
-          <li><%= link_to exchange.date.strftime("%a %b %e"), exchange %></li>
-        <% end %>
-      </ul>
-    <% end %>
-    </div>
 
     <!-- Back link -->
     <div class="back-link" style="text-align: center; margin-top: 1.5rem;">
