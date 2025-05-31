@@ -20,13 +20,11 @@
       <% @current_exchanges.each do |exchange| %>
         <div class="card h-100 shadow-sm border-1 rounded-4">
           <div>
-            <h3><%= exchange.requesting_user.first_name %></h3>
+            <h3><%= exchange.meal_offered.user.first_name %></h3>
             <%= exchange.status %>
           </div>
           <div>
-            They get: <%= exchange.meal_offered.name %>
-            <br>
-            You get: <%= exchange.meal_requested.name %>
+            You get: <%= exchange.meal_offered.name %>
           </div>
         </div>
       <% end %>

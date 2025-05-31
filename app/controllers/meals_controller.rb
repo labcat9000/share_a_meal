@@ -53,7 +53,6 @@ class MealsController < ApplicationController
     @meal = Meal.find(params[:id])
     @meal.photos.reload
     authorize @meal
-    @exchange = Exchange.new
   end
 
   def new
@@ -117,14 +116,9 @@ class MealsController < ApplicationController
   def my_meals
     @meals = current_user.meals
     @my_exchanges = Exchange
-      .includes(:meal_offered, :meal_requested, :requesting_user)
-      .where("requesting_user_id = :id OR meal_offered_id IN (:meal_ids)",
-            id: current_user.id,
+      .includes(:meal_offered, :requesting_user)
+      .where("meal_offered_id IN (:meal_ids)",
             meal_ids: @meals.pluck(:id))
-
-    @pending_exchanges = Exchange
-      .where(meal_offered_id: @meals.pluck(:id), status: "pending")
-      .includes(:meal_requested, :requesting_user)
   end
 
 

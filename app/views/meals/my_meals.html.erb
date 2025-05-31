@@ -8,7 +8,7 @@
     <button class="toggle-button"
             data-action="click->meal-toggle#showMyExchanges"
             data-meal-toggle-target="myExchangesButton">
-      My Exchanges
+      Share Requests
     </button>
   </div>
   <!-- === My Meals Section === -->
@@ -25,15 +25,14 @@
       <p class="text-muted text-center mt-4">You haven’t listed any meals yet.</p>
     <% end %>
   </div>
-  <!-- === My Exchanges Section === -->
+  <!-- === Share Requests Section === -->
   <div data-meal-toggle-target="myExchangesSection" style="display: none;">
     <% if @my_exchanges.any? %>
       <div class="mt-4">
         <% @my_exchanges.each do |exchange| %>
           <div class="card p-3 mb-3">
-            <p><strong>Meal Offered:</strong> <%= exchange.meal_offered&.name || "N/A" %></p>
-            <p><strong>Meal Requested:</strong> <%= exchange.meal_requested&.name || "N/A" %></p>
-            <p><strong>Requester:</strong> <%= exchange.requesting_user&.name || "N/A" %></p>
+            <h2></strong> <%= link_to exchange.requesting_user.name, view_user_path(exchange.requesting_user), class: "meal-card-link" %> </h2>
+            <p><strong>Meal Requested:</strong> <%= exchange.meal_offered&.name || "N/A" %> </p>
             <p><strong>Status:</strong>
               <span class="badge bg-<%= exchange.status == "accepted" ? "success" : "secondary" %>">
                 <%= exchange.status.capitalize %>
