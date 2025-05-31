@@ -19,25 +19,34 @@
       <h2>Current Shares</h2>
         <% if @current_exchanges.any? %>
           <% @current_exchanges.each do |exchange| %>
-            <div class="meal-card">
-              <div>
-                <h3><%= exchange.requesting_user.first_name %></h3>
-                <%= exchange.status %>
-              </div>
-              <div>
-                They get: <%= exchange.meal_offered.name %>
-                <br>
-                You get: <%= exchange.meal_requested.name %>
-              </div>
-              <% if exchange.status == "Accepted" %>
-                <%= link_to "chat", exchange_messages_path(exchange) %>
-              <% end %>
+            <div class="meal-card p-3 border rounded mb-3">
+              <!-- Flex container for top row -->
+              <div class="d-flex justify-content-between align-items-center">
+                <div>
+                  <strong>Status:</strong> <%= exchange.status %>
+                </div>
+                <% if exchange.status == "Accepted" %>
+                  <%= link_to exchange_messages_path(exchange), class: "text-dark text-decoration-none" do %>
+                    <i class="fa-solid fa-comment"></i>
+                  <% end %>
+                <% end %>
             </div>
-          <% end %>
-        <% else %>
-          <p class="text-muted text-center mt-4">You don't have any active shares right now.</p>
-        <% end %>
-    </div>
+
+        <!-- Body of the card -->
+        <div class="mt-2">
+          <h3><%= exchange.requesting_user.first_name %></h3>
+          <div>
+            They get: <%= exchange.meal_offered.name %><br>
+            You get: <%= exchange.meal_requested.name %>
+          </div>
+        </div>
+      </div>
+    <% end %>
+  <% else %>
+    <p class="text-muted text-center mt-4">You don't have any active shares right now.</p>
+  <% end %>
+</div>
+
 
     <div data-exchanges-toggle-target="pastExchangesSection" style="display: none;">
       <h2>Past Shares</h2>
