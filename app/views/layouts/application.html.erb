@@ -26,23 +26,24 @@
 
     <footer class="fixed-bottom bg-white border-top shadow d-flex justify-content-around align-items-center"
             style="height: 65px; z-index: 1030;">
-      <%= link_to root_path, class: "text-dark text-decoration-none text-center" do %>
-        <div><i class="fa fa-home fa-lg d-block"></i></div>
+      <%= link_to root_path, class: "text-decoration-none text-center" do %>
+        <div><i class="fa fa-home fa-lg d-block footer-icon"></i></div>
       <% end %>
 
-      <%= link_to new_meal_path, class: "text-dark text-decoration-none text-center" do %>
+      <%= link_to new_meal_path, class: "text-decoration-none text-center" do %>
         <div class="bg-light rounded-circle d-flex align-items-center justify-content-center"
-             style="width: 46px; height: 46px;">
-          <i class="fa fa-plus fa-lg"></i>
+            style="width: 46px; height: 46px;">
+          <i class="fa fa-plus fa-lg footer-icon"></i>
         </div>
       <% end %>
 
-      <%= link_to exchanges_dashboard_path, class: "text-dark text-decoration-none text-center" do %>
+      <%= link_to exchanges_dashboard_path, class: "text-decoration-none text-center" do %>
         <div class="d-flex align-items-center justify-content-center" style="width: 46px; height: 46px;">
-          <i class="fa-solid fa-handshake-angle"></i>
+          <i class="fa-solid fa-handshake-angle footer-icon"></i>
         </div>
       <% end %>
     </footer>
+
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js" integrity="sha384-w77wwc6Rt20A8C8Mdq4Kg2XJ2fB4Up43qgqYF9D2LtM6q/5T2Lgh5BdceFbEvT5z" crossorigin="anonymous"></script>
   </body>
 </html>
