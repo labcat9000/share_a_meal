@@ -14,10 +14,9 @@ class ExchangesController < ApplicationController
 
   def accept
     @exchange = Exchange.find(params[:id])
-    authorize @exchange.meal, :update?  # meal owner only
-
-    @exchange.update(accepted: true, seen: true)
-    redirect_to meal_path(@exchange.meal), notice: "Exchange accepted!"
+    authorize @exchange  # meal owner only
+    @exchange.update(accepted: true, seen: true, status: "Accepted", meal_requested_id: params[:meal_id])
+    redirect_to user_meals_path(section: "exchanges"), notice: "Exchange accepted!"
   end
 
   def decline
@@ -49,16 +48,14 @@ class ExchangesController < ApplicationController
 
   def create
     @meal = Meal.find(params[:meal_id])
-    @exchange = Exchange.new(exchange_params)
-    @exchange.meal_requested = @meal
+    @exchange = Exchange.new
+    @exchange.meal_offered = @meal
     @exchange.requesting_user = current_user
-    @exchange.offering_user = @meal.user
-
 
     if @exchange.save
-      redirect_to meal_path(@exchange.meal_requested), notice: "Share requested!"
+      redirect_to meal_path(@exchange.meal_offered), notice: "Share requested!"
     else
-      render "meal/show"
+      redirect_to meal_path(@meal), notice: "Share request unsuccessful."
     end
   end
 
@@ -75,7 +72,6 @@ class ExchangesController < ApplicationController
   end
 
   def my_exchanges
-    # @exchanges = Exchange.where(requesting_user_id: current_user.id)
     @current_exchanges = Exchange.where(requesting_user_id: current_user.id, status: ["Accepted", "Pending"])
     @past_exchanges = Exchange.where(requesting_user_id: current_user.id, status: ["Declined", "Complete"])
   end
@@ -83,8 +79,10 @@ class ExchangesController < ApplicationController
   def exchanges_dashboard
     @current_exchanges = Exchange.where(requesting_user_id: current_user.id, status: ["Accepted", "Pending"])
     @past_exchanges = Exchange.where(requesting_user_id: current_user.id, status: ["Declined", "Complete"])
-    # @exchange_requests = Exchange.where(meal_offered.user = current_user.id)
-    @exchange_requests = Exchange.joins(:meal_offered).where(meals: { user_id: current_user.id })
+    @exchange_requests = Exchange
+      .includes(:meal_offered, :requesting_user)
+      .where("meal_offered_id IN (:meal_ids)",
+            meal_ids: current_user.meals.pluck(:id))
     @my_meals = Meal.where(user_id: current_user.id)
     @messages = Message.includes(:user).order(created_at: :asc) # or scoped by user or exchange
   end

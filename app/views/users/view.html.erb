@@ -9,41 +9,50 @@
           <%= image_tag "pfp-default.png", class: "w-100 h-100 object-fit-cover" %>
         <% end %>
       </div>
-
-      <div>
-        <h2 style="font-size: 1.4rem; font-weight: 700; margin: 0;">
-          <%= "#{@user.first_name} #{@user.last_name.first}." %>
-        </h2>
-        <p class="text-muted" style="font-size: 0.85rem; margin: 0;">
-          Joined <%= @user.created_at.strftime("%B %Y") %>
-        </p>
+      <div class="d-flex justify-content-between">
+        <div>
+          <h2 style="font-size: 1.4rem; font-weight: 700; margin: 0;">
+            <%= "#{@user.first_name} #{@user.last_name.first}." %>
+          </h2>
+          <p class="text-muted" style="font-size: 0.85rem; margin: 0;">
+            Joined <%= @user.created_at.strftime("%B %Y") %>
+          </p>
+        </div>
+        <div>
+          <h2>Decline</h2>
+        </div>
       </div>
     </div>
 
     <div class="px-1">
       <% @meals.each do |meal| %>
-        <div class="d-flex bg-white border rounded-4 shadow-sm mb-3 p-3 align-items-start" style="gap: 1rem;">
+        <%= link_to meal_path(meal), class: "meal-card-link" do %>
+          <div class="d-flex bg-white border rounded-4 shadow-sm mb-3 p-3 align-items-start" style="gap: 1rem;">
+            <div style="flex-shrink: 0;">
+              <% if meal.photos.attached? %>
+                <%= cl_image_tag meal.photos.first.key, style: "width: 90px; height: 90px; object-fit: cover; border-radius: 12px;" %>
+              <% else %>
+                <%= image_tag "meal-default.jpeg", style: "width: 90px; height: 90px; object-fit: cover; border-radius: 12px;" %>
+              <% end %>
+            </div>
+            <div class="flex-grow-1">
+              <h5 class="mb-1" style="font-size: 1.1rem;"><%= meal.name %></h5>
+              <p class="mb-1 text-muted" style="font-size: 0.9rem;"><%= truncate(meal.description, length: 120) %></p>
 
-          <div style="flex-shrink: 0;">
-            <% if meal.photos.attached? %>
-              <%= cl_image_tag meal.photos.first.key, style: "width: 90px; height: 90px; object-fit: cover; border-radius: 12px;" %>
-            <% else %>
-              <%= image_tag "meal-default.jpeg", style: "width: 90px; height: 90px; object-fit: cover; border-radius: 12px;" %>
-            <% end %>
+              <% if meal.category.present? || meal.cuisine.present? %>
+                <p class="mb-0 text-muted" style="font-size: 0.85rem;">
+                  <% if meal.cuisine.present? %>
+                    <strong>Cuisine:</strong> <%= meal.cuisine %>
+                  <% end %>
+                </p>
+              <% end %>
+              <p class="mb-0 text-muted" style="font-size: 0.85rem;"><strong>Posted on:</strong> <%= meal.posted_on.strftime("%B %d, %Y") if meal.posted_on %></p>
+            </div>
           </div>
-          <div class="flex-grow-1">
-            <h5 class="mb-1" style="font-size: 1.1rem;"><%= meal.name %></h5>
-            <p class="mb-1 text-muted" style="font-size: 0.9rem;"><%= truncate(meal.description, length: 120) %></p>
-
-            <% if meal.category.present? || meal.cuisine.present? %>
-              <p class="mb-0 text-muted" style="font-size: 0.85rem;">
-                <% if meal.cuisine.present? %>
-                  <strong>Cuisine:</strong> <%= meal.cuisine %>
-                <% end %>
-              </p>
-            <% end %>
-          </div>
-        </div>
+        <% end %>
+        <% if Exchange.joins(:meal_offered).where(meal_offered:{ user: current_user}, requesting_user: meal.user, status: "Pending").any? %>
+          <%= link_to "Accept", accept_exchange_path(Exchange.joins(:meal_offered).where(meal_offered:{ user: current_user}, requesting_user: meal.user, status: "Pending").first, meal_id: meal.id), method: :patch, data: { turbo_method: :patch, turbo_confirm: "Accept this share?" } %>
+        <% end %>
       <% end %>
 
       <% if @meals.empty? %>
