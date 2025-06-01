@@ -36,7 +36,7 @@
         <div class="mt-2">
           <h3><%= exchange.requesting_user.first_name %></h3>
           <div>
-            You get: <%= exchange.meal_requested.name %>
+            You get: <%= exchange.meal_requested&.name || "No meal info" %>
 
           </div>
         </div>
@@ -54,13 +54,13 @@
         <% @past_exchanges.each do |exchange| %>
           <div class="meal-card">
             <div>
-              <h2><%= exchange.requesting_user.first_name %></h2>
+              <h2><%= exchange.requesting_user&.first_name || "Unknown user" %></h2>
               <%= exchange.status %>
             </div>
             <div>
-              They got: <%=exchange.meal_offered.name %>
+              They got: <%=exchange.meal_offered %>
               <br>
-              You got: <%= exchange.meal_requested.name %>
+              You got: <%= exchange.meal_requested %>
               <br>
               Date exchanged: <%= exchange.updated_at.strftime("%Y-%m-%d") %>
             <div>

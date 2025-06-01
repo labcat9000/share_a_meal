@@ -15,20 +15,20 @@ Meal.destroy_all
 puts "Destroyed all meals"
 
 # Create one user who owns all meals
-user = User.create!(
-  first_name: "test",
-  last_name: "123",
-  email: "new_unique_email@example.com",
-  password: "password"
-)
+user = User.find_or_create_by!(email: "annarouss@gmail.com") do |u|
+  u.first_name = "Ana"
+  u.last_name = "Rouss"
+  u.password = "password"
+end
+
 puts "Created chef user"
 
-user2 = User.create!(
-  first_name: "test2",
-  last_name: "123",
-  email: "unique_email@example.com",
-  password: "123456"
-)
+user2 = User.find_or_create_by!(email: "kaiisi@gmail.com") do |u|
+  u.first_name = "Kai"
+  u.last_name = "Isidro"
+  u.password = "123456"
+end
+
 puts "Created second user"
 
 meal1 = Meal.create!(
@@ -76,7 +76,7 @@ Meal.create!(
   address: "Outremont, Montreal, QC",
   latitude: 45.5208,
   longitude: -73.6056,
-  user: user
+  user: user2
 )
 
 Meal.create!(
@@ -100,7 +100,7 @@ Meal.create!(
   address: "Hochelaga-Maisonneuve, Montreal, QC",
   latitude: 45.5500,
   longitude: -73.5400,
-  user: user
+  user: user2
 )
 
 Meal.create!(
@@ -124,7 +124,7 @@ Meal.create!(
   address: "Villeray, Montreal, QC",
   latitude: 45.5461,
   longitude: -73.6206,
-  user: user
+  user: user2
 )
 
 Meal.create!(
@@ -148,14 +148,15 @@ Meal.create!(
   address: "Saint-Laurent, Montreal, QC",
   latitude: 45.5023,
   longitude: -73.6987,
-  user: user
+  user: user2
 )
 
 puts "Created 10 meals across different boroughs"
 
 exchange1 = Exchange.create!(
   meal_offered_id: meal1.id,
-  meal_requested_id: meal2.id
+  meal_requested_id: meal2.id,
+  requesting_user: user2
 )
 
 puts "Created 1 exchange"
