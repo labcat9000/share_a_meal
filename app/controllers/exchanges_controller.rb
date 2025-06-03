@@ -86,8 +86,8 @@ class ExchangesController < ApplicationController
     @messages = Message.includes(:user).order(created_at: :asc) # or scoped by user or exchange
   end
 
-  def exchange_requests
-  end
+  # def exchange_requests
+  # end
 
   def edit_rating
     @rating_user = params[:user] # expecting 'offering' or 'requesting'
