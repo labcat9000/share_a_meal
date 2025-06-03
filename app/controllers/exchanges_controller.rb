@@ -22,8 +22,8 @@ class ExchangesController < ApplicationController
   def decline
     @exchange = Exchange.find(params[:id])
     authorize @exchange  # meal owner only
-    @exchange.update(accepted: false, seen: true, status: "Declined", meal_requested_id: params[:meal_id])
-    redirect_to meal_path(@exchange.meal), notice: "Exchange declined."
+    @exchange.update(accepted: false, status: "Declined")
+    redirect_to user_meals_path(section: "exchanges"), notice: "Exchange declined."
   end
 
   def update
