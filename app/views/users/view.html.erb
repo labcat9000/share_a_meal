@@ -19,7 +19,7 @@
           </p>
         </div>
         <div>
-          <h2><%= link_to "Decline", decline_exchange_path(Exchange.joins(:meal_offered).where(meal_offered:{ user: current_user}, requesting_user: meal.user, status: "Pending").first, meal_id: meal.id), method: :patch, data: { turbo_method: :patch, turbo_confirm: "Deline this share?" } %></h2>
+          <h2><%= link_to "Decline", decline_exchange_path, method: :patch, data: { turbo_method: :patch, turbo_confirm: "Decline this share?" } %></h2>
         </div>
       </div>
     </div>

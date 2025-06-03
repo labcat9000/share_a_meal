@@ -22,8 +22,8 @@ class ExchangesController < ApplicationController
   def decline
     @exchange = Exchange.find(params[:id])
     authorize @exchange  # meal owner only
-    @exchange.update(accepted: false, seen: true, status: "Declined", meal_requested_id: params[:meal_id])
-    redirect_to meal_path(@exchange.meal), notice: "Exchange declined."
+    @exchange.update(accepted: false, status: "Declined")
+    redirect_to user_meals_path(section: "exchanges"), notice: "Exchange declined."
   end
 
   def update
@@ -86,8 +86,8 @@ class ExchangesController < ApplicationController
     @messages = Message.includes(:user).order(created_at: :asc) # or scoped by user or exchange
   end
 
-  def exchange_requests
-  end
+  # def exchange_requests
+  # end
 
   def edit_rating
     @rating_user = params[:user] # expecting 'offering' or 'requesting'
