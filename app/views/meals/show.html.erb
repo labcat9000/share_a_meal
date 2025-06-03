@@ -43,8 +43,8 @@
       </div>
 
     <% else %>
-      <!-- NON-OWNER VIEW -->
 
+    <!-- NON-OWNER VIEW -->
       <!-- Request Button -->
       <%# unless Exchange.joins(:meal_requested).where(requesting_user: current_user, meal_requested:{ user: @meal.user}, status: "Pending").any? %>
       <% unless Exchange.joins(:meal_offered).where(meal_offered: {user: @meal.user}, requesting_user: current_user, status: "Pending").any? %>
