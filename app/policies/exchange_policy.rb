@@ -31,6 +31,10 @@ class ExchangePolicy < ApplicationPolicy
     true
   end
 
+  def decline?
+    true
+  end
+
   private
 
   def user_is_owner?

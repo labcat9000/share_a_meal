@@ -19,7 +19,7 @@
           </p>
         </div>
         <div>
-          <h2><%= link_to "Decline", decline_exchange_path, method: :patch, data: { turbo_method: :patch, turbo_confirm: "Decline this share?" } %></h2>
+          <h2><%= link_to "Decline", decline_exchange_path(@exchange), method: :patch, data: { turbo_method: :patch, turbo_confirm: "Decline this share?" } %></h2>
         </div>
       </div>
     </div>
@@ -62,3 +62,4 @@
 
   </div>
 </div>
+<% console %>

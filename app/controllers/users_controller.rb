@@ -17,6 +17,7 @@ class UsersController < ApplicationController
   def view
     @user = User.find(params[:id])
     @meals = @user.meals
+    @exchange = Exchange.where(requesting_user_id: params[:id], status: "Pending").first
   end
 
 
