@@ -113,3 +113,31 @@
 .btn-warning {
   background: #ECEBDE;
 }
+
+// === Custom Green Button ===
+.btn-green {
+  background-color: #82983A;
+  border: 2px solid #82983A;
+  color: #fff;
+  font-size: 0.95rem;
+  padding: 0.5rem 2.5rem;
+  border-radius: 999px;
+  text-decoration: none;
+  display: inline-block;
+  font-weight: 500;
+  transition: all 0.2s ease;
+  cursor: pointer;
+}
+
+.btn-green:hover {
+  background-color: #72872f;
+}
+
+.btn-green:active {
+  background-color: #5d6d23;
+  transform: scale(0.97);
+}
+
+.text-light {
+  color: #FEFAE0 !important;
+}

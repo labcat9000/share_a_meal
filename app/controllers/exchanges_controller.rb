@@ -21,10 +21,9 @@ class ExchangesController < ApplicationController
 
   def decline
     @exchange = Exchange.find(params[:id])
-    authorize @exchange.meal, :update?  # meal owner only
-
-    @exchange.destroy
-    redirect_to meal_path(@exchange.meal), notice: "Exchange declined."
+    authorize @exchange  # meal owner only
+    @exchange.update(accepted: false, status: "Declined")
+    redirect_to user_meals_path(section: "exchanges"), notice: "Exchange declined."
   end
 
   def update
@@ -51,8 +50,7 @@ class ExchangesController < ApplicationController
     @exchange = Exchange.new
     @exchange.meal_offered = @meal
     @exchange.requesting_user = current_user
-
-    if @exchange.save
+    if @exchange.save!
       redirect_to meal_path(@exchange.meal_offered), notice: "Share requested!"
     else
       redirect_to meal_path(@meal), notice: "Share request unsuccessful."
@@ -73,12 +71,12 @@ class ExchangesController < ApplicationController
 
   def my_exchanges
     @current_exchanges = Exchange.where(requesting_user_id: current_user.id, status: ["Accepted", "Pending"])
-    @past_exchanges = Exchange.where(requesting_user_id: current_user.id, status: ["Declined", "Complete"])
+    @past_exchanges = Exchange.where(requesting_user_id: current_user.id, status: ["Declined", "Completed"])
   end
 
   def exchanges_dashboard
     @current_exchanges = Exchange.where(requesting_user_id: current_user.id, status: ["Accepted", "Pending"])
-    @past_exchanges = Exchange.where(requesting_user_id: current_user.id, status: ["Declined", "Complete"])
+    @past_exchanges = Exchange.where(requesting_user_id: current_user.id, status: ["Declined", "Completed"])
     @exchange_requests = Exchange
       .includes(:meal_offered, :requesting_user)
       .where("meal_offered_id IN (:meal_ids)",
@@ -87,8 +85,8 @@ class ExchangesController < ApplicationController
     @messages = Message.includes(:user).order(created_at: :asc) # or scoped by user or exchange
   end
 
-  def exchange_requests
-  end
+  # def exchange_requests
+  # end
 
   def edit_rating
     @rating_user = params[:user] # expecting 'offering' or 'requesting'

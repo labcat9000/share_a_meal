@@ -1,6 +1,6 @@
-<div class="bg-white min-vh-100 d-flex flex-column justify-content-between" style="padding-bottom: 70px;">
+<div class=" min-vh-100 d-flex flex-column justify-content-between" style="padding-bottom: 70px;">
   <div class="w-100 px-3 py-4">
-    <div class="bg-white rounded-4 shadow-sm px-4 py-5">
+    <div class="green-ak rounded-4 shadow-sm px-4 py-5">
 
       <%= simple_form_for(meal, html: { multipart: true }) do |f| %>
         <% if meal.errors.any? %>
@@ -15,12 +15,12 @@
         <% end %>
 
         <div class="d-flex flex-column gap-4">
-          <!-- 🥘 Meal Name -->
+          <!-- Meal Name -->
           <div class="text-center">
-            <%= f.input :name, label: false, placeholder: "Meal Name", input_html: { class: "form-control fs-4 fw-bold text-center bg-light border-0 rounded-pill" } %>
+            <%= f.input :name, label: false, placeholder: "Meal Name", input_html: { class: "meal-name-input" } %>
           </div>
 
-          <!-- 🖼️ Photos Area -->
+          <!-- Photos Area -->
           <div class="mb-4">
             <h6 class="fw-semibold mb-2">Attached Photos</h6>
 
@@ -28,11 +28,11 @@
             <div data-controller="file-list">
               <!-- Stimulus Target: list -->
               <div
-                class="d-flex gap-3 flex-wrap p-3 bg-light rounded-3 border"
+                class="attached-photo d-flex gap-3 flex-wrap p-3 rounded-3 border"
                 data-file-list-target="list"
                 style="min-height: 110px;">
 
-                <!-- ✅ Render already attached photos (Cloudinary) -->
+                <!-- Render already attached photos (Cloudinary) -->
                 <% if meal.photos.attached? %>
                   <% meal.photos.each do |photo| %>
                     <div class="position-relative"
@@ -49,14 +49,14 @@
                 <% end %>
 
 
-                <!-- 🟢 Stimulus Preview Goes Here -->
+                <!-- Stimulus Preview Goes Here -->
                 <label
                   for="add-photo-input"
                   data-plus-box
-                  class="d-flex align-items-center justify-content-center bg-white border border-secondary-subtle"
-                  style="cursor: pointer; width: 100px; height: 100px; border-radius: 8px; font-size: 32px; color: #999; box-shadow: 0 0 4px rgba(0,0,0,0.1);">
+                  class="add-photo-button">
                   +
                 </label>
+
               </div>
 
               <!-- Stimulus Target: input -->
@@ -77,16 +77,15 @@
 
 
 
-          <!-- 📝 Description -->
-          <%= f.input :description, label: "Description", input_html: { class: "form-control bg-light rounded-4 p-3", rows: 3 } %>
+          <!-- Description -->
+          <%= f.input :description, label: "Description", label_html: { style: "color: #FEFAE0;" }, input_html: { class: "form-control bg-light rounded-4 p-3", rows: 3 } %>
 
-          <!-- 🧂 Ingredients -->
-          <%= f.input :ingredients, label: "Ingredients", input_html: { class: "form-control bg-light rounded-4 p-3" } %>
+          <!-- Ingredients -->
+          <%= f.input :ingredients, label: "Ingredients", label_html: { style: "color: #FEFAE0;" }, input_html: { class: "form-control bg-light rounded-4 p-3" } %>
 
-          <!-- 🍽️ Category -->
-          <%= f.input :category, label: "Category", collection: Meal::CATEGORY_OPTIONS, prompt: "Select Category", input_html: { class: "form-select bg-light rounded-4 p-2" } %>
-
-          <!-- 🌍 Cuisine -->
+          <!-- Category -->
+          <%= f.input :category, label: "Category", label_html: { style: "color: #FEFAE0;" }, collection: Meal::CATEGORY_OPTIONS, prompt: "Select Category", input_html: { class: "form-select rounded-4 p-2", style: "background-color: #D7E0D2; color: #223618;" } %>
+          <!-- Cuisine -->
           <%= f.input_field :cuisine, list: "cuisine-options", placeholder: "e.g. Chinese, French", class: "form-control bg-light rounded-4 p-3" %>
           <datalist id="cuisine-options">
             <% ['Italian', 'Chinese', 'Mexican', 'Indian', 'Greek', 'Thai', 'American'].each do |cuisine| %>
@@ -95,20 +94,20 @@
           </datalist>
 
           <!-- 📍 Address -->
-          <%= f.input :address, label: "Location", input_html: { class: "form-control bg-light rounded-4 p-3" } %>
+          <%= f.input :address, label: "Location", label_html: { style: "color: #FEFAE0;" }, input_html: { class: "form-control bg-light rounded-4 p-3" } %>
 
           <!-- 🗓️ Date -->
-          <%= f.input :posted_on, as: :date, label: "Date", input_html: { class: "form-control bg-light rounded-pill p-2", value: f.object.posted_on || Date.today } %>
+          <%= f.input :posted_on, as: :date, label: "Date", label_html: { style: "color: #FEFAE0;" }, input_html: { class: "form-control bg-light rounded-pill p-2", value: f.object.posted_on || Date.today } %>
 
-          <!-- ✅ Submit -->
+          <!-- submit -->
           <div class="text-center">
-            <%= f.button :submit, meal.persisted? ? "Update Meal" : "Create Meal", class: "btn btn-success rounded-pill px-5 py-2" %>
+            <%= f.button :submit, meal.persisted? ? "Update Meal" : "Create Meal", class: "btn btn-green" %>
           </div>
         </div>
       <% end %>
 
       <div class="text-center mt-4">
-        <%= link_to "Back", meals_path, class: "text-muted" %>
+        <%= link_to "Back", meals_path, class: "btn btn-green mt-4" %>
       </div>
     </div>
   </div>
