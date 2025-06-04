@@ -33,7 +33,6 @@
     <% if @my_exchanges.any? %>
       <div class="mt-4">
         <% @my_exchanges.each do |exchange| %>
-
           <div class="meal-card">
             <h2></strong> <%= link_to exchange.requesting_user.name, view_user_path(exchange.requesting_user), class: "meal-card-link" %> </h2>
             <p><strong>Meal Requested:</strong> <%= exchange.meal_offered&.name || "N/A" %> </p>
