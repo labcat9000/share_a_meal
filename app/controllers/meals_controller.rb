@@ -117,10 +117,8 @@ class MealsController < ApplicationController
 
   def my_meals
     @meals = current_user.meals
-    @my_exchanges = Exchange
-      .includes(:meal_offered, :requesting_user)
-      .where("meal_offered_id IN (:meal_ids)",
-            meal_ids: @meals.pluck(:id))
+    # @my_exchanges = Exchange.includes(:meal_offered, :requesting_user).where("meal_offered_id IN (:meal_ids)", meal_ids: @meals.pluck(:id))
+    @my_exchanges = Exchange.includes(:meal_offered, :requesting_user).where(meal_offered_id: @meals.pluck(:id)).distinct
   end
 
 

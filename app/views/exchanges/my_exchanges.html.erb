@@ -53,15 +53,21 @@
         <% @past_exchanges.each do |exchange| %>
           <div class="meal-card">
             <div>
-              <h2><%= exchange.requesting_user.first_name %></h2>
-              <%= exchange.status %>
+              <h2><%= exchange.meal_offered.user.first_name %></h2>
+              Status: <%= exchange.status %>
             </div>
             <div>
-              They got: <%=exchange.meal_offered.name %>
-              <br>
-              You got: <%= exchange.meal_requested.name %>
-              <br>
-              Date exchanged: <%= exchange.updated_at.strftime("%Y-%m-%d") %>
+              <% if exchange.status == "Completed" %>
+                They got: <%=exchange.meal_offered.name %>
+                <br>
+                You got: <%= exchange.meal_requested.name %>
+                <br>
+                Date exchanged: <%= exchange.updated_at.strftime("%Y-%m-%d") %>
+              <% elsif exchange.status == "Declined" %>
+                You requested: <%=exchange.meal_offered.name %>
+                <br>
+                Date: <%= exchange.updated_at.strftime("%Y-%m-%d") %>
+              <% end %>
             <div>
           </div>
         <% end %>

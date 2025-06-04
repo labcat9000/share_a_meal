@@ -3,11 +3,11 @@ class Exchange < ApplicationRecord
   belongs_to :meal_offered, class_name: "Meal", foreign_key: "meal_offered_id"
   belongs_to :requesting_user, class_name: "User", foreign_key: "requesting_user_id"
 
-  has_many :messages
+  has_many :messages, dependent: :destroy
 
-  validates :requesting_user, uniqueness: { scope: [:meal_requested] }
+  # skip this validation for the demo
+  # validates :requesting_user, uniqueness: { scope: [:meal_requested] }
 
-  # validates :meal_requested_id, presence: true
   validates :meal_offered_id, presence: true
   validates :requesting_user_id, presence: true
 

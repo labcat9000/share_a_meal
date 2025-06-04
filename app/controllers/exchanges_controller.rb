@@ -50,8 +50,7 @@ class ExchangesController < ApplicationController
     @exchange = Exchange.new
     @exchange.meal_offered = @meal
     @exchange.requesting_user = current_user
-
-    if @exchange.save
+    if @exchange.save!
       redirect_to meal_path(@exchange.meal_offered), notice: "Share requested!"
     else
       redirect_to meal_path(@meal), notice: "Share request unsuccessful."
@@ -72,12 +71,12 @@ class ExchangesController < ApplicationController
 
   def my_exchanges
     @current_exchanges = Exchange.where(requesting_user_id: current_user.id, status: ["Accepted", "Pending"])
-    @past_exchanges = Exchange.where(requesting_user_id: current_user.id, status: ["Declined", "Complete"])
+    @past_exchanges = Exchange.where(requesting_user_id: current_user.id, status: ["Declined", "Completed"])
   end
 
   def exchanges_dashboard
     @current_exchanges = Exchange.where(requesting_user_id: current_user.id, status: ["Accepted", "Pending"])
-    @past_exchanges = Exchange.where(requesting_user_id: current_user.id, status: ["Declined", "Complete"])
+    @past_exchanges = Exchange.where(requesting_user_id: current_user.id, status: ["Declined", "Completed"])
     @exchange_requests = Exchange
       .includes(:meal_offered, :requesting_user)
       .where("meal_offered_id IN (:meal_ids)",
