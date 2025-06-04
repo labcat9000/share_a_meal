@@ -47,7 +47,7 @@
 
   <% if controller_name == "meals" && action_name == "index" %>
     <div class="container-fluid px-3 pt-3 filter-drawer" data-filter-target="panel" hidden>
-      <div class="p-4" style="background: white; border: none; border-radius: 1rem; box-shadow: none;">
+      <div class="p-4" style="background: #223618; border: none; border-radius: 1rem; box-shadow: none;">
         <h5 class="mb-3">Filter Meals</h5>
 
         <%= form_with url: meals_path, method: :get, local: true do |f| %>

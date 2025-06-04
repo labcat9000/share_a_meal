@@ -9,7 +9,7 @@
   <!-- Message Area -->
   <div id="messages" class="chat-body px-3 py-2 flex-grow-1" style="overflow-y: auto; background-color: #FFF9E5;">
     <% @exchange.messages.each do |message| %>
-      <%= render partial: "messages/message", locals: { message: message, user: current_user } %>
+      <%= render partial: 'message', collection: @messages, as: :message, locals: { user: current_user } %>
     <% end %>
   </div>
 
