@@ -8,7 +8,7 @@
 }
 
 .meal-card {
-  background: white;
+  background: #223618;
   border: 1px solid #ddd;
   border-radius: 16px;
   padding: 12px;
@@ -54,18 +54,26 @@
   font-weight: 700;
   font-size: 1.1rem;
   margin: 0 0 0.25rem 0;
+  color: #FEFAE0;
 }
 
 .meal-description {
   font-size: 0.9rem;
   color: #333;
   margin-bottom: 0.4rem;
+  color: #FEFAE0;
 }
 
 .meal-author {
   font-size: 0.85rem;
   color: #555;
   margin-bottom: 0.25rem;
+  color: #D7E0D2;
+}
+.meal-date {
+  font-size: 0.8rem;
+  color: #D7E0D2;
+  margin-bottom: 0.5rem;
 }
 
 .meal-actions {
@@ -88,21 +96,39 @@
 // === Responsive ===
 @media (max-width: 480px) {
   .meal-card-inner {
-    flex-direction: column;
-    align-items: center;
-  }
-
-  .meal-card-image {
-    width: 100%;
-    max-width: 280px;
-    height: auto;
-    aspect-ratio: 1 / 1;
+    flex-direction: row;
+    align-items: flex-start;
   }
 
   .meal-card-content {
-    text-align: center;
+    text-align: left;
   }
+
+  .meal-card-image {
+    width: 90px;
+    height: 90px;
+  }
+
+  .meal-title {
+    font-size: 1rem;
+  }
+
+  .meal-description {
+    font-size: 0.85rem;
+  }
+
+  .meal-author,
+  .meal-date {
+    font-size: 0.75rem;
+  }
+
+  .meal-card {
+    padding: 8px;
+    border-radius: 12px;
+  }
+
 }
+
 
 // === Attached Photo Delete Styling ===
 .photo-delete-checkbox {

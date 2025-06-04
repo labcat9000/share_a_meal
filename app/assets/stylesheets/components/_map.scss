@@ -29,6 +29,7 @@
   border-radius: 12px;
   padding: 10px 16px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  background-color: #FEFAE0;
 }
 
 .map-location p {
@@ -39,10 +40,10 @@
 .map-buttons {
   display: flex;
   gap: 10px;
+
 }
 
 .map-btn {
-  background: white;
   border: 1px solid #ccc;
   padding: 6px 12px;
   border-radius: 12px;
@@ -51,4 +52,6 @@
   display: flex;
   align-items: center;
   gap: 6px;
+  color: #FEFAE0;
+  background-color: #223618;
 }
