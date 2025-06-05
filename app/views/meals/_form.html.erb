@@ -97,8 +97,8 @@
           <%= f.input :address, label: "Location", label_html: { style: "color: #FEFAE0;" }, input_html: { class: "form-control bg-light rounded-4 p-3" } %>
 
           <!-- 🗓️ Date -->
-          <%= f.input :posted_on, as: :date, label: "Date", label_html: { style: "color: #FEFAE0;" }, input_html: { class: "form-control bg-light rounded-pill p-2", value: f.object.posted_on || Date.today } %>
-
+          <p style="color: #FEFAE0;"><strong>Date:</strong> <%= Date.today.strftime("%B %d, %Y") %></p>
+          <%= f.hidden_field :posted_on, value: Date.today %>
           <!-- submit -->
           <div class="text-center">
             <%= f.button :submit, meal.persisted? ? "Update Meal" : "Create Meal", class: "btn btn-green" %>
@@ -107,7 +107,6 @@
       <% end %>
 
       <div class="text-center mt-4">
-        <%= link_to "Back", meals_path, class: "btn btn-green mt-4" %>
       </div>
     </div>
   </div>
