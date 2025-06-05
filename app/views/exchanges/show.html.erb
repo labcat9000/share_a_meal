@@ -1,3 +1,7 @@
+<% content_for :meta_title, "#{@exchange.name} is on #{DEFAULT_META["meta_product_name"]}" %>
+<% content_for :meta_description, @exchange.description %>
+<% content_for :meta_image, cl_image_path(@meal.photo.path) %>
+
 <%= turbo_stream_from "exchanges_#{@exchange.id}_messages" %>
 <div id="messages" class="messages">
   <% @exchange.messages.each do |message| %>
