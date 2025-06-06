@@ -6,5 +6,5 @@
 //= link bootstrap.min.js
 // app/assets/config/manifest.js
 // ...
-//= link_directory ../images/icons
+
 //= link manifest.json
