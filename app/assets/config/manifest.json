@@ -1,5 +1,8 @@
 {
- "name": "App",
+ "background_color": "white",
+ "description": "Share A Meal is a web application to share meals, while creating a community of people who love to cook and share food.",
+ "display": "fullscreen",
+ "name": "Share A Meal",
  "icons": [
   {
    "src": "\/android-icon-36x36.png",
