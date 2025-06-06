@@ -16,7 +16,6 @@
     </div>
 
     <div data-exchanges-toggle-target="currentExchangesSection">
-      <h2>Current Shares</h2>
       <% if @current_exchanges.any? %>
         <% @current_exchanges.each do |exchange| %>
           <div class="meal-card p-3 border rounded mb-3">
@@ -47,7 +46,6 @@
 
 
     <div data-exchanges-toggle-target="pastExchangesSection" style="display: none;">
-      <h2>Past Shares</h2>
       <% if @past_exchanges.any? %>
         <% @past_exchanges.each do |exchange| %>
           <div class="meal-card">
