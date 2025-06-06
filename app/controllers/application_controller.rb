@@ -19,6 +19,10 @@ class ApplicationController < ActionController::Base
     devise_parameter_sanitizer.permit(:account_update, keys: added_attrs)
   end
 
+  def default_url_options
+    { host: ENV["DOMAIN"] || "localhost:3000" }
+  end
+
   def user_not_authorized
     redirect_to(request.referrer || root_path, alert: "You are not authorized to perform this action.")
   end
