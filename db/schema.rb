@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2025_06_07_153044) do
+ActiveRecord::Schema[7.1].define(version: 2025_06_07_153043) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -51,11 +51,11 @@ ActiveRecord::Schema[7.1].define(version: 2025_06_07_153044) do
     t.bigint "meal_requested_id"
     t.boolean "accepted", default: false
     t.boolean "seen", default: false
+    t.bigint "requesting_user_id"
     t.integer "offering_user_rating"
     t.integer "requesting_user_rating"
     t.text "offering_user_comment"
     t.text "requesting_user_comment"
-    t.bigint "requesting_user_id"
     t.index ["meal_offered_id"], name: "index_exchanges_on_meal_offered_id"
     t.index ["meal_requested_id"], name: "index_exchanges_on_meal_requested_id"
     t.index ["requesting_user_id"], name: "index_exchanges_on_requesting_user_id"
@@ -102,7 +102,6 @@ ActiveRecord::Schema[7.1].define(version: 2025_06_07_153044) do
     t.text "payload"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["channel"], name: "index_solid_cable_messages_on_channel"
     t.index ["created_at"], name: "index_solid_cable_messages_on_created_at"
   end
 
