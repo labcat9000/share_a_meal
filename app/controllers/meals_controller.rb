@@ -95,7 +95,7 @@ class MealsController < ApplicationController
     end
 
     if @meal.update(meal_params.except(:photos, :remove_photo_ids))
-      redirect_to @meal, notice: 'Meal updated successfully.'
+      redirect_to meal_path(@meal), notice: 'Meal updated successfully.'
     else
       render :edit, status: :unprocessable_entity
     end
