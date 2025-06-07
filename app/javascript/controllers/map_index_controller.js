@@ -21,62 +21,97 @@ export default class extends Controller {
 
     this.map.addControl(new mapboxgl.NavigationControl(), 'top-left')
 
-    const markers = JSON.parse(this.markersValue)
+    const allMarkers = JSON.parse(this.markersValue)
+    const accepted = []
+    const blurred = []
 
-    if (markers.length > 0) {
-      const bounds = new mapboxgl.LngLatBounds()
+    allMarkers.forEach(marker => {
+      if (marker.status === "accepted") {
+        accepted.push(marker)
+      } else {
+        blurred.push(marker)
+      }
+    })
 
-      markers.forEach((marker, i) => {
-        const coordinates = [marker.lng, marker.lat]
+    const bounds = new mapboxgl.LngLatBounds()
 
-        if (marker.status === "accepted") {
-          const popup = new mapboxgl.Popup().setHTML(`
-            <strong>${marker.name}</strong><br>
-            ${marker.description}<br>
-            Cooked by: ${marker.owner}<br>
-            <a href="${marker.path}" class="btn btn-sm btn-outline-primary mt-1">View</a>
-          `)
+    accepted.forEach(marker => {
+      const popup = new mapboxgl.Popup().setHTML(`
+        <strong>${marker.name}</strong><br>
+        ${marker.description}<br>
+        Cooked by: ${marker.owner}<br>
+        <a href="${marker.path}" class="btn btn-sm btn-outline-primary mt-1">View</a>
+      `)
 
-          new mapboxgl.Marker()
-            .setLngLat(coordinates)
-            .setPopup(popup)
-            .addTo(this.map)
-        } else {
-          this.map.on("load", () => {
-            this.map.addSource(`meal-${i}`, {
-              type: "geojson",
-              data: {
-                type: "Feature",
-                geometry: {
-                  type: "Point",
-                  coordinates: coordinates
-                }
-              }
-            })
+      new mapboxgl.Marker()
+        .setLngLat([marker.lng, marker.lat])
+        .setPopup(popup)
+        .addTo(this.map)
 
-            this.map.addLayer({
-              id: `blur-circle-${i}`,
-              type: "circle",
-              source: `meal-${i}`,
-              paint: {
-                "circle-radius": {
-                  stops: [[0, 0], [20, 35000 / 2]],
-                  base: 2
-                },
-                "circle-color": "#1e90ff",
-                "circle-opacity": 0.15,
-                "circle-stroke-color": "#1e90ff",
-                "circle-stroke-width": 1
-              }
-            })
-          })
-        }
+      bounds.extend([marker.lng, marker.lat])
+    })
 
-        bounds.extend(coordinates)
+    this.map.on("load", () => {
+      this.map.addSource("blurred-meals", {
+        type: "geojson",
+        data: {
+          type: "FeatureCollection",
+          features: blurred.map(m => ({
+            type: "Feature",
+            geometry: {
+              type: "Point",
+              coordinates: [m.lng, m.lat]
+            },
+            properties: { name: m.name }
+          }))
+        },
+        cluster: true,
+        clusterMaxZoom: 14,
+        clusterRadius: 60
       })
 
-      this.map.fitBounds(bounds, { padding: 60, maxZoom: 15, duration: 0 })
-    }
+      this.map.addLayer({
+        id: "clusters",
+        type: "circle",
+        source: "blurred-meals",
+        filter: ["has", "point_count"],
+        paint: {
+          "circle-color": "#1e90ff",
+          "circle-radius": ["step", ["get", "point_count"], 20, 10, 30, 50, 40],
+          "circle-opacity": 0.2
+        }
+      })
+
+      this.map.addLayer({
+        id: "cluster-count",
+        type: "symbol",
+        source: "blurred-meals",
+        filter: ["has", "point_count"],
+        layout: {
+          "text-field": "{point_count_abbreviated}",
+          "text-font": ["DIN Offc Pro Medium", "Arial Unicode MS Bold"],
+          "text-size": 14
+        }
+      })
+
+      this.map.addLayer({
+        id: "unclustered-point",
+        type: "circle",
+        source: "blurred-meals",
+        filter: ["!", ["has", "point_count"]],
+        paint: {
+          "circle-color": "#1e90ff",
+          "circle-radius": 80,
+          "circle-opacity": 0.15,
+          "circle-stroke-color": "#1e90ff",
+          "circle-stroke-width": 1
+        }
+      })
+
+      if (accepted.length > 0) {
+        this.map.fitBounds(bounds, { padding: 60, maxZoom: 15 })
+      }
+    })
 
     this.element.addEventListener("map:visible", () => {
       if (this.map) this.map.resize()

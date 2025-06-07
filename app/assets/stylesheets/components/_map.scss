@@ -5,6 +5,8 @@
   height: 60vh;
   max-width: 100%;
   border-radius: 12px;
+  border: none !important;
+  outline:none !important;
 }
 
 .map-wrapper {
@@ -12,13 +14,16 @@
   display: flex;
   flex-direction: column;
   gap: 16px;
+  border: none !important;
+  outline:none !important;
 }
-
 
 .map-container {
   width: 100%;
   height: 60vh;
   border-radius: 12px;
+  border: none !important;
+  outline: none !important;
 }
 
 .map-footer {

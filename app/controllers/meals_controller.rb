@@ -113,7 +113,6 @@ class MealsController < ApplicationController
     redirect_to meals_path, notice: 'Meal was successfully deleted.'
   end
 
-
   def remove_photo
     @meal = Meal.find(params[:id])
     photo = @meal.photos.find(params[:photo_id])
@@ -123,10 +122,8 @@ class MealsController < ApplicationController
 
   def my_meals
     @meals = current_user.meals
-    # @my_exchanges = Exchange.includes(:meal_offered, :requesting_user).where("meal_offered_id IN (:meal_ids)", meal_ids: @meals.pluck(:id))
     @my_exchanges = Exchange.includes(:meal_offered, :requesting_user).where(meal_offered_id: @meals.pluck(:id)).distinct
   end
-
 
   private
 
