@@ -1,9 +1,10 @@
-<div class="bg-white min-vh-100 d-flex flex-column justify-content-between" style="padding-bottom: 70px;">
+<div class="min-vh-100 d-flex flex-column justify-content-between" style="padding-bottom: 70px;">
   <div class="w-100 px-3 py-4">
-    <div class="bg-white rounded-4 shadow-sm px-4 py-5" data-controller="profile-photo">
+    <div class="edit-profile rounded-4 shadow-sm px-4 py-5 text-white" data-controller="profile-photo">
+
       <div class="d-flex justify-content-center mb-4">
         <div class="rounded-circle bg-secondary d-flex justify-content-center align-items-center" style="width: 100px; height: 100px;">
-          <% if resource.profile_photo.attached? %>
+          <% if resource.persisted? && resource.profile_photo.attached? %>
             <%= image_tag resource.profile_photo, class: "w-100 h-100 object-fit-cover rounded-circle", data: { profile_photo_target: "preview" } %>
           <% else %>
             <%= image_tag "pfp-default.png", class: "w-100 h-100 object-fit-cover rounded-circle", data: { profile_photo_target: "preview" } %>
@@ -33,12 +34,12 @@
             <p class="text-muted small">Currently waiting confirmation for: <%= resource.unconfirmed_email %></p>
           <% end %>
 
-          <%= f.input :password, label: false, placeholder: "New Password", hint: "Leave blank if you don't want to change it", input_html: { class: "form-control", autocomplete: "new-password" } %>
-          <%= f.input :password_confirmation, label: false, placeholder: "Confirm New Password", input_html: { class: "form-control", autocomplete: "new-password" } %>
-          <%= f.input :current_password, label: false, placeholder: "Current Password", hint: "Required to save changes", required: true, input_html: { class: "form-control", autocomplete: "current-password" } %>
+          <%= f.input :password, label: false, placeholder: "New Password", hint: "Leave blank if you don't want to change it", hint_html: { style: "color: #FEFAE0;" }, input_html: { class: "form-control rounded-pill px-3 py-2 bg-light border-0", autocomplete: "new-password" } %>
+          <%= f.input :password_confirmation, label: false, placeholder: "Confirm New Password", input_html: { class: "form-control rounded-pill px-3 py-2 bg-light border-0", autocomplete: "new-password" } %>
+          <%= f.input :current_password, label: false, placeholder: "Current Password", hint: "Required to save changes", hint_html: { style: "color: #FEFAE0;" }, required: true, input_html: { class: "form-control rounded-pill px-3 py-2 bg-light border-0", autocomplete: "current-password" } %>
 
           <div class="text-center mt-4">
-            <%= f.button :submit, "Done", class: "btn btn-success rounded-pill px-5 py-2" %>
+            <%= f.button :submit, "Done", class: "btn rounded-pill px-5 py-2", style: "background-color: #82983A;" %>
           </div>
         </div>
       <% end %>
