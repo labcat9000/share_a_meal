@@ -1,0 +1,24 @@
+.dashboard-box {
+  background-color: #223618;
+  border-radius: 12px;
+  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.08);
+  min-width: 140px;
+  color: #FEFAE0;
+  transition: transform 0.2s ease-in-out;
+
+  &:hover {
+    transform: scale(1.03);
+  }
+
+  &:active {
+    transform: scale(0.96);
+  }
+}
+
+.dashboard-box .text-success {
+  color: #82983A !important;
+}
+
+.text-dashboard {
+  color: #223618;
+}

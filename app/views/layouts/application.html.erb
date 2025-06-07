@@ -59,22 +59,24 @@
     <%= yield %>
 
     <% unless devise_controller? && ["sessions", "registrations", "passwords", "confirmations"].include?(controller_name) %>
+
       <footer class="footer fixed-bottom border-top shadow d-flex justify-content-around align-items-center"
               style="height: 65px; z-index: 1030;">
         <%= link_to root_path, class: "text-decoration-none text-center" do %>
-          <div><i class="fa fa-home fa-lg d-block footer-icon"></i></div>
+          <div><i class="fa fa-home fa-2x d-block footer-icon"></i></div>
         <% end %>
 
         <%= link_to new_meal_path, class: "text-decoration-none text-center" do %>
-          <div class="bg-light rounded-circle d-flex align-items-center justify-content-center"
-              style="width: 46px; height: 46px;">
-            <i class="fa fa-plus fa-lg footer-icon"></i>
+          <div class="d-flex align-items-center justify-content-center" style="width: 46px; height: 46px;">
+            <i class="fa-solid fa-square-plus footer-icon" style="font-size: 50px;"></i>
           </div>
         <% end %>
 
+
+
         <%= link_to exchanges_dashboard_path, class: "text-decoration-none text-center" do %>
           <div class="d-flex align-items-center justify-content-center" style="width: 46px; height: 46px;">
-            <i class="fa-solid fa-handshake-angle footer-icon"></i>
+            <i class="fa-solid fa-handshake-angle fa-2x footer-icon"></i>
           </div>
         <% end %>
       </footer>
