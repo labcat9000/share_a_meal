@@ -25,19 +25,54 @@ export default class extends Controller {
 
     if (markers.length > 0) {
       const bounds = new mapboxgl.LngLatBounds()
-      markers.forEach(marker => {
-        const popup = new mapboxgl.Popup().setHTML(`
-          <strong>${marker.name}</strong><br>
-          ${marker.description}<br>
-          <a href="${marker.path}" class="btn btn-sm btn-outline-primary mt-1">View</a>
-        `)
 
-        new mapboxgl.Marker()
-          .setLngLat([marker.lng, marker.lat])
-          .setPopup(popup)
-          .addTo(this.map)
+      markers.forEach((marker, i) => {
+        const coordinates = [marker.lng, marker.lat]
 
-        bounds.extend([marker.lng, marker.lat])
+        if (marker.status === "accepted") {
+          const popup = new mapboxgl.Popup().setHTML(`
+            <strong>${marker.name}</strong><br>
+            ${marker.description}<br>
+            Cooked by: ${marker.owner}<br>
+            <a href="${marker.path}" class="btn btn-sm btn-outline-primary mt-1">View</a>
+          `)
+
+          new mapboxgl.Marker()
+            .setLngLat(coordinates)
+            .setPopup(popup)
+            .addTo(this.map)
+        } else {
+          this.map.on("load", () => {
+            this.map.addSource(`meal-${i}`, {
+              type: "geojson",
+              data: {
+                type: "Feature",
+                geometry: {
+                  type: "Point",
+                  coordinates: coordinates
+                }
+              }
+            })
+
+            this.map.addLayer({
+              id: `blur-circle-${i}`,
+              type: "circle",
+              source: `meal-${i}`,
+              paint: {
+                "circle-radius": {
+                  stops: [[0, 0], [20, 35000 / 2]],
+                  base: 2
+                },
+                "circle-color": "#1e90ff",
+                "circle-opacity": 0.15,
+                "circle-stroke-color": "#1e90ff",
+                "circle-stroke-width": 1
+              }
+            })
+          })
+        }
+
+        bounds.extend(coordinates)
       })
 
       this.map.fitBounds(bounds, { padding: 60, maxZoom: 15, duration: 0 })
@@ -50,7 +85,6 @@ export default class extends Controller {
     window.addEventListener("resize", () => {
       if (this.map) this.map.resize()
     })
-
 
     this.map.on("moveend", () => {
       const center = this.map.getCenter()
