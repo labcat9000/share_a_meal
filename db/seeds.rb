@@ -63,9 +63,6 @@ Meal.create!(
   category: "Breakfast",
   ingredients: "Oats, Strawberries, Greek yogurt, cinnamon",
   cuisine: "",
-  address: "Rosemont–La Petite-Patrie, Montreal, QC",
-  latitude: 45.5451,
-  longitude: -73.5983,
   user: user2,
   address: user2.address
 )
