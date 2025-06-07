@@ -25,7 +25,7 @@
                 <strong>Status:</strong> <%= exchange.status %>
               </div>
               <% if exchange.status == "Accepted" %>
-                <%= link_to exchange_messages_path(exchange), class: "text-dark text-decoration-none" do %>
+                <%= link_to exchange_messages_path(exchange), class: "text-decoration-none", style: "color: #FEFAE0;" do %>
                   <i class="fa-solid fa-comment"></i>
                 <% end %>
               <% end %>
