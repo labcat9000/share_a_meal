@@ -4,8 +4,7 @@ class Message < ApplicationRecord
   after_create_commit :broadcast_message
 
   def broadcast_message
-    raise
-    broadcast_append_to "exchange_#{exchange.id}_messages", partial: "messages/message", locals: { message: self, user: user}, target: "messages"
+    broadcast_append_to "exchanges_#{exchange.id}_messages", partial: "messages/message", locals: { message: self, user: user}, target: "messages"
   end
 
   private
