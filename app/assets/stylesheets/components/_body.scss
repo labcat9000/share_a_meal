@@ -11,10 +11,8 @@ html, body {
 }
 
 .user-info-card {
-  background-color: #FEFAE0;
-  border: none;
-  box-shadow: 0 0 24px rgba(0, 0, 0, 0.15);
-  border-radius: 1rem;
+  background-color: #223618;
+  color: #FEFAE0;
 }
 
 .big-title {
@@ -58,4 +56,13 @@ html, body {
 
 .attached-photo {
   background-color: #D7E0D2;
+}
+
+.edit-profile {
+  background-color: #223618;
+
+}
+
+.text-muted-all {
+  color: #FEFAE0 !important;
 }

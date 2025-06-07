@@ -1,5 +1,4 @@
 .filter-drawer {
-  background-color: #ffffff;
   border-radius: 20px;
   box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
   padding: 1.5rem;
@@ -9,14 +8,14 @@
   h5 {
     font-weight: 700;
     font-size: 1.25rem;
-    color: #2e3e1d;
+    color: #FEFAE0;
     margin-bottom: 1.25rem;
   }
 
   .form-label {
     font-size: 0.95rem;
     font-weight: 500;
-    color: #444;
+    color:#D7E0D2;
     margin-bottom: 0.3rem;
   }
 
@@ -41,7 +40,7 @@
       appearance: none;
       width: 16px;
       height: 16px;
-      background: #3bb54a;
+      background: #82983A;
       border-radius: 50%;
       cursor: pointer;
     }
@@ -54,7 +53,7 @@
   }
 
   .btn-warning {
-    background: #3bb54a;
+    background: #82983A;
     color: #fff;
     border: none;
     border-radius: 999px;

@@ -18,36 +18,40 @@
     </h4>
 
     <!-- Info Card -->
-    <div class="user-info-card rounded-4 p-4 shadow-sm position-relative" style="min-height: 450px;">
-      <%= link_to edit_user_registration_path, class: "position-absolute top-0 end-0 mt-3 me-3 text-muted" do %>
-        <i class="fa fa-pen fs-5"></i>
+    <div class="user-info-card rounded-4 p-4 shadow-sm position-relative text-muted-all" style="min-height: 450px;">
+      <%= link_to edit_user_registration_path, class: "position-absolute top-0 end-0 mt-3 me-3" do %>
+        <i class="fa fa-pen fs-5" style="color: #D7E0D2;"></i>
       <% end %>
 
+
       <div class="mb-4">
-        <p class="fw-semibold fs-5 text-capitalize mb-1"><%= "#{@user.first_name} #{@user.last_name}" %></p>
-        <p class="text-muted mb-0" style="font-size: 1rem;">Member since <%= @user.created_at.strftime("%B %Y") %></p>
+        <p class="fw-semibold fs-5 text-capitalize mb-1">
+          <%= "#{@user.first_name} #{@user.last_name}" %>
+        </p>
+        <p class="mb-0" style="font-size: 1rem;">
+          Member since <%= @user.created_at.strftime("%B %Y") %>
+        </p>
       </div>
 
       <div class="mb-4">
         <p class="fw-bold fs-6 mb-1">Email address</p>
-        <p class="text-muted mb-0 fs-6"><%= @user.email %></p>
+        <p class="mb-0 fs-6"><%= @user.email %></p>
       </div>
 
       <div class="mb-4">
         <p class="fw-bold fs-6 mb-1">Phone number</p>
-        <p class="text-muted mb-0 fs-6"><%= @user.phone_number.presence || "(XXX) XXX-XXXX" %></p>
+        <p class="mb-0 fs-6"><%= @user.phone_number.presence || "(XXX) XXX-XXXX" %></p>
       </div>
 
       <div class="mb-4">
         <p class="fw-bold fs-6 mb-1">Pickup address</p>
-        <p class="text-muted mb-0 fs-6"><%= @user.address.presence || "No address set" %></p>
+        <p class="mb-0 fs-6"><%= @user.address.presence || "No address set" %></p>
       </div>
 
       <div>
         <p class="fw-bold fs-6 mb-1">Rating</p>
-        <p class="text-muted mb-0 fs-6"><%= @user.average_combined_rating %></p>
+        <p class="mb-0 fs-6"><%= @user.average_combined_rating.presence || "No ratings yet" %></p>
       </div>
     </div>
-
   </div>
 </div>
