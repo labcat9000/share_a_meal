@@ -76,11 +76,25 @@ export default class extends Controller {
         source: "blurred-meals",
         filter: ["has", "point_count"],
         paint: {
-          "circle-color": "#1e90ff",
-          "circle-radius": ["step", ["get", "point_count"], 20, 10, 30, 50, 40],
-          "circle-opacity": 0.2
+          "circle-color": "#87da5e",
+          "circle-opacity": 0.2,
+          "circle-stroke-color": "#87da5e",
+          "circle-stroke-width": 1,
+          "circle-radius": [
+            "interpolate",
+            ["linear"],
+            ["get", "point_count"],
+            1, 50,
+            5, 60,
+            10, 70,
+            20, 80,
+            40, 90,
+            100, 80
+          ]
         }
       })
+
+
 
       this.map.addLayer({
         id: "cluster-count",
@@ -101,7 +115,7 @@ export default class extends Controller {
         filter: ["!", ["has", "point_count"]],
         paint: {
           "circle-color": "#1e90ff",
-          "circle-radius": 80,
+          "circle-radius": 35,
           "circle-opacity": 0.15,
           "circle-stroke-color": "#1e90ff",
           "circle-stroke-width": 1
