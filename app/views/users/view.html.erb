@@ -1,5 +1,5 @@
-<div class="bg-white min-vh-100 d-flex flex-column justify-content-between" style="padding-bottom: 70px;">
-  <div class="w-100 bg-white px-4 pt-3 pb-5">
+<div class="min-vh-100 d-flex flex-column justify-content-between" style="padding-bottom: 70px;">
+  <div class="w-100 px-4 pt-3 pb-5">
 
     <div class="d-flex align-items-center mb-4" style="gap: 1rem;">
       <div class="rounded-circle overflow-hidden shadow" style="width: 55px; height: 55px; flex-shrink: 0;">
@@ -11,49 +11,54 @@
       </div>
       <div class="d-flex justify-content-between">
         <div>
-          <h2 style="font-size: 1.4rem; font-weight: 700; margin: 0;">
+          <h4 style="font-size: 1.4rem; font-weight: 700; margin: 0;">
             <%= "#{@user.first_name} #{@user.last_name&.first || ''}." %>
-          </h2>
-          <p class="text-muted" style="font-size: 0.85rem; margin: 0;">
+          </h4>
+          <p class="profile-text" style="font-size: 0.85rem; margin: 0; color:#223618;">
             Joined <%= @user.created_at.strftime("%B %Y") %>
           </p>
         </div>
         <div>
-          <% if Exchange.joins(:meal_offered).where(meal_offered:{ user: current_user}, status: "Pending").any? %>
+          <% if Exchange.joins(:meal_offered).where(meal_offered: { user: current_user }, status: "Pending").any? %>
             <h2><%= link_to "Decline", decline_exchange_path(@exchange), method: :patch, data: { turbo_method: :patch, turbo_confirm: "Decline this share?" } %></h2>
           <% end %>
         </div>
       </div>
     </div>
 
-    <div class="px-1">
+    <div class="px-1 meal-cards">
       <% @meals.each do |meal| %>
         <%= link_to meal_path(meal), class: "meal-card-link" do %>
-          <div class="d-flex bg-white border rounded-4 shadow-sm mb-3 p-3 align-items-start" style="gap: 1rem;">
-            <div style="flex-shrink: 0;">
-              <% if meal.photos.attached? %>
-                <%= cl_image_tag meal.photos.first.key, style: "width: 90px; height: 90px; object-fit: cover; border-radius: 12px;" %>
-              <% else %>
-                <%= image_tag "meal-default.jpeg", style: "width: 90px; height: 90px; object-fit: cover; border-radius: 12px;" %>
-              <% end %>
-            </div>
-            <div class="flex-grow-1">
-              <h5 class="mb-1" style="font-size: 1.1rem;"><%= meal.name %></h5>
-              <p class="mb-1 text-muted" style="font-size: 0.9rem;"><%= truncate(meal.description, length: 120) %></p>
-
-              <% if meal.category.present? || meal.cuisine.present? %>
-                <p class="mb-0 text-muted" style="font-size: 0.85rem;">
-                  <% if meal.cuisine.present? %>
-                    <strong>Cuisine:</strong> <%= meal.cuisine %>
-                  <% end %>
-                </p>
-              <% end %>
-              <p class="mb-0 text-muted" style="font-size: 0.85rem;"><strong>Posted on:</strong> <%= meal.posted_on.strftime("%B %d, %Y") if meal.posted_on %></p>
+          <div class="meal-card">
+            <div class="meal-card-inner">
+              <div class="meal-card-image">
+                <% if meal.photos.attached? %>
+                  <%= cl_image_tag meal.photos.first.key %>
+                <% else %>
+                  <%= image_tag "meal-default.jpeg" %>
+                <% end %>
+              </div>
+              <div class="meal-card-content">
+                <h5 class="meal-title"><%= meal.name %></h5>
+                <p class="meal-description"><%= truncate(meal.description, length: 120) %></p>
+                <% if meal.cuisine.present? %>
+                  <p class="meal-author"><strong>Cuisine:</strong> <%= meal.cuisine %></p>
+                <% end %>
+                <% if meal.posted_on %>
+                  <p class="meal-date"><strong>Posted on:</strong> <%= meal.posted_on.strftime("%B %d, %Y") %></p>
+                <% end %>
+              </div>
             </div>
           </div>
         <% end %>
-        <% if Exchange.joins(:meal_offered).where(meal_offered:{ user: current_user}, requesting_user: meal.user, status: "Pending").any? %>
-          <%= link_to "Accept", accept_exchange_path(Exchange.joins(:meal_offered).where(meal_offered:{ user: current_user}, requesting_user: meal.user, status: "Pending").first, meal_id: meal.id), method: :patch, data: { turbo_method: :patch, turbo_confirm: "Accept this share?" } %>
+
+        <% if Exchange.joins(:meal_offered).where(meal_offered: { user: current_user }, requesting_user: meal.user, status: "Pending").any? %>
+          <%= link_to "Accept", accept_exchange_path(
+                Exchange.joins(:meal_offered).where(meal_offered: { user: current_user }, requesting_user: meal.user, status: "Pending").first,
+                meal_id: meal.id),
+              method: :patch,
+              data: { turbo_method: :patch, turbo_confirm: "Accept this share?" },
+              class: "btn btn-success mt-2 mb-4 rounded-pill px-4" %>
         <% end %>
       <% end %>
 
@@ -61,6 +66,5 @@
         <p class="text-center text-muted mt-4">This user hasn’t shared any meals yet.</p>
       <% end %>
     </div>
-
   </div>
 </div>
