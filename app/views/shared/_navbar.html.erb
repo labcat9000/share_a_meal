@@ -14,17 +14,19 @@
               <%= f.text_field :query,
                     value: params[:query],
                     placeholder: "Search Share A Meal...",
-                    class: "form-control ps-5 rounded-pill" %>
-            </div>
+                    class: "form-control ps-5 pe-5 rounded-pill" %>
+              <button type="button"
+                      class="btn position-absolute top-50 translate-middle-y p-0"
+                      style="border: none; background: none; right: 12px;"
+                      data-action="click->filter#toggle"
+                      aria-label="Filters">
+                <%= image_tag "filter_btn.svg", alt: "Filter", height: "45", width: "18", class: "d-block", style: "object-fit: contain;" %>
+              </button>
 
-            <button type="button"
-                    class="btn btn-outline-secondary rounded-circle"
-                    data-action="click->filter#toggle"
-                    aria-label="Filters">
-              <i class="fa fa-sliders-h"></i>
-            </button>
+            </div>
           <% end %>
         </div>
+
       <% else %>
         <div class="flex-grow-1 mt-2 mt-md-0" style="max-width: 600px;">
           <form action="/meals" method="get"
