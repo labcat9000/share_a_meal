@@ -65,7 +65,7 @@
             <span>
               Cooked by:
               <strong class="text-light">
-                <%= "#{@meal.user.first_name} #{@meal.user.last_name}" %>
+                <%= [@meal.user.first_name, @meal.user.last_name&.first&.upcase].compact.join(" ") + "." %>
               </strong>
 
             </span>

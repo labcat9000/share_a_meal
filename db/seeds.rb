@@ -1,35 +1,40 @@
-# This file should ensure the existence of records required to run the application in every environment (production,
-# development, test). The code here should be idempotent so that it can be executed at any point in every environment.
-# The data can then be loaded with the bin/rails db:seed command (or created alongside the database with db:setup).
-#
-# Example:
-#
-#   ["Action", "Comedy", "Drama", "Horror"].each do |genre_name|
-#     MovieGenre.find_or_create_by!(name: genre_name)
-#   end
-
 Exchange.destroy_all
 puts "Destroyed all exchanges"
 
 Meal.destroy_all
 puts "Destroyed all meals"
 
-# Create one user who owns all meals
-user = User.find_or_create_by!(email: "annarouss@gmail.com") do |u|
-  u.first_name = "Ana"
-  u.last_name = "Rouss"
-  u.password = "password"
-end
+user1 = User.create!(
+  first_name: "Henrique",
+  last_name: "Vera",
+  email: "henrique@mail.com",
+  password: "password"
+)
+puts "Created user Henrique"
 
-puts "Created chef user"
+user2 = User.create!(
+  first_name: "Kai",
+  last_name: "Isidro",
+  email: "kai@mail.com",
+  password: "123456"
+)
+puts "Created user Kai"
 
-user2 = User.find_or_create_by!(email: "kaiisi@gmail.com") do |u|
-  u.first_name = "Kai"
-  u.last_name = "Isidro"
-  u.password = "123456"
-end
+user3 = User.create!(
+  first_name: "Mikey",
+  last_name: "Row",
+  email: "mrow@mail.com",
+  password: "123456"
+)
+puts "Created user Mikey"
 
-puts "Created second user"
+user4 = User.create!(
+  first_name: "Alexa",
+  last_name: "Amos",
+  email: "aamos@mail.com",
+  password: "123456"
+)
+puts "Created user Alexa"
 
 meal1 = Meal.create!(
   name: "Poutine",
@@ -40,15 +45,15 @@ meal1 = Meal.create!(
   address: "Plateau-Mont-Royal, Montreal, QC",
   latitude: 45.5231,
   longitude: -73.5817,
-  user: user
+  user: user3
 )
 
 meal2 = Meal.create!(
-  name: "Sushi",
-  description: "Fresh sushi rolls made in Rosemont.",
-  category: "Lunch",
-  ingredients: "Rice, Fish, Seaweed",
-  cuisine: "Japanese",
+  name: "Strawberry-Oat Breakfast Bars",
+  description: "Baked breakfast bars made with oats, greek yogurt, and frozen strawberries",
+  category: "Breakfast",
+  ingredients: "Oats, Strawberries, Greek yogurt, cinnamon",
+  cuisine: "",
   address: "Rosemont–La Petite-Patrie, Montreal, QC",
   latitude: 45.5451,
   longitude: -73.5983,
@@ -56,107 +61,233 @@ meal2 = Meal.create!(
 )
 
 Meal.create!(
-  name: "Pho",
-  description: "Vietnamese noodle soup with beef broth.",
-  category: "Side",
-  ingredients: "Beef, Noodles, Herbs",
-  cuisine: "Vietnamese",
+  name: "Coconut Chia Pudding",
+  description: "A lightly sweetened chia pudding made with coconut milk and maple syrup",
+  category: "Breakfast",
+  ingredients: "Chia seeds, coconut milk, dried coconut, maple syrup",
+  cuisine: "",
   address: "Ville-Marie, Montreal, QC",
   latitude: 45.5074,
   longitude: -73.5547,
-  user: user
+  user: user3
 )
 
 Meal.create!(
   name: "Tacos",
   description: "Delicious tacos in Outremont.",
   category: "Snack",
-  ingredients: "Tortilla, Beef, Cheese",
+  ingredients: "Tortilla, Pork, Pineapple, Spices, Cheese",
   cuisine: "Mexican",
   address: "Outremont, Montreal, QC",
   latitude: 45.5208,
   longitude: -73.6056,
-  user: user2
+  user: user3
 )
 
 Meal.create!(
-  name: "Pizza",
-  description: "Wood-fired pizza in Verdun.",
-  category: "Lunch",
-  ingredients: "Dough, Tomato, Mozzarella",
-  cuisine: "Italian",
+  name: "Roasted Red Pepper Egg Muffins",
+  description: "Mini egg-muffins with roasted red pepper and green onions.",
+  category: "Breakfast",
+  ingredients: "Eggs, oil, roasted red pepper from jar, green onions, salt, pepper, mozzarella cheese",
+  cuisine: "",
   address: "Verdun, Montreal, QC",
   latitude: 45.4583,
   longitude: -73.5672,
-  user: user
+  user: user1
 )
 
 Meal.create!(
-  name: "Kebab",
-  description: "Grilled kebab served in Hochelaga.",
-  category: "Dinner",
-  ingredients: "Lamb, Onion, Spices",
+  name: "Lamb Kebab",
+  description: "Grilled kebab served with roasted potatoes and green salad.",
+  category: "Lunch",
+  ingredients: "Lamb, Onion, Spices, Oil, Rice, Iceberg Lettuce",
   cuisine: "Middle Eastern",
   address: "Hochelaga-Maisonneuve, Montreal, QC",
   latitude: 45.5500,
   longitude: -73.5400,
-  user: user2
+  user: user3
 )
 
 Meal.create!(
   name: "Lasagna",
-  description: "Home-style lasagna from Côte-des-Neiges.",
+  description: "Home-style lasagna made with beef, pork, and veal.",
   category: "Dinner",
-  ingredients: "Pasta, Tomato Sauce, Cheese",
+  ingredients: "Pasta, Beef, Pork, Veal, Tomato Sauce, Cheese",
   cuisine: "Italian",
   address: "Côte-des-Neiges, Montreal, QC",
   latitude: 45.4998,
   longitude: -73.6274,
-  user: user
+  user: user3
 )
 
 Meal.create!(
-  name: "Ramen",
-  description: "Hot and comforting ramen bowl.",
-  category: "Snack",
-  ingredients: "Broth, Noodles, Pork",
-  cuisine: "Japanese",
+  name: "Chicken Burrito Bowl with Avocado",
+  description: "Shredded chicken in a bowl with black beans, tomato rice, tomatoes, corn, and cheese. Each portion includes a half avocado.",
+  category: "Lunch",
+  ingredients: "Chicken, rice, tomato, corn, onion, cilantro, cheese, avocado",
+  cuisine: "Tex-Mex",
   address: "Villeray, Montreal, QC",
   latitude: 45.5461,
   longitude: -73.6206,
-  user: user2
+  user: user3
 )
 
 Meal.create!(
-  name: "Paella",
-  description: "Seafood paella in Lachine.",
-  category: "Side",
-  ingredients: "Rice, Seafood, Saffron",
-  cuisine: "Spanish",
+  name: "Mini Charcuterie Box",
+  description: "An assortment of charcuterie ingredients in a little snack tray. Includes meat, cheese, crackers, fruit, pickles, and nuts.",
+  category: "Snack",
+  ingredients: "Multigrain crackers, table crackers, cheddar cheese, salami, ham, grapes, dried cranberries, cornichons, roasted almonds",
+  cuisine: "",
   address: "Lachine, Montreal, QC",
   latitude: 45.4312,
   longitude: -73.6757,
-  user: user
+  user: user4
 )
 
 Meal.create!(
-  name: "Fajitas",
-  description: "Sizzling fajitas from Saint-Laurent.",
+  name: "Tofu Stir-Fry with Brown Rice",
+  description: "Vegan stir-fry with tofu and carrots",
   category: "Lunch",
-  ingredients: "Chicken, Peppers, Onion",
-  cuisine: "Tex-Mex",
+  ingredients: "Tofu, carrots, ginger, cabbage, onions, scallions, soy sauce, sesame oil",
+  cuisine: "",
   address: "Saint-Laurent, Montreal, QC",
   latitude: 45.5023,
   longitude: -73.6987,
-  user: user2
+  user: user4
 )
 
-puts "Created 10 meals across different boroughs"
-
-exchange1 = Exchange.create!(
-  meal_offered_id: meal1.id,
-  meal_requested_id: meal2.id,
-  requesting_user: user2
+Meal.create!(
+  name: "Turkey Chili",
+  description: "Chili with ground turkey, beans, and bacon",
+  category: "Lunch",
+  ingredients: "Crushed tomatoes, ground turkey, bacon, red kidney beans, garlic, onion, dried herbs, spices",
+  cuisine: "",
+  address: "Saint-Laurent, Montreal, QC",
+  latitude: 45.5023,
+  longitude: -73.6987,
+  user: user3
 )
 
-puts "Created 1 exchange"
+Meal.create!(
+  name: "Savory Trail Mix",
+  description: "Crunchy trail mix with nuts",
+  category: "Snack",
+  ingredients: "Corn chex cereal, rice chex cereal, butter, BBQ seasoning, roasted peanuts, roasted almonds, pretzel sticks, corn chips",
+  cuisine: "",
+  address: "Saint-Laurent, Montreal, QC",
+  latitude: 45.5023,
+  longitude: -73.6987,
+  user: user4
+)
+
+Meal.create!(
+  name: "Marinated Bean Salad",
+  description: "Mixed bean side salad with herby oil and vinegar dressing",
+  category: "Side",
+  ingredients: "Kidney beans, chickpeas, pinto beans, olive oil, fresh thyme, dried oregano, onion, tomato",
+  cuisine: "",
+  address: "Saint-Laurent, Montreal, QC",
+  latitude: 45.5023,
+  longitude: -73.6987,
+  user: user3
+)
+
+Meal.create!(
+  name: "Greek Salad",
+  description: "Simple and fresh Greek salad with cucumber, tomato, and feta cheese.",
+  category: "Side",
+  ingredients: "Cucumber, tomato, onion, feta, olive oil, vinegar",
+  cuisine: "Greek",
+  address: "Saint-Laurent, Montreal, QC",
+  latitude: 45.5023,
+  longitude: -73.6987,
+  user: user4
+)
+
+Meal.create!(
+  name: "Cabbage Rolls in Tomato Sauce",
+  description: "Cabbage leaves rolled up with a filling of rice, beef, and pork. Stewed in tomato sauce for a hearty and complete meal. Delicious and made with love.",
+  category: "Dinner",
+  ingredients: "Cabbage, beef, pork, onion, rice, parsley, dill, salt, cayenne, tomatoes, tomato sauce, sugar",
+  cuisine: "European",
+  address: "Saint-Laurent, Montreal, QC",
+  latitude: 45.5023,
+  longitude: -73.6987,
+  user: user4
+)
+
+Meal.create!(
+  name: "Vegetable Curry",
+  description: "A bright mix of veggies including zucchini, bell pepper, and cauliflower in a flavorful curry sauce. Served over basmati rice.",
+  category: "Dinner",
+  ingredients: "Crushed tomato, zucchini, okra, bell pepper, cauliflower, onion, garlic, vegetable broth, coriander, curry powder, cayenne, cumin, nutmeg, paprika, salt, pepper",
+  cuisine: "Indian",
+  address: "Saint-Laurent, Montreal, QC",
+  latitude: 45.5023,
+  longitude: -73.6987,
+  user: user4
+)
+
+Meal.create!(
+  name: "Beef Stew",
+  description: "Traditional beef stew made with onion, carrot, bell pepper, and potatoes. Deglazed with red wine.",
+  category: "Dinner",
+  ingredients: "Beef, beef broth, red wine, onion, carrot, garlic, bell pepper, potatoes, thyme, salt, black pepper",
+  cuisine: "European",
+  address: "Saint-Laurent, Montreal, QC",
+  latitude: 45.5023,
+  longitude: -73.6987,
+  user: user3
+)
+
+Meal.create!(
+  name: "Creamy Chicken Pasta Bake ",
+  description: "Fettuccine Alfredo with chicken breast baked into a casserole. Served with a side of cooked spinach.",
+  category: "Dinner",
+  ingredients: "Pasta, cream, Parmesan cheese, garlic, chicken breast, salt, pepper, olive oil, spinach",
+  cuisine: "American",
+  address: "Saint-Laurent, Montreal, QC",
+  latitude: 45.5023,
+  longitude: -73.6987,
+  user: user3
+)
+
+Meal.create!(
+  name: "Stuffed Green Bell Peppers",
+  description: "Green bell peppers hollowed out and baked with a sausage and rice filling then topped with cheese.",
+  category: "Dinner",
+  ingredients: "Green bell pepper, white rice, spicy Italian sausage, onion, garlic, salt, white pepper, mozzarella cheese",
+  cuisine: "",
+  address: "Saint-Laurent, Montreal, QC",
+  latitude: 45.5023,
+  longitude: -73.6987,
+  user: user4
+)
+
+Meal.create!(
+  name: "Peanut Butter Cookies",
+  description: "Classic cookie recipe made with smooth peanut butter and baked in the oven.",
+  category: "Dessert",
+  ingredients: "Butter, peanut butter, sugar, eggs, flour, baking powder, salt",
+  cuisine: "Eurpoean",
+  address: "Saint-Laurent, Montreal, QC",
+  latitude: 45.5023,
+  longitude: -73.6987,
+  user: user1
+)
+
+Meal.create!(
+  name: "Fruit Salad with Lime and Mint",
+  description: "A summery chopped-fruit salad.",
+  category: "Dessert",
+  ingredients: "Watermelon, cantaloupe, apple, pear, honey, lime, mint",
+  cuisine: "",
+  address: "Saint-Laurent, Montreal, QC",
+  latitude: 45.5023,
+  longitude: -73.6987,
+  user: user3
+)
+
+puts "Created many meals across different boroughs"
+
+puts "Done seeding"
