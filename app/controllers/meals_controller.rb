@@ -39,12 +39,18 @@ class MealsController < ApplicationController
     @markers = @displayed_meals
       .select { |m| m.latitude.present? && m.longitude.present? }
       .map do |meal|
+        exchange_status = if current_user
+          Exchange.find_by(meal_offered: meal, requesting_user: current_user)&.status
+        end
+
         {
           lat: meal.latitude,
           lng: meal.longitude,
           name: meal.name,
           description: meal.description.truncate(60),
-          path: Rails.application.routes.url_helpers.meal_path(meal)
+          owner: "#{meal.user.first_name} #{meal.user.last_name}",
+          path: Rails.application.routes.url_helpers.meal_path(meal),
+          status: exchange_status == "accepted" ? "accepted" : "blurred"
         }
       end
   end

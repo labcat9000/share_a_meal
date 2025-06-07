@@ -15,11 +15,23 @@
   font-size: 1rem;
   cursor: pointer;
   background-color: #D7E0D2;
+  color: #223618;
+  font-weight: 500;
+  text-decoration: none;
+
+  &:link,
+  &:visited,
+  &:hover,
+  &:focus,
+  &:active {
+    color: #223618;
+    text-decoration: none;
+    outline: none;
+  }
 
   &.active {
     background-color: #223618;
-    border-radius: 24px;
+    color: #FEFAE0 !important;
     font-weight: bold;
-    color: #FEFAE0;
   }
 }
