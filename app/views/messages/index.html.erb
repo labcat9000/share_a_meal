@@ -7,11 +7,12 @@
   </div>
 
   <!-- Message Area -->
-  <div id="messages" class="chat-body px-3 py-2 flex-grow-1" style="overflow-y: auto; background-color: #FFF9E5;">
-    <% @exchange.messages.each do |message| %>
-      <%= render partial: 'message', collection: @messages, as: :message, locals: { user: current_user } %>
-    <% end %>
-  </div>
+  <%= turbo_stream_from "exchanges_#{@exchange.id}_messages" %>
+    <div id="messages" class="chat-body px-3 py-2 flex-grow-1" style="overflow-y: auto; background-color: #FFF9E5;">
+      <% @exchange.messages.each do |message| %>
+        <%= render "messages/message", message: message, user: current_user %>
+      <% end %>
+    </div>
 
   <!-- Message Input -->
   <div class="chat-input border-top px-3 py-2 bg-white">

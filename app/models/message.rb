@@ -4,8 +4,7 @@ class Message < ApplicationRecord
   after_create_commit :broadcast_message
 
   def broadcast_message
-    broadcast_prepend_to(messages_stream_target)
-    broadcast_append_to(alerts_stream_target, partial: "shared/message_alert", locals: { message: self })
+    broadcast_append_to "exchanges_#{exchange.id}_messages", partial: "messages/message", locals: { message: self, user: user}, target: "messages"
   end
 
   private
