@@ -1,26 +1,43 @@
-<h3>My Shares</h3>
-<div class="d-flex justify-content-around">
-  <div>
-    <%= link_to "Current Shares", user_exchanges_path(section: "current") %>
-    <br>
-    <%= @current_exchanges.length %>
-  </div>
-  <div>
-    <%= link_to "Past Shares", user_exchanges_path(section: "past") %>
-    <br>
-    <%= @past_exchanges.length %>
-  </div>
-</div>
+<div class="container px-3">
+  <h3 class="text-dashboard fw-bold mb-3">My Shares</h3>
+  <div class="row g-3 mb-4">
+    <div class="col-6">
+      <div class="dashboard-box text-center p-3 h-100">
+        <%= link_to user_exchanges_path(section: "current"), class: "text-decoration-none text-white fw-semibold d-block mb-2" do %>
+          Current Shares
+        <% end %>
+        <div class="fs-3 fw-bold text-success"><%= @current_exchanges.length %></div>
+      </div>
+    </div>
 
-<h3>My Meals</h3>
-<div class="d-flex justify-content-around">
-  <div>
-    <%= link_to "Share Requests", user_meals_path(section: "exchanges") %>
-    <br>
-    <%= @exchange_requests.length %>
+    <div class="col-6">
+      <div class="dashboard-box text-center p-3 h-100">
+        <%= link_to user_exchanges_path(section: "past"), class: "text-decoration-none text-white fw-semibold d-block mb-2" do %>
+          Past Shares
+        <% end %>
+        <div class="fs-3 fw-bold text-success"><%= @past_exchanges.length %></div>
+      </div>
+    </div>
   </div>
-  <div>
-    <%= link_to "My Meals", user_meals_path(section: "meals") %><br>
-    <%= @my_meals.length %>
+
+  <h3 class="text-dashboard fw-bold mb-3">My Meals</h3>
+  <div class="row g-3">
+    <div class="col-6">
+      <div class="dashboard-box text-center p-3 h-100">
+        <%= link_to user_meals_path(section: "exchanges"), class: "text-decoration-none text-white fw-semibold d-block mb-2" do %>
+          Share Requests
+        <% end %>
+        <div class="fs-3 fw-bold text-success"><%= @exchange_requests.length %></div>
+      </div>
+    </div>
+
+    <div class="col-6">
+      <div class="dashboard-box text-center p-3 h-100">
+        <%= link_to user_meals_path(section: "meals"), class: "text-decoration-none text-white fw-semibold d-block mb-2" do %>
+          My Meals
+        <% end %>
+        <div class="fs-3 fw-bold text-success"><%= @my_meals.length %></div>
+      </div>
+    </div>
   </div>
 </div>

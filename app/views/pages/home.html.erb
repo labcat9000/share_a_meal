@@ -18,13 +18,14 @@
   <% end %>
 </div>
 
-
-
 <div class="d-flex justify-content-between align-items-center px-3 pt-2">
-  <h2 class=" big-title fw-semibold mb-0 display-5" style="font-family: system-ui, sans-serif;">Fresh meals!</h2>
+  <h2 class="big-title fw-semibold mb-0 display-5" style="font-family: system-ui, sans-serif;">
+    Fresh meals!
+  </h2>
 </div>
 
-<div class="px-3 pt-3">
+
+<div class="pt-3" style="padding-left: 3px; padding-right: 3px;">
   <div class="meal-cards">
     <% if @meals_by_name.present? %>
       <% @meals_by_name.each do |meal| %>

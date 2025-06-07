@@ -3,7 +3,6 @@
   display: flex;
   flex-direction: column;
   gap: 1rem;
-  padding: 1rem;
   flex-wrap: wrap;
 }
 
@@ -12,10 +11,13 @@
   color: #FEFAE0;
   border: 1px solid #ddd;
   border-radius: 16px;
-  padding: 12px;
+  padding: 10px;
   width: 100%;
   max-width: 100%;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+
+  // === NEW: Bring cards closer to screen edge ===
+  margin: 0 1px;
 }
 
 .meal-card-inner {
@@ -60,21 +62,20 @@
 
 .meal-description {
   font-size: 0.9rem;
-  color: white;
   margin-bottom: 0.4rem;
   color: #FEFAE0;
 }
 
 .meal-author {
   font-size: 0.85rem;
-  color: #FEFAE0;
   margin-bottom: 0.25rem;
   color: #D7E0D2;
 }
+
 .meal-date {
   font-size: 0.8rem;
-  color: #D7E0D2;
   margin-bottom: 0.5rem;
+  color: #D7E0D2;
 }
 
 .meal-actions {
@@ -126,10 +127,11 @@
   .meal-card {
     padding: 8px;
     border-radius: 12px;
+
+    // === Also apply margin tweak on mobile
+    margin: 0 1px;
   }
-
 }
-
 
 // === Attached Photo Delete Styling ===
 .photo-delete-checkbox {
