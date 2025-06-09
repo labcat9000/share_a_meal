@@ -63,12 +63,12 @@ export default class extends Controller {
             source: sourceId,
             paint: {
               "circle-radius": {
-                stops: [[0, 0], [20, 5000]], // Radius in meters
+                stops: [[0, 0], [20, 5000]],
                 base: 2
               },
-              "circle-color": "#1e90ff",
+              "circle-color": "#88f065",
               "circle-opacity": 0.15,
-              "circle-stroke-color": "#1e90ff",
+              "circle-stroke-color": "#88f065",
               "circle-stroke-width": 1
             }
           })
@@ -77,17 +77,18 @@ export default class extends Controller {
             const exactMatches = markers.filter(m => m.lat === marker.lat && m.lng === marker.lng)
 
             const popupHTML = `
-              <ul style="padding-left: 16px;">
+              <ul>
                 ${exactMatches.map(m => `
                   <li>
                     <strong>${m.name}</strong><br>
                     Cooked by: ${m.owner}<br>
-                    <a href="${m.path}" class="btn btn-sm btn-outline-primary mt-1">View</a>
+                    <a href="${m.path}" class="btn-green-sm">View</a>
                   </li>
                 `).join("")}
               </ul>
             `
-            new mapboxgl.Popup()
+
+            new mapboxgl.Popup({ className: "custom-popup" })
               .setLngLat(e.lngLat)
               .setHTML(popupHTML)
               .addTo(this.map)
