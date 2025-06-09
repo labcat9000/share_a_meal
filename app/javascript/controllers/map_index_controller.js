@@ -21,124 +21,100 @@ export default class extends Controller {
 
     this.map.addControl(new mapboxgl.NavigationControl(), 'top-left')
 
-    const allMarkers = JSON.parse(this.markersValue)
-    const accepted = []
-    const blurred = []
-
-    allMarkers.forEach(marker => {
-      if (marker.status === "accepted") {
-        accepted.push(marker)
-      } else {
-        blurred.push(marker)
-      }
-    })
+    const markers = JSON.parse(this.markersValue)
+    if (markers.length === 0) return
 
     const bounds = new mapboxgl.LngLatBounds()
 
-    accepted.forEach(marker => {
-      const popup = new mapboxgl.Popup().setHTML(`
-        <strong>${marker.name}</strong><br>
-        ${marker.description}<br>
-        Cooked by: ${marker.owner}<br>
-        <a href="${marker.path}" class="btn btn-sm btn-outline-primary mt-1">View</a>
-      `)
-
-      new mapboxgl.Marker()
-        .setLngLat([marker.lng, marker.lat])
-        .setPopup(popup)
-        .addTo(this.map)
-
-      bounds.extend([marker.lng, marker.lat])
-    })
-
     this.map.on("load", () => {
-      this.map.addSource("blurred-meals", {
-        type: "geojson",
-        data: {
-          type: "FeatureCollection",
-          features: blurred.map(m => ({
-            type: "Feature",
-            geometry: {
-              type: "Point",
-              coordinates: [m.lng, m.lat]
-            },
-            properties: { name: m.name }
-          }))
-        },
-        cluster: true,
-        clusterMaxZoom: 14,
-        clusterRadius: 60
-      })
+      markers.forEach((marker, i) => {
+        const coords = [marker.lng, marker.lat]
 
-      this.map.addLayer({
-        id: "clusters",
-        type: "circle",
-        source: "blurred-meals",
-        filter: ["has", "point_count"],
-        paint: {
-          "circle-color": "#87da5e",
-          "circle-opacity": 0.2,
-          "circle-stroke-color": "#87da5e",
-          "circle-stroke-width": 1,
-          "circle-radius": [
-            "interpolate",
-            ["linear"],
-            ["get", "point_count"],
-            1, 50,
-            5, 60,
-            10, 70,
-            20, 80,
-            40, 90,
-            100, 80
-          ]
+        if (marker.status === "accepted") {
+          const popup = new mapboxgl.Popup().setHTML(`
+            <strong>${marker.name}</strong><br>
+            ${marker.description}<br>
+            Cooked by: ${marker.owner}<br>
+            <a href="${marker.path}" class="btn btn-sm btn-outline-primary mt-1">View</a>
+          `)
+
+          new mapboxgl.Marker()
+            .setLngLat(coords)
+            .setPopup(popup)
+            .addTo(this.map)
+        } else {
+          const sourceId = `blurred-${i}`
+          const layerId = `circle-${i}`
+
+          this.map.addSource(sourceId, {
+            type: "geojson",
+            data: {
+              type: "Feature",
+              geometry: {
+                type: "Point",
+                coordinates: coords
+              }
+            }
+          })
+
+          this.map.addLayer({
+            id: layerId,
+            type: "circle",
+            source: sourceId,
+            paint: {
+              "circle-radius": {
+                stops: [[0, 0], [20, 5000]],
+                base: 2
+              },
+              "circle-color": "#88f065",
+              "circle-opacity": 0.15,
+              "circle-stroke-color": "#88f065",
+              "circle-stroke-width": 1
+            }
+          })
+
+          this.map.on("click", layerId, (e) => {
+            const exactMatches = markers.filter(m => m.lat === marker.lat && m.lng === marker.lng)
+
+            const popupHTML = `
+              <ul>
+                ${exactMatches.map(m => `
+                  <li>
+                    <strong>${m.name}</strong><br>
+                    Cooked by: ${m.owner}<br>
+                    <a href="${m.path}" class="btn-green-sm">View</a>
+                  </li>
+                `).join("")}
+              </ul>
+            `
+
+            new mapboxgl.Popup({ className: "custom-popup" })
+              .setLngLat(e.lngLat)
+              .setHTML(popupHTML)
+              .addTo(this.map)
+          })
+
+          this.map.on("mouseenter", layerId, () => {
+            this.map.getCanvas().style.cursor = "pointer"
+          })
+          this.map.on("mouseleave", layerId, () => {
+            this.map.getCanvas().style.cursor = ""
+          })
         }
+
+        bounds.extend(coords)
       })
 
-
-
-      this.map.addLayer({
-        id: "cluster-count",
-        type: "symbol",
-        source: "blurred-meals",
-        filter: ["has", "point_count"],
-        layout: {
-          "text-field": "{point_count_abbreviated}",
-          "text-font": ["DIN Offc Pro Medium", "Arial Unicode MS Bold"],
-          "text-size": 14
-        }
-      })
-
-      this.map.addLayer({
-        id: "unclustered-point",
-        type: "circle",
-        source: "blurred-meals",
-        filter: ["!", ["has", "point_count"]],
-        paint: {
-          "circle-color": "#1e90ff",
-          "circle-radius": 35,
-          "circle-opacity": 0.15,
-          "circle-stroke-color": "#1e90ff",
-          "circle-stroke-width": 1
-        }
-      })
-
-      if (accepted.length > 0) {
-        this.map.fitBounds(bounds, { padding: 60, maxZoom: 15 })
-      }
-    })
-
-    this.element.addEventListener("map:visible", () => {
-      if (this.map) this.map.resize()
-    })
-
-    window.addEventListener("resize", () => {
-      if (this.map) this.map.resize()
+      this.map.fitBounds(bounds, { padding: 60, maxZoom: 15, duration: 0 })
     })
 
     this.map.on("moveend", () => {
       const center = this.map.getCenter()
       this.updateCityLabel(center.lat, center.lng)
     })
+
+    window.addEventListener("resize", () => this.map.resize())
+    this.element.addEventListener("map:visible", () => this.map.resize())
   }
 
   locatePosition() {
@@ -158,7 +134,7 @@ export default class extends Controller {
 
   updateCityLabel(lat, lng) {
     fetch(`https://api.mapbox.com/geocoding/v5/mapbox.places/${lng},${lat}.json?access_token=${this.apiKeyValue}`)
-      .then(response => response.json())
+      .then(res => res.json())
       .then(data => {
         const city = data.features.find(f => f.place_type.includes("place"))
         const country = data.features.find(f => f.place_type.includes("country"))
