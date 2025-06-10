@@ -50,6 +50,7 @@
   display: flex;
   flex-direction: column;
   justify-content: center;
+  min-width: 0;
 }
 
 .meal-title {
@@ -58,6 +59,7 @@
   margin: 0 0 0.25rem 0;
   color: #FEFAE0;
 }
+
 
 .meal-description {
   font-size: 0.9rem;
@@ -112,6 +114,15 @@
 
   .meal-title {
     font-size: 1rem;
+    display: -webkit-box;
+    display: box;
+    line-clamp: 1;
+    -webkit-line-clamp: 1;
+    -webkit-box-orient: vertical;
+
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: normal;
   }
 
   .meal-description {
@@ -138,8 +149,6 @@
   .meal-card {
     padding: 8px;
     border-radius: 12px;
-
-    // === Also apply margin tweak on mobile
     margin: 0 1px;
   }
 }
