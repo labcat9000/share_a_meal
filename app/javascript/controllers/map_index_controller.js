@@ -1,150 +1,176 @@
 import { Controller } from "@hotwired/stimulus"
 import mapboxgl from "mapbox-gl"
 
+
 export default class extends Controller {
-  static values = {
-    apiKey: String,
-    markers: String
-  }
+ static values = {
+   apiKey: String,
+   markers: String
+ }
 
-  static targets = ["map", "locationInfo"]
 
-  connect() {
-    mapboxgl.accessToken = this.apiKeyValue
+ static targets = ["map", "locationInfo"]
 
-    this.map = new mapboxgl.Map({
-      container: this.mapTarget,
-      style: "mapbox://styles/mapbox/streets-v11",
-      center: [-73.5673, 45.5019],
-      zoom: 13
-    })
 
-    this.map.addControl(new mapboxgl.NavigationControl(), 'top-left')
+ connect() {
+   mapboxgl.accessToken = this.apiKeyValue
 
-    const markers = JSON.parse(this.markersValue)
-    if (markers.length === 0) return
 
-    const bounds = new mapboxgl.LngLatBounds()
+   this.map = new mapboxgl.Map({
+     container: this.mapTarget,
+     style: "mapbox://styles/mapbox/streets-v11",
+     center: [-73.5673, 45.5019],
+     zoom: 13
+   })
 
-    this.map.on("load", () => {
-      markers.forEach((marker, i) => {
-        const coords = [marker.lng, marker.lat]
 
-        if (marker.status === "accepted") {
-          const popup = new mapboxgl.Popup().setHTML(`
-            <strong>${marker.name}</strong><br>
-            ${marker.description}<br>
-            Cooked by: ${marker.owner}<br>
-            <a href="${marker.path}" class="btn btn-sm btn-outline-primary mt-1">View</a>
-          `)
+   this.map.addControl(new mapboxgl.NavigationControl(), 'top-left')
 
-          new mapboxgl.Marker()
-            .setLngLat(coords)
-            .setPopup(popup)
-            .addTo(this.map)
-        } else {
-          const sourceId = `blurred-${i}`
-          const layerId = `circle-${i}`
 
-          this.map.addSource(sourceId, {
-            type: "geojson",
-            data: {
-              type: "Feature",
-              geometry: {
-                type: "Point",
-                coordinates: coords
-              }
-            }
-          })
+   const markers = JSON.parse(this.markersValue)
+   if (markers.length === 0) return
 
-          this.map.addLayer({
-            id: layerId,
-            type: "circle",
-            source: sourceId,
-            paint: {
-              "circle-radius": {
-                stops: [[0, 0], [20, 5000]],
-                base: 2
-              },
-              "circle-color": "#88f065",
-              "circle-opacity": 0.15,
-              "circle-stroke-color": "#88f065",
-              "circle-stroke-width": 1
-            }
-          })
 
-          this.map.on("click", layerId, (e) => {
-            const exactMatches = markers.filter(m => m.lat === marker.lat && m.lng === marker.lng)
+   const bounds = new mapboxgl.LngLatBounds()
 
-            const popupHTML = `
-              <ul>
-                ${exactMatches.map(m => `
-                  <li>
-                    <strong>${m.name}</strong><br>
-                    Cooked by: ${m.owner}<br>
-                    <a href="${m.path}" class="btn-green-sm">View</a>
-                  </li>
-                `).join("")}
-              </ul>
-            `
 
-            new mapboxgl.Popup({ className: "custom-popup" })
-              .setLngLat(e.lngLat)
-              .setHTML(popupHTML)
-              .addTo(this.map)
-          })
+   this.map.on("load", () => {
+     markers.forEach((marker, i) => {
+       const coords = [marker.lng, marker.lat]
 
-          this.map.on("mouseenter", layerId, () => {
-            this.map.getCanvas().style.cursor = "pointer"
-          })
-          this.map.on("mouseleave", layerId, () => {
-            this.map.getCanvas().style.cursor = ""
-          })
-        }
 
-        bounds.extend(coords)
-      })
+       if (marker.status === "accepted") {
+         const popup = new mapboxgl.Popup().setHTML(`
+           <strong>${marker.name}</strong><br>
+           ${marker.description}<br>
+           Cooked by: ${marker.owner}<br>
+           <a href="${marker.path}" class="btn btn-sm btn-outline-primary mt-1">View</a>
+         `)
 
-      this.map.fitBounds(bounds, { padding: 60, maxZoom: 15, duration: 0 })
-    })
 
-    this.map.on("moveend", () => {
-      const center = this.map.getCenter()
-      this.updateCityLabel(center.lat, center.lng)
-    })
+         new mapboxgl.Marker()
+           .setLngLat(coords)
+           .setPopup(popup)
+           .addTo(this.map)
+       } else {
+         const sourceId = `blurred-${i}`
+         const layerId = `circle-${i}`
 
-    window.addEventListener("resize", () => this.map.resize())
-    this.element.addEventListener("map:visible", () => this.map.resize())
-  }
 
-  locatePosition() {
-    navigator.geolocation.getCurrentPosition(position => {
-      const lat = position.coords.latitude
-      const lng = position.coords.longitude
+         this.map.addSource(sourceId, {
+           type: "geojson",
+           data: {
+             type: "Feature",
+             geometry: {
+               type: "Point",
+               coordinates: coords
+             }
+           }
+         })
 
-      this.map.flyTo({ center: [lng, lat], zoom: 14 })
 
-      new mapboxgl.Marker({ color: "#d00" })
-        .setLngLat([lng, lat])
-        .addTo(this.map)
+         this.map.addLayer({
+           id: layerId,
+           type: "circle",
+           source: sourceId,
+           paint: {
+             "circle-radius": {
+               stops: [[0, 0], [20, 5000]],
+               base: 2
+             },
+             "circle-color": "#88f065",
+             "circle-opacity": 0.15,
+             "circle-stroke-color": "#88f065",
+             "circle-stroke-width": 1
+           }
+         })
 
-      this.updateCityLabel(lat, lng)
-    })
-  }
 
-  updateCityLabel(lat, lng) {
-    fetch(`https://api.mapbox.com/geocoding/v5/mapbox.places/${lng},${lat}.json?access_token=${this.apiKeyValue}`)
-      .then(res => res.json())
-      .then(data => {
-        const city = data.features.find(f => f.place_type.includes("place"))
-        const country = data.features.find(f => f.place_type.includes("country"))
+         this.map.on("click", layerId, (e) => {
+           const exactMatches = markers.filter(m => m.lat === marker.lat && m.lng === marker.lng)
 
-        if (city && country) {
-          this.locationInfoTarget.innerHTML = `
-            <p><strong>${city.text}, ${country.text}</strong><br><small>Location is approximate</small></p>
-          `
-        }
-      })
-      .catch(err => console.error("Geocoding error:", err))
-  }
+
+           const popupHTML = `
+             <ul>
+               ${exactMatches.map(m => `
+                 <li>
+                   <strong>${m.name}</strong><br>
+                   Cooked by: ${m.owner}<br>
+                   <a href="${m.path}" class="btn-green-sm">View</a>
+                 </li>
+               `).join("")}
+             </ul>
+           `
+
+
+           new mapboxgl.Popup({ className: "custom-popup" })
+             .setLngLat(e.lngLat)
+             .setHTML(popupHTML)
+             .addTo(this.map)
+         })
+
+
+         this.map.on("mouseenter", layerId, () => {
+           this.map.getCanvas().style.cursor = "pointer"
+         })
+         this.map.on("mouseleave", layerId, () => {
+           this.map.getCanvas().style.cursor = ""
+         })
+       }
+
+
+       bounds.extend(coords)
+     })
+
+
+     this.map.fitBounds(bounds, { padding: 60, maxZoom: 15, duration: 0 })
+   })
+
+
+   this.map.on("moveend", () => {
+     const center = this.map.getCenter()
+     this.updateCityLabel(center.lat, center.lng)
+   })
+
+
+   window.addEventListener("resize", () => this.map.resize())
+   this.element.addEventListener("map:visible", () => this.map.resize())
+ }
+
+
+ locatePosition() {
+   navigator.geolocation.getCurrentPosition(position => {
+     const lat = position.coords.latitude
+     const lng = position.coords.longitude
+
+
+     this.map.flyTo({ center: [lng, lat], zoom: 14 })
+
+
+     new mapboxgl.Marker({ color: "#d00" })
+       .setLngLat([lng, lat])
+       .addTo(this.map)
+
+
+     this.updateCityLabel(lat, lng)
+   })
+ }
+
+
+ updateCityLabel(lat, lng) {
+   fetch(`https://api.mapbox.com/geocoding/v5/mapbox.places/${lng},${lat}.json?access_token=${this.apiKeyValue}`)
+     .then(res => res.json())
+     .then(data => {
+       const city = data.features.find(f => f.place_type.includes("place"))
+       const country = data.features.find(f => f.place_type.includes("country"))
+
+
+       if (city && country) {
+         this.locationInfoTarget.innerHTML = `
+           <p><strong>${city.text}, ${country.text}</strong><br><small>Location is approximate</small></p>
+         `
+       }
+     })
+     .catch(err => console.error("Geocoding error:", err))
+ }
 }
