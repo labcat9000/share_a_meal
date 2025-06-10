@@ -5,25 +5,55 @@ export default class extends Controller {
 
   connect() {
     this.index = 0
-    this.total = this.dotTargets.length
     this.container = this.trackTarget.parentElement
+    this.total = this.dotTargets.length
+
+    requestAnimationFrame(() => {
+      this.waitForImages().then(() => {
+        this.setTrackWidth()
+        this.updateSlide()
+      })
+    })
+
     this.updateDots()
     this.attachListeners()
-    window.addEventListener("resize", () => this.updateSlide())
+
+    window.addEventListener("resize", () => {
+      this.setTrackWidth()
+      this.updateSlide()
+    })
   }
 
+  waitForImages() {
+    const images = this.trackTarget.querySelectorAll("img")
+    const promises = Array.from(images).map(img => {
+      if (img.complete) return Promise.resolve()
+      return new Promise(resolve => (img.onload = resolve))
+    })
+    return Promise.all(promises)
+  }
+
+  setTrackWidth() {
+    const containerWidth = this.container.clientWidth
+    this.trackTarget.style.width = `${this.total * containerWidth}px`
+
+    Array.from(this.trackTarget.children).forEach(child => {
+      child.style.width = `${containerWidth}px`
+      child.style.flex = "0 0 auto"
+      child.style.maxWidth = "100%"
+    })
+  }
+
+
   attachListeners() {
-    // Touch events
     this.trackTarget.addEventListener("touchstart", this.startTouch.bind(this), { passive: true })
     this.trackTarget.addEventListener("touchmove", this.onTouchMove.bind(this), { passive: true })
     this.trackTarget.addEventListener("touchend", this.endTouch.bind(this))
 
-    // Mouse events (desktop)
     this.trackTarget.addEventListener("mousedown", this.startMouse.bind(this))
     this.trackTarget.addEventListener("mouseup", this.endMouse.bind(this))
   }
 
-  // Touch handling
   startTouch(event) {
     this.startX = event.touches[0].clientX
     this.moved = false
@@ -39,7 +69,6 @@ export default class extends Controller {
     this.handleSwipe(endX - this.startX)
   }
 
-  // Mouse handling
   startMouse(event) {
     this.startX = event.clientX
   }
@@ -49,7 +78,6 @@ export default class extends Controller {
     this.handleSwipe(endX - this.startX)
   }
 
-  // Swipe logic
   handleSwipe(diff) {
     if (Math.abs(diff) > 40) {
       diff < 0 ? this.next() : this.prev()

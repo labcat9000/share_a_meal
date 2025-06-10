@@ -50,6 +50,7 @@
   display: flex;
   flex-direction: column;
   justify-content: center;
+  min-width: 0;
 }
 
 .meal-title {
@@ -58,6 +59,7 @@
   margin: 0 0 0.25rem 0;
   color: #FEFAE0;
 }
+
 
 .meal-description {
   font-size: 0.9rem;
@@ -106,16 +108,37 @@
   }
 
   .meal-card-image {
-    width: 90px;
-    height: 90px;
+    width: 100px;
+    height: 100px;
   }
 
   .meal-title {
     font-size: 1rem;
+    display: -webkit-box;
+    display: box;
+    line-clamp: 1;
+    -webkit-line-clamp: 1;
+    -webkit-box-orient: vertical;
+
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: normal;
   }
 
   .meal-description {
-    font-size: 0.85rem;
+    font-size: 0.9rem;
+    margin-bottom: 0.4rem;
+    color: #FEFAE0;
+
+    display: -webkit-box;
+    display: box;
+    line-clamp: 1;
+    -webkit-line-clamp: 1;
+    -webkit-box-orient: vertical;
+
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: normal;
   }
 
   .meal-author,
@@ -126,8 +149,6 @@
   .meal-card {
     padding: 8px;
     border-radius: 12px;
-
-    // === Also apply margin tweak on mobile
     margin: 0 1px;
   }
 }
