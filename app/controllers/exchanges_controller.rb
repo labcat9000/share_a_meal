@@ -82,7 +82,20 @@ class ExchangesController < ApplicationController
       .where("meal_offered_id IN (:meal_ids)",
             meal_ids: current_user.meals.pluck(:id))
     @my_meals = Meal.where(user_id: current_user.id)
-    @messages = Message.includes(:user).order(created_at: :asc) # or scoped by user or exchange
+    @messages = Message.includes(:user).order(created_at: :asc)
+    @latest_messages = Message
+      .includes(:exchange, :user)
+      .where(exchange_id: Exchange.where(
+        status: "Accepted"
+      ).where(
+        "requesting_user_id = :id OR meal_offered_id IN (:meal_ids)",
+        id: current_user.id,
+        meal_ids: current_user.meals.ids
+      ))
+      .order(created_at: :desc)
+      .group_by(&:exchange)
+      .transform_values(&:first)
+        # or scoped by user or exchange
   end
 
   # def exchange_requests

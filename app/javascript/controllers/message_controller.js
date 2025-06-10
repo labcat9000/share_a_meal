@@ -4,7 +4,6 @@ import { Controller } from "@hotwired/stimulus"
 export default class extends Controller {
   static values = { userId: Number }
   connect() {
-    console.log("hello")
     // triggered when a new message is added to the page
     const currentUserId = parseInt(document.body.dataset.currentUserId, 10);
     if (this.userIdValue === currentUserId) {
