@@ -44,12 +44,26 @@
       </div>
     </div>
   </div>
-  <div class="col-3">
-    <% if @accepted_exchanges.any? %>
-    <h3 class="text-dashboard fw-bold mb-3">My Messages</h3>
-      <div class="dashboard-box text-center p-3 h-100">
-      <%= link_to "New Message", user_exchanges_path(section: "current"), class: "btn px-4 py-2", style: " border-radius: 5px; background-color: #82983A; color: #FEFAE0;" %>
+  <div class="text-dashboard fw-bold my-4 row g-3">
+  <% @latest_messages.each do |exchange, message| %>
+    <% next unless exchange.status == "Accepted" %>
+    <div class="col-3">
+      <div class="dashboard-box p-3">
+        <%= link_to exchange_messages_path(exchange), class: "text-decoration-none text-white" do %>
+          <div class="d-flex justify-content-between align-items-center">
+            <div>
+              <div class="fw-semibold mb-1">Chat about: <%= exchange.meal_offered.name %></div>
+              <div class="text-muted small">
+                <strong><%= message.user == current_user ? "You" : message.user.name %>:</strong>
+                <%= truncate(message.content, length: 50) %>
+              </div>
+            </div>
+            <i class="bi bi-chevron-right text-muted"></i>
+          </div>
+        <% end %>
       </div>
-    <% end %>
-  </div>
+    </div>
+  <% end %>
+</div>
+
 </div>
