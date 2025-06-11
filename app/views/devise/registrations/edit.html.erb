@@ -4,15 +4,16 @@
     <!-- Profile Image -->
     <div class="d-flex justify-content-center mb-4">
       <div class="rounded-circle overflow-hidden shadow" style="width: 140px; height: 140px;">
-        <% if resource.persisted? && resource.profile_photo.attached? %>
-          <%= image_tag resource.profile_photo, class: "w-100 h-100 object-fit-cover", data: { profile_photo_target: "preview" } %>
+        <% if resource.persisted? && resource.profile_photo.attached? && resource.profile_photo.blob.persisted? %>
+          <%= image_tag url_for(resource.profile_photo), class: "w-100 h-100 object-fit-cover", data: { profile_photo_target: "preview" } %>
         <% else %>
           <%= image_tag "pfp-default.png", class: "w-100 h-100 object-fit-cover", data: { profile_photo_target: "preview" } %>
         <% end %>
       </div>
     </div>
 
-    <!-- Form Card (content stays as-is) -->
+
+    <!-- Form Card -->
     <div class="edit-profile rounded-4 shadow-sm px-4 py-5 text-white" data-controller="profile-photo">
       <%= simple_form_for(resource, as: resource_name, url: registration_path(resource_name), html: { method: :put, multipart: true }) do |f| %>
         <%= f.error_notification %>

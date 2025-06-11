@@ -7,7 +7,7 @@ class User < ApplicationRecord
   # Exchanges involving meals this user owns (i.e., they are offering)
   has_many :offered_exchanges, through: :meals, source: :offered_exchanges
 
-  has_one_attached :profile_photo
+  has_one_attached :profile_photo, dependent: :purge_later
 
   # Devise modules
   devise :database_authenticatable, :registerable,

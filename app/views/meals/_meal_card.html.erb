@@ -10,8 +10,11 @@
     <div class="meal-card-content">
       <h3 class="meal-title"><%= meal.name %></h3>
       <p class="meal-description"><%= truncate(meal.description, length: 80) %></p>
-      <p class="meal-author">Cooked by: <strong><%= [meal.user.first_name, meal.user.last_name&.first&.upcase].compact.join(" ") + "." if meal.user %></strong></p>
-      <p class="meal-date">Posted on: <%= meal.posted_on.strftime("%B %d, %Y") if meal.posted_on %></p>
+      <p class="meal-author">
+        <%= image_tag("chef.png", alt: "Chef", class: "me-card-icon me-1", style: "width: 18px; height: 18px; vertical-align: text-bottom;") %>
+        <strong><%= [meal.user.first_name, meal.user.last_name&.first&.upcase].compact.join(" ") + "." if meal.user %></strong>
+      </p>
+      <p class="meal-date fst-italic"><%= meal.posted_on.strftime("%B %d, %Y") if meal.posted_on %></p>
     </div>
   </div>
 </div>
