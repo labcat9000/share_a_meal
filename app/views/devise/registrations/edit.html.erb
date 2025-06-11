@@ -44,21 +44,21 @@
           <%= f.input :current_password, label: false, placeholder: "Current Password", hint: "Required to save changes", hint_html: { style: "color: #FEFAE0;" }, required: true, input_html: { class: "form-control rounded-pill px-3 py-2 bg-light border-0", autocomplete: "current-password" } %>
 
           <div class="text-center mt-4">
-            <%= f.button :submit, "Done", class: "btn rounded-pill px-5 py-2", style: "background-color: #82983A;" %>
+            <%= f.button :submit, "Done", class: "btn rounded-pill px-5 py-2", style: "background-color: #82983A; color: #223618" %>
           </div>
         </div>
       <% end %>
 
+      <div class="text-center mt-3">
+        <%= link_to "Back", user_profile_path, class: "btn btn-outline rounded-pill px-5 py-2", style: "border-color: #82983A; color: #82983A;" %>
+      </div>
+
       <div class="text-center mt-5">
         <%= button_to "Cancel my account", registration_path(resource_name), method: :delete,
               data: { confirm: "Are you sure you want to delete your account?" },
-              class: "btn btn-outline-danger rounded-pill px-4" %>
-      </div>
-
-      <div class="text-center mt-3">
-        <%= link_to "Back", user_profile_path, class: "text-muted" %>
+              class: "btn btn-outline rounded-pill px-4",
+              style: "color: #DA9343; border-color: #DA9343;" %>
       </div>
     </div>
-
   </div>
 </div>
