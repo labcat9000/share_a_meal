@@ -2,8 +2,6 @@
   <%= link_to root_path, class: "internal-logo" do %>
     <%= image_tag "logo-dark.png", height: 50, class: "me-2" %>
   <% end %>
-  <span class="fw-bold text-dark" style="font-size: 2rem;">Share A Meal</span>
-
   <% if user_signed_in? %>
     <div class="dropdown">
       <button class="btn text-dark dropdown-toggle"
