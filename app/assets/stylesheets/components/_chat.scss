@@ -21,14 +21,16 @@
 }
 
 .message-bubble.sent {
-  background-color: #DA9343;
+  background-color: #82983A;
   margin-left: auto;
   text-align: right;
+  color: #FFF9E5;
 }
 
 .message-bubble.received {
-  background-color: #82983A;
+  background-color: #DA9343;
   margin-right: auto;
   text-align: left;
   border: 1px solid #eee;
+  color: #FFF9E5;
 }
