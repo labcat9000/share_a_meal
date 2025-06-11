@@ -1,6 +1,7 @@
 class ExchangesController < ApplicationController
   before_action :authenticate_user!
   before_action :set_meal, only: [:new, :create]
+  before_action :set_exchange, only: [:edit_rating, :update_rating]
 
   def new
     @exchange = Exchange.new
@@ -74,33 +75,28 @@ class ExchangesController < ApplicationController
   end
 
   def exchanges_dashboard
-    # Current and past exchanges for this user
     @current_exchanges = Exchange.where(requesting_user_id: current_user.id, status: ["Accepted", "Pending"])
     @past_exchanges = Exchange.where(requesting_user_id: current_user.id, status: ["Declined", "Completed"])
-
-    # Requests made by others for this user's meals
     @exchange_requests = Exchange
       .includes(:meal_offered, :requesting_user)
-      .where(meal_offered_id: current_user.meals.pluck(:id))
-
-    # Meals this user has created
+      .where("meal_offered_id IN (:meal_ids)",
+            meal_ids: current_user.meals.pluck(:id))
     @my_meals = Meal.where(user_id: current_user.id)
-
-    # 👇 Add this to fix the issue
-    @accepted_exchanges = Exchange.where(requesting_user_id: current_user.id, status: "Accepted")
-
-    # Show messages *only* for accepted exchanges
-    if @accepted_exchanges.any?
-      @messages = Message
-        .includes(:user, :exchange)
-        .where(exchange: @accepted_exchanges)
-        .order(created_at: :desc)
-
-      # Optional: flag for unread messages
-      @new_message = @messages.any?
+    @messages = Message.includes(:user).order(created_at: :asc)
+    @latest_messages = Message
+    .includes(:exchange, :user)
+    .where(exchange_id: Exchange.where(
+      status: "Accepted"
+    ).where(
+      "requesting_user_id = :id OR meal_offered_id IN (:meal_ids)",
+      id: current_user.id,
+      meal_ids: current_user.meals.ids
+    ))
+    .order(created_at: :desc)
+    .group_by(&:exchange)
+    .transform_values(&:first)
+      # or scoped by user or exchange
   end
-end
-
 
   # def exchange_requests
   # end
