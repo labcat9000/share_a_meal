@@ -40,4 +40,12 @@
       </div>
     </div>
   </div>
+  <div class="col-3">
+    <% if @accepted_exchanges.any? %>
+    <h3 class="text-dashboard fw-bold mb-3">My Messages</h3>
+      <div class="dashboard-box text-center p-3 h-100">
+      <%= link_to "New Message", user_exchanges_path(section: "current"), class: "btn px-4 py-2", style: " border-radius: 5px; background-color: #82983A; color: #FEFAE0;" %>
+      </div>
+    <% end %>
+  </div>
 </div>

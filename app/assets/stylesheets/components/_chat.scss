@@ -1,5 +1,5 @@
 .chat-header {
-  background-color: #FFF9E5;
+  background-color: #D7E0D2;
   border-bottom: 1px solid #ddd;
 }
 
@@ -9,7 +9,7 @@
 
 .chat-input {
   border-top: 1px solid #ddd;
-  background-color: white;
+  background-color: #D7E0D2;
 }
 
 .message-bubble {
@@ -21,14 +21,16 @@
 }
 
 .message-bubble.sent {
-  background-color: #aabe99;
+  background-color: #82983A;
   margin-left: auto;
   text-align: right;
+  color: #FFF9E5;
 }
 
 .message-bubble.received {
-  background-color: #ffffff;
+  background-color: #DA9343;
   margin-right: auto;
   text-align: left;
   border: 1px solid #eee;
+  color: #FFF9E5;
 }
