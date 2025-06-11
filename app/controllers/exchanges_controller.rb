@@ -1,7 +1,6 @@
 class ExchangesController < ApplicationController
   before_action :authenticate_user!
   before_action :set_meal, only: [:new, :create]
-  before_action :set_exchange, only: [:edit_rating, :update_rating]
 
   def new
     @exchange = Exchange.new

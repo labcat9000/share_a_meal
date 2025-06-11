@@ -72,7 +72,7 @@ class MealsController < ApplicationController
     authorize @meal
 
     if @meal.save
-      redirect_to meals_path, notice: 'Meal was successfully created.'
+      redirect_to root_path, notice: 'Meal was successfully posted.'
     else
       render :new, status: :unprocessable_entity
     end

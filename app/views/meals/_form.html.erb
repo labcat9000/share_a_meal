@@ -86,7 +86,7 @@
           <!-- Category -->
           <%= f.input :category, label: "Category", label_html: { style: "color: #FEFAE0;" }, collection: Meal::CATEGORY_OPTIONS, prompt: "Select Category", input_html: { class: "form-select rounded-4 p-2", style: "background-color: #D7E0D2; color: #223618;" } %>
           <!-- Cuisine -->
-          <%= f.input_field :cuisine, list: "cuisine-options", placeholder: "e.g. Chinese, French", class: "form-control bg-light rounded-4 p-3" %>
+          <%= f.input :cuisine, label: "Cuisine", label_html: { style: "color: #FEFAE0;" }, list: "cuisine-options", placeholder: "e.g. Chinese, French", input_html: { class: "form-control bg-light rounded-4 p-3" } %>
           <datalist id="cuisine-options">
             <% ['Italian', 'Chinese', 'Mexican', 'Indian', 'Greek', 'Thai', 'American'].each do |cuisine| %>
               <option value="<%= cuisine %>">
@@ -96,13 +96,9 @@
           <!-- 📍 Address -->
           <%= f.input :address, label: "Location", label_html: { style: "color: #FEFAE0;" }, input_html: { class: "form-control bg-light rounded-4 p-3", placeholder: current_user.address.presence || "Enter address" } %>
 
-
-          <!-- 🗓️ Date -->
-          <p style="color: #FEFAE0;"><strong>Date:</strong> <%= Date.today.strftime("%B %d, %Y") %></p>
-          <%= f.hidden_field :posted_on, value: Date.today %>
           <!-- submit -->
           <div class="text-center">
-            <%= f.button :submit, meal.persisted? ? "Update Meal" : "Create Meal", class: "btn btn-green" %>
+            <%= f.button :submit, meal.persisted? ? "Update Meal" : "Post Meal", class: "btn btn-green" %>
           </div>
         </div>
       <% end %>
