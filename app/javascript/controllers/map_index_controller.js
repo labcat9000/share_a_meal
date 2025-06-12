@@ -4,7 +4,8 @@ import mapboxgl from "mapbox-gl"
 export default class extends Controller {
   static values = {
     apiKey: String,
-    markers: String
+    markers: String,
+    imgurl: String
   }
 
   static targets = ["map", "locationInfo"]
@@ -82,7 +83,7 @@ export default class extends Controller {
                 ${exactMatches.map(m => `
                   <li style="margin-bottom: 10px;">
                     <strong>${m.name}</strong><br>
-                    <img src="/assets/chef.png" alt="Chef" style="width:14px; height:14px; vertical-align:middle; margin-right:4px;">
+                    <img src="${this.imgurlValue}" alt="Chef" style="width:14px; height:14px; vertical-align:middle; margin-right:4px;">
                     <strong>${m.owner}</strong><br>
                     <a href="${m.path}" class="btn-green-sm mt-1">View</a>
                   </li>
