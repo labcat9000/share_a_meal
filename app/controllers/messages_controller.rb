@@ -10,6 +10,7 @@ class MessagesController < ApplicationController
     @message.exchange = @exchanges
     @message.user = current_user
     if @message.save
+      flash[:notice] = "Message sent successfully."
       respond_to do |format|
         format.turbo_stream do
           render turbo_stream: turbo_stream.append(:messages, partial: "messages/message", locals: { message: @message, user: current_user })
@@ -17,6 +18,7 @@ class MessagesController < ApplicationController
         format.html { redirect_to exchange_path(@exchange) }
       end
     else
+      flash[:alert] = "There was a problem sending your message."
       render "exchanges/show", status: :unprocessable_entity
     end
   end
