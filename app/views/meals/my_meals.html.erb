@@ -34,13 +34,27 @@
       <div class="mt-4">
         <% @my_exchanges.each do |exchange| %>
           <div class="meal-card">
-            <h2></strong> <%= link_to exchange.requesting_user.name, view_user_path(exchange.requesting_user), class: "meal-card-link" %> </h2>
-            <p><strong>Meal Requested:</strong> <%= exchange.meal_offered&.name || "N/A" %> </p>
-            <p><strong>Status:</strong>
-              <span class="badge bg-<%= exchange.status == "accepted" ? "success" : "secondary" %>">
-                <%= exchange.status.capitalize %>
-              </span>
-            </p>
+            <!-- Flex container for top row -->
+            <div class="d-flex justify-content-between align-items-center">
+              <h2></strong> <%= link_to [exchange.requesting_user.first_name, exchange.requesting_user.last_name&.first&.upcase].compact.join(" ") + ".", view_user_path(exchange.requesting_user), class: "meal-card-link" %> </h2>
+                <% if exchange.status == "Accepted" %>
+                  <div>
+                    <%= link_to exchange_messages_path(exchange), class: "text-decoration-none", style: "color: #FEFAE0;" do %>
+                      <i class="fa-solid fa-comment"></i>
+                    <% end %>
+                  </div>
+                <% end %>
+              </div>
+            <!-- Body of the card -->
+              <div>
+                <p><strong>Meal Requested:</strong> <%= exchange.meal_offered&.name || "N/A" %> </p>
+                <p><strong>Status:</strong>
+                  <span class="badge bg-<%= exchange.status == "accepted" ? "success" : "secondary" %>">
+                    <%= exchange.status.capitalize %>
+                  </span>
+                </p>
+              </div>
+            </div>
           </div>
         <% end %>
       </div>

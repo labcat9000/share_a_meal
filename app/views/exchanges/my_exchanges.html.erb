@@ -18,24 +18,26 @@
     <div data-exchanges-toggle-target="currentExchangesSection">
       <% if @current_exchanges.any? %>
         <% @current_exchanges.each do |exchange| %>
-          <div class="meal-card p-3 border rounded mb-3">
+          <div class="meal-card">
             <!-- Flex container for top row -->
             <div class="d-flex justify-content-between align-items-center">
-              <div>
-                <strong>Status:</strong> <%= exchange.status %>
-              </div>
+              <div><h2><%= link_to [exchange.meal_offered.user.first_name, exchange.meal_offered.user.last_name&.first&.upcase].compact.join(" ") + ".", view_user_path(exchange.meal_offered.user), class: "meal-card-link" %></h2></div>
               <% if exchange.status == "Accepted" %>
-                <%= link_to exchange_messages_path(exchange), class: "text-decoration-none", style: "color: #FEFAE0;" do %>
-                  <i class="fa-solid fa-comment"></i>
-                <% end %>
+                <div>
+                  <%= link_to exchange_messages_path(exchange), class: "text-decoration-none", style: "color: #FEFAE0;" do %>
+                    <i class="fa-solid fa-comment"></i>
+                  <% end %>
+                </div>
               <% end %>
             </div>
             <!-- Body of the card -->
-            <div class="mt-2">
-              <h3><%= exchange.meal_offered.user.first_name %></h3>
-              <div>
-                You get: <%= exchange.meal_offered.name %>
-              </div>
+            <div>
+            <p><strong>Status:</strong>
+              <span class="badge bg-<%= exchange.status == "accepted" ? "success" : "secondary" %>">
+                <%= exchange.status.capitalize %>
+              </span>
+            </p>
+            <p><strong>You get:</strong> <%= exchange.meal_offered.name %></p>
             </div>
           </div>
         <% end %>
@@ -50,7 +52,7 @@
         <% @past_exchanges.each do |exchange| %>
           <div class="meal-card">
             <div>
-              <h2><%= exchange.meal_offered.user.first_name %></h2>
+              <h2><%= [exchange.meal_offered.user.first_name, exchange.meal_offered.user.last_name&.first&.upcase].compact.join(" ") + "." %></h2>
               Status: <%= exchange.status %>
             </div>
             <div>
