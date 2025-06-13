@@ -48,7 +48,7 @@ class MealsController < ApplicationController
           lng: meal.longitude,
           name: meal.name,
           description: meal.description.truncate(60),
-          owner: "#{meal.user.first_name} #{meal.user.last_name}",
+          owner: "#{[meal.user.first_name, meal.user.last_name&.first&.upcase].compact.join(" ") + "."}",
           path: Rails.application.routes.url_helpers.meal_path(meal),
           status: exchange_status == "accepted" ? "accepted" : "blurred"
         }
