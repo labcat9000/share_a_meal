@@ -1,15 +1,14 @@
-<div class="min-vh-100 d-flex flex-column justify-content-between" style="padding-bottom: 70px;">
-  <div class="w-100 px-4 pt-3 pb-5">
-
-    <div class="d-flex align-items-center mb-4" style="gap: 1rem;">
-      <div class="rounded-circle overflow-hidden shadow" style="width: 55px; height: 55px; flex-shrink: 0;">
-        <% if @user.profile_photo.attached? %>
-          <%= image_tag @user.profile_photo, class: "w-100 h-100 object-fit-cover" %>
-        <% else %>
-          <%= image_tag "pfp-default.png", class: "w-100 h-100 object-fit-cover" %>
-        <% end %>
-      </div>
-      <div class="d-flex justify-content-between">
+<div class="pt-3 pb-5">
+  <div class="w-100 px-4">
+    <div class="d-flex justify-content-between align-items-start mb-4" style="gap: 1rem;">
+      <div class="d-flex" style="gap: 1rem;">
+        <div class="rounded-circle overflow-hidden shadow" style="width: 55px; height: 55px; flex-shrink: 0;">
+          <% if @user.profile_photo.attached? %>
+            <%= image_tag @user.profile_photo, class: "w-100 h-100 object-fit-cover" %>
+          <% else %>
+            <%= image_tag "pfp-default.png", class: "w-100 h-100 object-fit-cover" %>
+          <% end %>
+        </div>
         <div>
           <h4 style="font-size: 1.4rem; font-weight: 700; margin: 0;">
             <%= "#{@user.first_name} #{@user.last_name&.first || ''}." %>
@@ -18,15 +17,15 @@
             Joined <%= @user.created_at.strftime("%B %Y") %>
           </p>
         </div>
-        <div>
-          <% if Exchange.joins(:meal_offered).where(meal_offered: { user: current_user }, status: "Pending").any? %>
-            <h2><%= link_to "Decline", decline_exchange_path(@exchange), method: :patch, data: { turbo_method: :patch, turbo_confirm: "Decline this share?" } %></h2>
-          <% end %>
-        </div>
       </div>
+      <% if Exchange.joins(:meal_offered).where(meal_offered: { user: current_user }, status: "Pending").any? %>
+        <%= link_to "Decline", decline_exchange_path(@exchange),
+            method: :patch,
+            data: { turbo_method: :patch, turbo_confirm: "Decline this share?" },
+            class: "decline-button text-danger fw-bold" %>
+      <% end %>
     </div>
-
-    <div class="px-1 meal-cards">
+    <div class="px-1 meal-cards meal-cards--tight">
       <% @meals.each do |meal| %>
         <%= link_to meal_path(meal), class: "meal-card-link" do %>
           <div class="meal-card">
@@ -42,23 +41,24 @@
                 <h5 class="meal-title"><%= meal.name %></h5>
                 <p class="meal-description"><%= truncate(meal.description, length: 120) %></p>
                 <% if meal.cuisine.present? %>
-                  <p class="meal-author"><strong>Cuisine:</strong> <%= meal.cuisine %></p>
+                  <p class="meal-author"><%= meal.cuisine %></p>
                 <% end %>
                 <% if meal.posted_on %>
-                  <p class="meal-date"><strong>Posted on:</strong> <%= meal.posted_on.strftime("%B %d, %Y") %></p>
+                  <div class="d-flex justify-content-between align-items-center mt-1">
+                    <p class="meal-date mb-0"><%= meal.posted_on.strftime("%B %d, %Y") %></p>
+                    <% if Exchange.joins(:meal_offered).where(meal_offered: { user: current_user }, requesting_user: meal.user, status: "Pending").any? %>
+                      <%= link_to "Accept", accept_exchange_path(
+                            Exchange.joins(:meal_offered).where(meal_offered: { user: current_user }, requesting_user: meal.user, status: "Pending").first,
+                            meal_id: meal.id),
+                          method: :patch,
+                          data: { turbo_method: :patch, turbo_confirm: "Accept this share?" },
+                          class: "meal-accept-btn" %>
+                    <% end %>
+                  </div>
                 <% end %>
               </div>
             </div>
           </div>
-        <% end %>
-
-        <% if Exchange.joins(:meal_offered).where(meal_offered: { user: current_user }, requesting_user: meal.user, status: "Pending").any? %>
-          <%= link_to "Accept", accept_exchange_path(
-                Exchange.joins(:meal_offered).where(meal_offered: { user: current_user }, requesting_user: meal.user, status: "Pending").first,
-                meal_id: meal.id),
-              method: :patch,
-              data: { turbo_method: :patch, turbo_confirm: "Accept this share?" },
-              class: "btn btn-success mt-2 mb-4 rounded-pill px-4" %>
         <% end %>
       <% end %>
 
@@ -66,5 +66,6 @@
         <p class="text-center text-muted mt-4">This user hasn’t shared any meals yet.</p>
       <% end %>
     </div>
+
   </div>
 </div>
