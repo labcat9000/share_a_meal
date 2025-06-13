@@ -47,7 +47,7 @@
       <!-- Request Button -->
       <% unless Exchange.joins(:meal_offered).where(meal_offered: {user: @meal.user}, requesting_user: current_user, status: "Pending").any? %>
         <div style="text-align: center; margin-bottom: 0.5rem;">
-          <%= link_to "Request Share", exchanges_dashboard_path(@meal), data: { turbo_method: :post }, class: "btn-green" %>
+          <%= link_to "Request Share", meal_exchanges_path(@meal), data: { turbo_method: :post }, class: "btn-green" %>
         </div>
       <% end %>
 
