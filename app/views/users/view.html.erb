@@ -4,7 +4,7 @@
       <div class="d-flex" style="gap: 1rem;">
         <div class="rounded-circle overflow-hidden shadow" style="width: 55px; height: 55px; flex-shrink: 0;">
           <% if @user.profile_photo.attached? %>
-            <%= image_tag @user.profile_photo, class: "w-100 h-100 object-fit-cover" %>
+            <%= cl_image_tag @user.profile_photo.key, class: "w-100 h-100 object-fit-cover" %>
           <% else %>
             <%= image_tag "pfp-default.png", class: "w-100 h-100 object-fit-cover" %>
           <% end %>
