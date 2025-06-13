@@ -51,7 +51,7 @@ class ExchangesController < ApplicationController
     @exchange.meal_offered = @meal
     @exchange.requesting_user = current_user
     if @exchange.save!
-      redirect_to meal_path(@exchange.meal_offered), notice: "Share requested!"
+      redirect_to user_exchanges_path(section: "current"), notice: "Share requested!"
     else
       redirect_to meal_path(@meal), notice: "Share request unsuccessful."
     end
