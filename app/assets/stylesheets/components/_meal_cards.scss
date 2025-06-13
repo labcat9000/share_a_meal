@@ -210,3 +210,63 @@
    line-height: 1;
  }
 }
+
+
+.meal-accept-btn {
+  font-size: 0.75rem;
+  padding: 3px 6px;
+  border-radius: 20px;
+  font-weight: 600;
+  background-color: #82983A;
+  color: #FEFAE0;
+  border: none;
+  line-height: 1;
+  text-align: center;
+  display: inline-block;
+  width: 60px;
+  min-width: 0;
+  text-decoration: none;
+}
+
+
+.meal-cards--tight {
+  .meal-card-inner {
+    align-items: stretch;
+  }
+
+  .meal-card-content {
+    justify-content: space-between;
+    padding-top: 2px;
+    padding-bottom: 2px;
+  }
+
+  .meal-author,
+  .meal-date {
+    margin-top: 0;
+    margin-bottom: 0;
+    font-size: 0.75rem;
+    line-height: 1.1;
+  }
+
+  .meal-accept-btn {
+    margin-left: 10px;
+    transform: translateY(-1px);
+  }
+}
+
+
+.decline-button {
+  font-size: 0.9rem;
+  padding: 2px 10px;
+  border-radius: 16px;
+  border: none;
+  background-color: transparent;
+  color: #d95f5f !important;
+  text-decoration: none;
+
+  &:hover {
+    background-color: #4e1d1d !important;
+    color: white !important;
+    text-decoration: none;
+  }
+}

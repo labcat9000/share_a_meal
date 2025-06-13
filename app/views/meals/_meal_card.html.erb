@@ -14,6 +14,11 @@
         <%= image_tag("chef.png", alt: "Chef", class: "me-card-icon me-1", style: "width: 18px; height: 18px; vertical-align: text-bottom;") %>
         <strong><%= [meal.user.first_name, meal.user.last_name&.first&.upcase].compact.join(" ") + "." if meal.user %></strong>
       </p>
+
+
+      <div class="mt-2">
+        <%= yield if block_given? %>
+      </div>
     </div>
   </div>
 </div>
