@@ -85,7 +85,9 @@ export default class extends Controller {
                     <strong>${m.name}</strong><br>
                     <img src="${this.imgurlValue}" alt="Chef" style="width:14px; height:14px; vertical-align:middle; margin-right:4px;">
                     <strong>${m.owner}</strong><br>
-                    <a href="${m.path}" class="btn-green-sm mt-1">View</a>
+                    <div style="text-align: center;">
+                      <a href="${m.path}" class="btn-green-sm mt-1">View</a>
+                    </div>
                   </li>
                 `).join("")}
               </ul>
