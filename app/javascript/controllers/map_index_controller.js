@@ -68,9 +68,9 @@ export default class extends Controller {
                 stops: [[0, 0], [20, 5000]],
                 base: 2
               },
-              "circle-color": "#88f065",
+              "circle-color": "#54a23a",
               "circle-opacity": 0.15,
-              "circle-stroke-color": "#88f065",
+              "circle-stroke-color": "#54a23a",
               "circle-stroke-width": 1
             }
           })
@@ -129,7 +129,7 @@ export default class extends Controller {
 
       this.map.flyTo({ center: [lng, lat], zoom: 14 })
 
-      new mapboxgl.Marker({ color: "#d00" })
+      new mapboxgl.Marker({ color: "#BD5826" })
         .setLngLat([lng, lat])
         .addTo(this.map)
 

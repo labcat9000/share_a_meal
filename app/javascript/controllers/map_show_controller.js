@@ -49,9 +49,9 @@ export default class extends Controller {
               stops: [[0, 0], [20, 5000]],
               base: 2
             },
-            "circle-color": "#88f065",
+            "circle-color": "#54a23a",
             "circle-opacity": 0.15,
-            "circle-stroke-color": "#88f065",
+            "circle-stroke-color": "#54a23a",
             "circle-stroke-width": 1
           }
         })
