@@ -1,4 +1,4 @@
-<div class="container chat d-flex flex-column justify-content-between p-0" style="height: 100vh;">
+<div class="container chat d-flex flex-column justify-content-between p-0">
   <!-- Header -->
   <div class="chat-header d-flex align-items-center justify-content-between px-3 py-2 bg-light-orange border-bottom">
     <div>
@@ -15,7 +15,7 @@
     </div>
 
   <!-- Message Input -->
-  <div class="chat-input border-top px-3 py-2 bg-white">
+  <div class="chat-input border-top px-3 py-2">
     <%= simple_form_for [@exchange, @message], html: { class: "d-flex", data: { controller: "reset-form", action: "turbo:submit-end->reset-form#reset"} } do |f| %>
       <% if current_user == @exchange.meal_offered.user %>
           <% other_user = @exchange.meal_requested.user %>
@@ -26,7 +26,7 @@
         label: false,
         input_html: { class: "form-control rounded-pill me-2" },
         wrapper_html: { class: "flex-grow-1 mb-0" } %>
-      <%= f.submit "Send", class: "btn rounded-pill", style: "background-color: #82983A; border-color: #82983A; color: #FFF9E5; margin-bottom: 20px; " %>
+      <%= f.submit "Send", class: "send-btn rounded-pill", style: "background-color: #82983A; border-color: #FFF9E5; color: #FFF9E5; margin-bottom: 20px; margin-left: 10px; " %>
     <% end %>
   </div>
 </div>

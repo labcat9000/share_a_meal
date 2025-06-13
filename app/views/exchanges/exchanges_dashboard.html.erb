@@ -44,26 +44,4 @@
       </div>
     </div>
   </div>
-  <div class="text-dashboard fw-bold my-4 row g-3">
-  <% @latest_messages.each do |exchange, message| %>
-    <% next unless exchange.status == "Accepted" %>
-    <div class="col-3">
-      <div class="dashboard-box p-3">
-        <%= link_to exchange_messages_path(exchange), class: "text-decoration-none text-white" do %>
-          <div class="d-flex justify-content-between align-items-center">
-            <div>
-              <div class="fw-semibold mb-1">Chat about: <%= exchange.meal_offered.name %></div>
-              <div class="text-muted small">
-                <strong><%= message.user == current_user ? "You" : message.user.name %>:</strong>
-                <%= truncate(message.content, length: 50) %>
-              </div>
-            </div>
-            <i class="bi bi-chevron-right text-muted"></i>
-          </div>
-        <% end %>
-      </div>
-    </div>
-  <% end %>
-</div>
-
 </div>

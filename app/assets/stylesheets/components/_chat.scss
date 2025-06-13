@@ -1,3 +1,6 @@
+.container.chat {
+  height: calc(100vh - 65px);
+}
 .chat-header {
   background-color: #D7E0D2;
   border-bottom: 1px solid #ddd;
@@ -8,8 +11,8 @@
 }
 
 .chat-input {
-  border-top: 1px solid #ddd;
-  background-color: #D7E0D2;
+  // border-top: 1px solid #ddd;
+  background-color: #FEFAE0;
 }
 
 .message-bubble {
