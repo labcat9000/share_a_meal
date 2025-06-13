@@ -19,9 +19,7 @@
         </div>
       </div>
       <% if Exchange.joins(:meal_offered).where(meal_offered: { user: current_user }, status: "Pending").any? %>
-        <%= link_to "Decline", decline_exchange_path(@exchange),
-            method: :patch,
-            data: { turbo_method: :patch, turbo_confirm: "Decline this share?" },
+        <%= link_to "Decline", root_path,
             class: "decline-button text-danger fw-bold" %>
       <% end %>
     </div>
