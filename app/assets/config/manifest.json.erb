@@ -1,0 +1,17 @@
+{
+ "background_color": "white",
+ "description": "Share A Meal is a web application to share meals, while creating a community of people who love to cook and share food.",
+ "display": "standalone",
+ "name": "Share A Meal",
+ "icons": [
+    <% files = Dir.entries(Rails.root.join("app/assets/images/icons/")).select {|f| !File.directory? f} %>
+    <% files.each_with_index do |file, index| %>
+      <% match = file.match(/.+-(?<size>\d{2,3}x\d{2,3}).png/) %>
+      {
+        "src": "<%= image_path "icons/#{file}" %>",
+        "sizes": "<%= match && match[:size] %>",
+        "type": "image/png"
+      }<%= "," unless (files.size - 1) == index %>
+    <% end %>
+  ]
+}
